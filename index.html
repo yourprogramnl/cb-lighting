@@ -496,7 +496,7 @@
   <div class="wrap">
     <div class="foot-grid">
       <div>
-        <div class="logo"><img class="logo-img logo-img-foot" data-cms="logo_image" alt="CB-lighting" /><span class="logo-default bulb"><svg viewBox="0 0 24 24" fill="none" stroke="#e0a528" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2Z"/></svg></span><span class="logo-default">CB<b>-</b>lighting</span></div>
+        <div class="logo"><span class="bulb"><svg viewBox="0 0 24 24" fill="none" stroke="#e0a528" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2Z"/></svg></span><span>CB<b>-</b>lighting</span></div>
         <p>Concreet en Betrouwbaar. Onafhankelijke lichtberekeningen en lichtplannen voor binnen- en buitenverlichting, met beide benen op de grond.</p>
       </div>
       <div>
@@ -536,7 +536,7 @@
       if(el.tagName==='IMG'){
         el.src=v; el.style.display='block';
         if(k==='hero_image'){ var hc=document.getElementById('heroCard'); if(hc) hc.style.display='none'; var fb=document.querySelector('.float-badge'); if(fb) fb.style.display='none'; }
-        if(k==='logo_image'){ document.querySelectorAll('.logo-default').forEach(function(x){ x.style.display='none'; }); }
+        if(k==='logo_image'){ document.querySelectorAll('header.nav .logo-default').forEach(function(x){ x.style.display='none'; }); }
         return;
       }
       if(type==='bullets'){
