@@ -74,6 +74,7 @@
   .strip{background:var(--bg-tint);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
   .strip-inner{padding:26px 0;display:flex;align-items:center;gap:36px;flex-wrap:wrap;justify-content:center;color:var(--ink-soft);font-size:.95rem}
   .strip-inner .label{font-weight:600;color:var(--muted);font-size:.82rem;letter-spacing:.08em;text-transform:uppercase}
+  #stripItems{display:flex;align-items:center;gap:36px;flex-wrap:wrap;justify-content:center}
   .strip-inner span.c{display:inline-flex;align-items:center;gap:8px;font-weight:600}
   .strip-inner .d{width:5px;height:5px;border-radius:50%;background:var(--amber)}
 
@@ -113,7 +114,6 @@
   .card li{display:flex;gap:10px;align-items:flex-start;font-size:.92rem;color:var(--ink-soft)}
   .card li svg{width:18px;height:18px;flex:none;margin-top:2px;color:var(--amber-deep)}
 
-  /* GALERIJ */
   .gal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
   .gal-item{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:transform .18s,box-shadow .18s}
   .gal-item:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
@@ -138,7 +138,6 @@
   .story h3{font-size:1.3rem;margin:8px 0 12px}
   .story p{color:var(--ink-soft);font-size:.97rem}
 
-  /* LINKEDIN */
   .li-wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;align-items:start}
   .li-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
   .li-card iframe{width:100%;border:none;display:block;min-height:420px}
@@ -226,11 +225,11 @@
 <section class="hero" id="top" style="padding:0">
   <div class="wrap hero-inner">
     <div>
-      <span class="eyebrow">Onafhankelijk &middot; Concreet &amp; Betrouwbaar</span>
-      <h1>Lichtberekeningen die <span class="hl">echt kloppen</span>.</h1>
-      <p class="lead">Onafhankelijke lichtberekeningen en lichtplannen voor binnen- en buitenverlichting. Onderbouwd, helder en zonder bla bla. Wij verkopen geen lampen, dus ons advies is eerlijk.</p>
+      <span class="eyebrow" data-cms="hero_eyebrow">Onafhankelijk &middot; Concreet &amp; Betrouwbaar</span>
+      <h1><span data-cms="hero_title">Lichtberekeningen die </span><span class="hl" data-cms="hero_title_accent">echt kloppen.</span></h1>
+      <p class="lead" data-cms="hero_lead">Onafhankelijke lichtberekeningen en lichtplannen voor binnen- en buitenverlichting. Onderbouwd, helder en zonder bla bla. Wij verkopen geen lampen, dus ons advies is eerlijk.</p>
       <div class="hero-cta">
-        <a href="#contact" class="btn btn-primary">Vraag een lichtberekening aan
+        <a href="#contact" class="btn btn-primary"><span data-cms="hero_cta">Vraag een lichtberekening aan</span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         <a href="#diensten" class="btn btn-ghost">Bekijk diensten</a>
       </div>
@@ -241,10 +240,10 @@
       </div>
     </div>
     <div class="hero-visual">
-      <img class="hero-img" id="heroImg" alt="CB-lighting project" />
+      <img class="hero-img" id="heroImg" data-cms="hero_image" alt="CB-lighting project" />
       <div class="hero-card" id="heroCard">
         <span class="tag">Lichtberekening</span>
-        <h3>Voldoende én gelijkmatig licht</h3>
+        <h3 data-cms="hero_card_title">Voldoende én gelijkmatig licht</h3>
         <div class="lux-row">
           <div class="lux-bar" style="height:52%"></div><div class="lux-bar" style="height:74%"></div>
           <div class="lux-bar" style="height:88%"></div><div class="lux-bar" style="height:96%"></div>
@@ -263,12 +262,14 @@
 
 <div class="strip">
   <div class="wrap strip-inner">
-    <span class="label">Ervaring opgedaan bij</span>
-    <span class="c"><span class="d"></span>Industria</span>
-    <span class="c"><span class="d"></span>Indal</span>
-    <span class="c"><span class="d"></span>Philips / Signify</span>
-    <span class="c"><span class="d"></span>Glamox</span>
-    <span class="c"><span class="d"></span>Gemeente Amsterdam</span>
+    <span class="label" data-cms="strip_label">Ervaring opgedaan bij</span>
+    <div id="stripItems" data-cms="strip_items" data-type="strip">
+      <span class="c"><span class="d"></span>Industria</span>
+      <span class="c"><span class="d"></span>Indal</span>
+      <span class="c"><span class="d"></span>Philips / Signify</span>
+      <span class="c"><span class="d"></span>Glamox</span>
+      <span class="c"><span class="d"></span>Gemeente Amsterdam</span>
+    </div>
   </div>
 </div>
 
@@ -276,16 +277,16 @@
 <section id="diensten">
   <div class="wrap">
     <div class="sec-head">
-      <span class="eyebrow">Diensten</span>
-      <h2>Voor elke toepassing de juiste berekening</h2>
-      <p>Of het nu om een straat, plein, parkeerterrein, kantoor, school of bedrijfshal gaat: wij rekenen het voor u uit en adviseren over de beste oplossing.</p>
+      <span class="eyebrow" data-cms="services_eyebrow">Diensten</span>
+      <h2 data-cms="services_title">Voor elke toepassing de juiste berekening</h2>
+      <p data-cms="services_intro">Of het nu om een straat, plein, parkeerterrein, kantoor, school of bedrijfshal gaat: wij rekenen het voor u uit en adviseren over de beste oplossing.</p>
     </div>
     <div class="cards">
       <div class="card">
         <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#c4861a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4M15 3h4a2 2 0 0 1 2 2v4M9 21H5a2 2 0 0 1-2-2v-4M15 21h4a2 2 0 0 0 2-2v-4"/><circle cx="12" cy="12" r="3"/></svg></span>
-        <h3>Lichtberekeningen</h3>
-        <p>Nauwkeurige berekeningen met DIALux evo, op basis van uw tekeningen. We tonen aan dat de verlichting voldoet, in plaats van "volgens mij zou het genoeg moeten zijn".</p>
-        <ul>
+        <h3 data-cms="service1_title">Lichtberekeningen</h3>
+        <p data-cms="service1_text">Nauwkeurige berekeningen met DIALux evo, op basis van uw tekeningen.</p>
+        <ul data-cms="service1_bullets" data-type="bullets">
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Binnen- én buitenverlichting</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Volgens NPR (buiten) en NEN 12464 (binnen)</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Heldere rapportage als bewijs</li>
@@ -293,9 +294,9 @@
       </div>
       <div class="card">
         <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#c4861a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2Z"/><path d="M9 18h6M10 21h4"/></svg></span>
-        <h3>Verlichtingsadvies</h3>
-        <p>Welke armaturen, welke lichtkleur, montagehoogte en lichtverdeling? We helpen u de juiste keuzes maken voor een resultaat dat klopt.</p>
-        <ul>
+        <h3 data-cms="service2_title">Verlichtingsadvies</h3>
+        <p data-cms="service2_text">Welke armaturen, welke lichtkleur, montagehoogte en lichtverdeling?</p>
+        <ul data-cms="service2_bullets" data-type="bullets">
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Kennis van de nieuwste technologieën</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Juiste plaatsing van armaturen</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Advies op maat voor uw situatie</li>
@@ -303,9 +304,9 @@
       </div>
       <div class="card">
         <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#c4861a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg></span>
-        <h3>Lichtplan op maat</h3>
-        <p>Elk gebouw en elke straat is anders: net wat breder, parkeervakken, afwijkende lichtpunthoogte. Wij maken een plan dat past bij úw uitdaging.</p>
-        <ul>
+        <h3 data-cms="service3_title">Lichtplan op maat</h3>
+        <p data-cms="service3_text">Elk gebouw en elke straat is anders.</p>
+        <ul data-cms="service3_bullets" data-type="bullets">
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Maatwerk in plaats van standaardplan</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Bespaart u tijd en geld</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>U focust op uw eigen werk</li>
@@ -320,11 +321,11 @@
   <div class="wrap">
     <div class="banner">
       <div>
-        <span class="badge">Onafhankelijk</span>
-        <h3>Geen lampenverkoper, maar een eerlijk adviseur</h3>
-        <p>Veel lichtberekeningen worden gratis weggegeven om u daarna armaturen te verkopen. Bij CB-lighting niet. Wij verkopen geen verlichting, dus ons advies dient alleen uw belang.</p>
+        <span class="badge" data-cms="banner_badge">Onafhankelijk</span>
+        <h3 data-cms="banner_title">Geen lampenverkoper, maar een eerlijk adviseur</h3>
+        <p data-cms="banner_text">Veel lichtberekeningen worden gratis weggegeven om u daarna armaturen te verkopen. Bij CB-lighting niet.</p>
       </div>
-      <a href="#contact" class="btn btn-amber">Vraag vrijblijvend advies</a>
+      <a href="#contact" class="btn btn-amber" data-cms="banner_cta">Vraag vrijblijvend advies</a>
     </div>
   </div>
 </section>
@@ -333,23 +334,23 @@
 <section class="about" id="over">
   <div class="wrap about-grid">
     <div class="body">
-      <span class="eyebrow">Over CB-lighting</span>
-      <h2 style="font-size:clamp(2rem,3.6vw,2.7rem);margin-bottom:18px">Iemand die écht wat van licht weet</h2>
-      <p>Mijn passie voor licht begon in 2002 bij Industria technische verlichting in Capelle aan den IJssel. Daar maakte ik mijn eerste lichtberekeningen. Industria werd overgenomen door het Spaanse Indal en later door Philips, waar ik werkte voor het LIAS, de licht-technische afdeling.</p>
-      <p>Daarna werkte ik voor het ingenieursbureau van de gemeente Amsterdam, afdeling openbare verlichting. Mijn kennis over binnenverlichting, voor kantoren, scholen, kazernes en bedrijfshallen, deed ik op bij Glamox. Ik mocht onder andere de gemeenten Amsterdam, Dordrecht en Den Haag helpen bij het verledden van hun stad.</p>
-      <p>Begin 2025 ben ik mijn eigen bureau gestart: CB-lighting. Mijn doel is om Groningse nuchterheid terug te brengen in de (openbare) verlichting. Wilt u een lichtplan zonder veel bla bla, maar met een oprecht en eerlijk verhaal? Neem dan gerust contact op.</p>
+      <span class="eyebrow" data-cms="about_eyebrow">Over CB-lighting</span>
+      <h2 style="font-size:clamp(2rem,3.6vw,2.7rem);margin-bottom:18px" data-cms="about_title">Iemand die écht wat van licht weet</h2>
+      <p data-cms="about_p1">Mijn passie voor licht begon in 2002 bij Industria technische verlichting in Capelle aan den IJssel.</p>
+      <p data-cms="about_p2">Daarna werkte ik voor het ingenieursbureau van de gemeente Amsterdam.</p>
+      <p data-cms="about_p3">Begin 2025 ben ik mijn eigen bureau gestart: CB-lighting.</p>
       <div class="stats">
-        <div class="stat"><b>2002</b><small>Begonnen met licht</small></div>
-        <div class="stat"><b>20+ jr</b><small>Praktijkervaring</small></div>
-        <div class="stat"><b>HVK</b><small>Hogere Verlichtingskunde</small></div>
+        <div class="stat"><b data-cms="stat1_num">2002</b><small data-cms="stat1_label">Begonnen met licht</small></div>
+        <div class="stat"><b data-cms="stat2_num">20+ jr</b><small data-cms="stat2_label">Praktijkervaring</small></div>
+        <div class="stat"><b data-cms="stat3_num">HVK</b><small data-cms="stat3_label">Hogere Verlichtingskunde</small></div>
       </div>
     </div>
     <div>
-      <img class="about-col-img" id="aboutImg" alt="Chris Bakker, CB-lighting" />
+      <img class="about-col-img" id="aboutImg" data-cms="about_image" alt="Chris Bakker, CB-lighting" />
       <div class="quote-card">
         <div class="mark">&ldquo;</div>
-        <blockquote>Ik zeg liever dat ik wél wat van verlichting weet, dan dat ik zou zeggen: "ik heb verstand van licht".</blockquote>
-        <div class="who">Chris Bakker<small>Oprichter CB-lighting &middot; Capelle a/d IJssel</small></div>
+        <blockquote data-cms="about_quote">Ik zeg liever dat ik wél wat van verlichting weet, dan dat ik zou zeggen: "ik heb verstand van licht".</blockquote>
+        <div class="who"><span data-cms="about_quote_who">Chris Bakker</span><small data-cms="about_quote_role">Oprichter CB-lighting &middot; Capelle a/d IJssel</small></div>
       </div>
     </div>
   </div>
@@ -359,9 +360,9 @@
 <section id="projecten">
   <div class="wrap">
     <div class="sec-head">
-      <span class="eyebrow">Projecten in beeld</span>
-      <h2>Werk uit de praktijk</h2>
-      <p>Een greep uit projecten en lichtberekeningen. Van straten en pleinen tot kantoren en bedrijfshallen.</p>
+      <span class="eyebrow" data-cms="projects_eyebrow">Projecten in beeld</span>
+      <h2 data-cms="projects_title">Werk uit de praktijk</h2>
+      <p data-cms="projects_intro">Een greep uit projecten en lichtberekeningen.</p>
     </div>
     <div class="gal-grid" id="galGrid">
       <div class="gal-empty" id="galEmpty">Binnenkort tonen we hier voorbeelden van projecten en DIALux-berekeningen.</div>
@@ -373,15 +374,15 @@
 <section class="process" id="werkwijze">
   <div class="wrap">
     <div class="sec-head">
-      <span class="eyebrow" style="color:var(--amber)">Werkwijze</span>
-      <h2>Zo gaan we te werk</h2>
-      <p>Elk plan is uniek en afgestemd op uw wensen. In een paar heldere stappen naar verlichting die klopt.</p>
+      <span class="eyebrow" style="color:var(--amber)" data-cms="process_eyebrow">Werkwijze</span>
+      <h2 data-cms="process_title">Zo gaan we te werk</h2>
+      <p data-cms="process_intro">Elk plan is uniek en afgestemd op uw wensen.</p>
     </div>
     <div class="steps">
-      <div class="step"><div class="n">1</div><h3>Kennismaken</h3><p>We bespreken telefonisch of per mail wat de bedoeling is en wat u nodig heeft.</p></div>
-      <div class="step"><div class="n">2</div><h3>Aanleveren</h3><p>U levert tekeningen of schetsen aan van de ruimte, straat of het terrein.</p></div>
-      <div class="step"><div class="n">3</div><h3>Berekenen</h3><p>Wij rekenen met DIALux evo en stemmen de verlichting af op de richtlijnen.</p></div>
-      <div class="step"><div class="n">4</div><h3>Rapportage</h3><p>U ontvangt een heldere lichtberekening die voldoet aan uw wensen.</p></div>
+      <div class="step"><div class="n">1</div><h3 data-cms="step1_title">Kennismaken</h3><p data-cms="step1_text">We bespreken wat de bedoeling is.</p></div>
+      <div class="step"><div class="n">2</div><h3 data-cms="step2_title">Aanleveren</h3><p data-cms="step2_text">U levert tekeningen of schetsen aan.</p></div>
+      <div class="step"><div class="n">3</div><h3 data-cms="step3_title">Berekenen</h3><p data-cms="step3_text">Wij rekenen met DIALux evo.</p></div>
+      <div class="step"><div class="n">4</div><h3 data-cms="step4_title">Rapportage</h3><p data-cms="step4_text">U ontvangt een heldere lichtberekening.</p></div>
     </div>
   </div>
 </section>
@@ -390,20 +391,20 @@
 <section>
   <div class="wrap">
     <div class="sec-head">
-      <span class="eyebrow">Echt gebeurd</span>
-      <h2>Verhalen uit de praktijk</h2>
-      <p>Na ruim 20 jaar in het verlichtingsvak kom je bijzondere vragen tegen. Een paar die zijn bijgebleven.</p>
+      <span class="eyebrow" data-cms="stories_eyebrow">Echt gebeurd</span>
+      <h2 data-cms="stories_title">Verhalen uit de praktijk</h2>
+      <p data-cms="stories_intro">Na ruim 20 jaar in het verlichtingsvak kom je bijzondere vragen tegen.</p>
     </div>
     <div class="story-grid">
       <div class="story">
-        <span class="date">Uit de praktijk</span>
-        <h3>Een parkeerterrein met "boldertjes"</h3>
-        <p>Een klant wilde een parkeerterrein verlichten met boldertjes: paaltjes van een kleine meter hoog met een lampje erin. Prima als oriëntatieverlichting in tuinen of op campings, maar voor een parkeerterrein? In gedachten zag ik de order voor tientallen paaltjes al binnenkomen. Die order hebben we (natuurlijk) nooit ontvangen.</p>
+        <span class="date" data-cms="story1_tag">Uit de praktijk</span>
+        <h3 data-cms="story1_title">Een parkeerterrein met "boldertjes"</h3>
+        <p data-cms="story1_text">Een klant wilde een parkeerterrein verlichten met boldertjes.</p>
       </div>
       <div class="story">
-        <span class="date">Richtlijnen</span>
-        <h3>Richtlijnen, wat doe je ermee?</h3>
-        <p>Wie iets doet met openbare verlichting komt al gauw richtlijnen tegen. Gelukkig maar, want richtlijnen geven houvast: je weet of je 3, 5, 10 lux of misschien wel veel meer licht nodig hebt. Een discussie is dan snel ten einde, want het voldoet immers aan de richtlijnen, zoals de NPR. Wij proberen daaraan te voldoen, tenzij u het anders wenst.</p>
+        <span class="date" data-cms="story2_tag">Richtlijnen</span>
+        <h3 data-cms="story2_title">Richtlijnen, wat doe je ermee?</h3>
+        <p data-cms="story2_text">Wie iets doet met openbare verlichting komt al gauw richtlijnen tegen.</p>
       </div>
     </div>
   </div>
@@ -413,14 +414,14 @@
 <section class="faq" id="updates">
   <div class="wrap">
     <div class="sec-head center">
-      <span class="eyebrow">Updates</span>
-      <h2>Laatste van LinkedIn</h2>
-      <p>Inzichten en projecten, rechtstreeks van Chris.</p>
+      <span class="eyebrow" data-cms="updates_eyebrow">Updates</span>
+      <h2 data-cms="updates_title">Laatste van LinkedIn</h2>
+      <p data-cms="updates_intro">Inzichten en projecten, rechtstreeks van Chris.</p>
     </div>
     <div class="li-wrap" id="liWrap">
       <div class="li-empty" id="liEmpty">
         <p style="margin-bottom:18px">Volg CB-lighting op LinkedIn voor het laatste nieuws en projecten.</p>
-        <a class="btn btn-primary" href="https://www.linkedin.com/in/ccbakker/" target="_blank" rel="noopener">Bekijk op LinkedIn
+        <a class="btn btn-primary" data-linkhref="linkedin_url" href="https://www.linkedin.com/in/ccbakker/" target="_blank" rel="noopener">Bekijk op LinkedIn
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
       </div>
     </div>
@@ -431,15 +432,13 @@
 <section id="faq">
   <div class="wrap">
     <div class="sec-head center">
-      <span class="eyebrow">Veelgestelde vragen</span>
-      <h2>Goed om te weten</h2>
+      <span class="eyebrow" data-cms="faq_eyebrow">Veelgestelde vragen</span>
+      <h2 data-cms="faq_title">Goed om te weten</h2>
     </div>
-    <div class="faq-list">
+    <div class="faq-list" id="faqList">
       <details open><summary>Wat voor soort projecten doen jullie? <span class="pl">+</span></summary><div class="ans">Projecten variërend van kantoren en scholen tot het verlichten van straten, pleinen of hele wijken. Binnen én buiten.</div></details>
-      <details><summary>Hoe gaat het adviesproces in zijn werk? <span class="pl">+</span></summary><div class="ans">Het begint met een (telefoon)gesprek. We bespreken wat de bedoeling is, u levert tekeningen of schetsen aan en vervolgens gaan we voor u aan de slag. Elk plan is uniek en afgestemd op uw behoeften.</div></details>
+      <details><summary>Hoe gaat het adviesproces in zijn werk? <span class="pl">+</span></summary><div class="ans">Het begint met een (telefoon)gesprek. We bespreken wat de bedoeling is, u levert tekeningen of schetsen aan en vervolgens gaan we voor u aan de slag.</div></details>
       <details><summary>Maken jullie berekeningen voor binnen- én buitenverlichting? <span class="pl">+</span></summary><div class="ans">Ja. Of het nu om binnenverlichting of straatverlichting gaat, met ruim 20 jaar ervaring kunnen we u vrijwel altijd van dienst zijn.</div></details>
-      <details><summary>Waarom zou ik het niet zelf doen met gratis software? <span class="pl">+</span></summary><div class="ans">Dat kan, maar het kost tijd om DIALux echt onder de knie te krijgen, plus kennis van armaturen, lichtverdelingen en lichtpunthoogtes. Net als een huis bouw je niet steen voor steen zelf. Uitbesteden scheelt u tijd en geld, zodat u zich op uw eigen werk kunt richten.</div></details>
-      <details><summary>Welke richtlijnen houden jullie aan? <span class="pl">+</span></summary><div class="ans">Voor buiten bij voorkeur de NPR-richtlijnen, voor binnen de NEN 12464. Wenst u een lagere of juist hogere verlichtingssterkte? Daar kunnen we over praten, als we er maar achter kunnen staan.</div></details>
     </div>
   </div>
 </section>
@@ -448,19 +447,19 @@
 <section id="contact">
   <div class="wrap contact-grid">
     <div class="contact-info">
-      <span class="eyebrow">Contact</span>
-      <h2>Doe gerust een aanvraag</h2>
-      <p>Vraag om advies, een lichtberekening of een lichtplan op maat. We denken graag met u mee, concreet en betrouwbaar.</p>
+      <span class="eyebrow" data-cms="contact_eyebrow">Contact</span>
+      <h2 data-cms="contact_title">Doe gerust een aanvraag</h2>
+      <p data-cms="contact_intro">Vraag om advies, een lichtberekening of een lichtplan op maat.</p>
       <div class="contact-actions">
-        <a class="ci-row" href="mailto:chris.bakker_31juli@icloud.com?subject=Aanvraag%20lichtberekening">
+        <a class="ci-row" id="contactEmailRow" data-linkhref="contact_email" href="mailto:chris.bakker_31juli@icloud.com?subject=Aanvraag%20lichtberekening">
           <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#c4861a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></span>
-          <span><small>E-mail</small><strong>chris.bakker_31juli@icloud.com</strong></span>
+          <span><small>E-mail</small><strong data-cms="contact_email">chris.bakker_31juli@icloud.com</strong></span>
         </a>
         <div class="ci-row">
           <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#c4861a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 11-9 11s-9-4-9-11a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg></span>
-          <span><small>Locatie</small><strong>Zijpenberg 115, 2905 RN Capelle a/d IJssel</strong></span>
+          <span><small>Locatie</small><strong data-cms="contact_address">Zijpenberg 115, 2905 RN Capelle a/d IJssel</strong></span>
         </div>
-        <a class="ci-row" href="https://www.linkedin.com/in/ccbakker/" target="_blank" rel="noopener">
+        <a class="ci-row" data-linkhref="linkedin_url" href="https://www.linkedin.com/in/ccbakker/" target="_blank" rel="noopener">
           <span class="ic"><svg viewBox="0 0 24 24" fill="#c4861a"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></span>
           <span><small>LinkedIn</small><strong>Chris Bakker op LinkedIn</strong></span>
         </a>
@@ -503,7 +502,7 @@
       </div>
       <div>
         <h4>Contact</h4>
-        <ul><li><a href="mailto:chris.bakker_31juli@icloud.com">chris.bakker_31juli@icloud.com</a></li><li>Zijpenberg 115</li><li>2905 RN Capelle a/d IJssel</li><li><a href="https://www.linkedin.com/in/ccbakker/" target="_blank" rel="noopener">LinkedIn</a></li></ul>
+        <ul><li><a data-linkhref="contact_email" href="mailto:chris.bakker_31juli@icloud.com">chris.bakker_31juli@icloud.com</a></li><li>Zijpenberg 115</li><li>2905 RN Capelle a/d IJssel</li><li><a data-linkhref="linkedin_url" href="https://www.linkedin.com/in/ccbakker/" target="_blank" rel="noopener">LinkedIn</a></li></ul>
       </div>
     </div>
     <div class="foot-bottom">
@@ -515,77 +514,90 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  // ---- Supabase verbinding (publieke sleutel, veilig om hier te tonen) ----
   var SUPA_URL = 'https://grcwjxtelyfpgwaodciz.supabase.co';
   var SUPA_KEY = 'sb_publishable_aLb324REz4wXN6URiOD_ig_lxL_OWLP';
   var sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+  var contactEmail = 'chris.bakker_31juli@icloud.com';
+  var CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
 
-  // Mobiel menu
   var burger = document.getElementById('burger');
   var navlinks = document.getElementById('navlinks');
   burger.addEventListener('click', function(){ navlinks.classList.toggle('open'); });
   navlinks.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ navlinks.classList.remove('open'); }); });
 
-  // Vaste fotoplekken laden
+  function applySettings(map){
+    document.querySelectorAll('[data-cms]').forEach(function(el){
+      var k = el.getAttribute('data-cms'); var v = map[k];
+      if(v===undefined || v===null || v==='') return;
+      var type = el.getAttribute('data-type');
+      if(el.tagName==='IMG'){
+        el.src=v; el.style.display='block';
+        if(k==='hero_image'){ var hc=document.getElementById('heroCard'); if(hc) hc.style.display='none'; var fb=document.querySelector('.float-badge'); if(fb) fb.style.display='none'; }
+        return;
+      }
+      if(type==='bullets'){
+        el.innerHTML='';
+        v.split('\n').forEach(function(line){ line=line.trim(); if(!line) return; var li=document.createElement('li'); li.innerHTML=CHECK; li.appendChild(document.createTextNode(line)); el.appendChild(li); });
+        return;
+      }
+      if(type==='strip'){
+        el.innerHTML='';
+        v.split(',').forEach(function(it){ it=it.trim(); if(!it) return; var s=document.createElement('span'); s.className='c'; s.innerHTML='<span class="d"></span>'; s.appendChild(document.createTextNode(it)); el.appendChild(s); });
+        return;
+      }
+      el.textContent = v;
+    });
+    if(map.linkedin_url){ document.querySelectorAll('[data-linkhref="linkedin_url"]').forEach(function(a){ a.href=map.linkedin_url; }); }
+    if(map.contact_email){ contactEmail=map.contact_email; document.querySelectorAll('[data-linkhref="contact_email"]').forEach(function(a){ a.href='mailto:'+map.contact_email+'?subject=Aanvraag%20lichtberekening'; }); }
+  }
+
   async function loadSettings(){
+    try{ var r= await sb.from('cbl_settings').select('key,value'); if(r.error||!r.data) return; var m={}; r.data.forEach(function(x){ m[x.key]=x.value; }); applySettings(m); }catch(e){}
+  }
+
+  async function loadFaq(){
     try{
-      var res = await sb.from('cbl_settings').select('key,value');
-      if(res.error) return;
-      var map = {};
-      (res.data||[]).forEach(function(r){ map[r.key] = r.value; });
-      if(map.hero_image){
-        var hi = document.getElementById('heroImg');
-        hi.src = map.hero_image; hi.style.display = 'block';
-        document.getElementById('heroCard').style.display = 'none';
-        var fb = document.querySelector('.float-badge'); if(fb) fb.style.display='none';
-      }
-      if(map.about_image){
-        var ai = document.getElementById('aboutImg');
-        ai.src = map.about_image; ai.style.display = 'block';
-      }
+      var r = await sb.from('cbl_faq').select('*').order('sort_order',{ascending:true}).order('created_at',{ascending:true});
+      if(r.error || !r.data || !r.data.length) return;
+      var list = document.getElementById('faqList'); list.innerHTML='';
+      r.data.forEach(function(item, i){
+        var d = document.createElement('details'); if(i===0) d.open=true;
+        var s = document.createElement('summary'); s.appendChild(document.createTextNode(item.question + ' '));
+        var pl=document.createElement('span'); pl.className='pl'; pl.textContent='+'; s.appendChild(pl);
+        var a = document.createElement('div'); a.className='ans'; a.textContent=item.answer;
+        d.appendChild(s); d.appendChild(a); list.appendChild(d);
+      });
     }catch(e){}
   }
 
-  // Projectgalerij laden
   async function loadGallery(){
     try{
-      var res = await sb.from('cbl_gallery').select('*').order('sort_order',{ascending:true}).order('created_at',{ascending:true});
-      if(res.error || !res.data || !res.data.length) return;
-      var grid = document.getElementById('galGrid');
-      document.getElementById('galEmpty').remove();
-      res.data.forEach(function(item){
-        var d = document.createElement('div'); d.className='gal-item';
-        var img = document.createElement('img'); img.src=item.image_url; img.alt=item.title||'Project'; img.loading='lazy';
-        d.appendChild(img);
-        if(item.title || item.description){
-          var b = document.createElement('div'); b.className='gal-body';
+      var r = await sb.from('cbl_gallery').select('*').order('sort_order',{ascending:true}).order('created_at',{ascending:true});
+      if(r.error || !r.data || !r.data.length) return;
+      var grid = document.getElementById('galGrid'); var em=document.getElementById('galEmpty'); if(em) em.remove();
+      r.data.forEach(function(item){
+        var d=document.createElement('div'); d.className='gal-item';
+        var img=document.createElement('img'); img.src=item.image_url; img.alt=item.title||'Project'; img.loading='lazy'; d.appendChild(img);
+        if(item.title||item.description){ var b=document.createElement('div'); b.className='gal-body';
           if(item.title){ var h=document.createElement('h3'); h.textContent=item.title; b.appendChild(h); }
           if(item.description){ var p=document.createElement('p'); p.textContent=item.description; b.appendChild(p); }
-          d.appendChild(b);
-        }
+          d.appendChild(b); }
         grid.appendChild(d);
       });
     }catch(e){}
   }
 
-  // LinkedIn-posts laden (ingesloten via embed-code)
   async function loadLinkedIn(){
     try{
-      var res = await sb.from('cbl_linkedin').select('*').order('sort_order',{ascending:true}).order('created_at',{ascending:true});
-      if(res.error || !res.data || !res.data.length) return;
-      var wrap = document.getElementById('liWrap');
-      document.getElementById('liEmpty').remove();
-      res.data.forEach(function(item){
-        var c = document.createElement('div'); c.className='li-card';
-        c.innerHTML = item.embed_html; // beheerder-content
-        wrap.appendChild(c);
-      });
+      var r = await sb.from('cbl_linkedin').select('*').order('sort_order',{ascending:true}).order('created_at',{ascending:true});
+      if(r.error || !r.data || !r.data.length) return;
+      var wrap=document.getElementById('liWrap'); var em=document.getElementById('liEmpty'); if(em) em.remove();
+      r.data.forEach(function(item){ var c=document.createElement('div'); c.className='li-card'; c.innerHTML=item.embed_html; wrap.appendChild(c); });
     }catch(e){}
   }
 
-  loadSettings(); loadGallery(); loadLinkedIn();
+  loadSettings(); loadFaq(); loadGallery(); loadLinkedIn();
 
-  // Contactformulier
   var form = document.getElementById('contactForm');
   var msg = document.getElementById('formMsg');
   form.addEventListener('submit', function(e){
@@ -595,17 +607,14 @@
       var naam = encodeURIComponent(document.getElementById('naam').value);
       var ond  = encodeURIComponent(document.getElementById('onderwerp').value);
       var ber  = encodeURIComponent(document.getElementById('bericht').value + '\n\nVan: ' + document.getElementById('naam').value + ' (' + document.getElementById('email').value + ')');
-      window.location.href = 'mailto:chris.bakker_31juli@icloud.com?subject=' + ond + ' - ' + naam + '&body=' + ber;
+      window.location.href = 'mailto:' + contactEmail + '?subject=' + ond + ' - ' + naam + '&body=' + ber;
       return;
     }
     e.preventDefault();
     var data = new FormData(form);
     fetch(action, { method:'POST', body:data, headers:{'Accept':'application/json'} })
-      .then(function(r){
-        if(r.ok){ form.reset(); msg.className='form-msg ok'; msg.textContent='Bedankt! Uw bericht is verstuurd. We nemen zo snel mogelijk contact op.'; }
-        else { msg.className='form-msg err'; msg.textContent='Er ging iets mis. Mail ons gerust direct via chris.bakker_31juli@icloud.com.'; }
-      })
-      .catch(function(){ msg.className='form-msg err'; msg.textContent='Er ging iets mis. Mail ons gerust direct via chris.bakker_31juli@icloud.com.'; });
+      .then(function(r){ if(r.ok){ form.reset(); msg.className='form-msg ok'; msg.textContent='Bedankt! Uw bericht is verstuurd. We nemen zo snel mogelijk contact op.'; } else { msg.className='form-msg err'; msg.textContent='Er ging iets mis. Mail ons gerust direct via ' + contactEmail + '.'; } })
+      .catch(function(){ msg.className='form-msg err'; msg.textContent='Er ging iets mis. Mail ons gerust direct via ' + contactEmail + '.'; });
   });
 </script>
 </body>
