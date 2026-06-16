@@ -42,6 +42,8 @@
   .logo .bulb{width:34px;height:34px;border-radius:9px;background:var(--navy);display:grid;place-items:center;flex:none}
   .logo .bulb svg{width:19px;height:19px}
   .logo b{color:var(--amber-deep)}
+  .logo-img{display:none;height:42px;width:auto;max-width:220px;border-radius:6px}
+  footer.site .logo-img{height:38px}
   nav.links{display:flex;gap:28px;align-items:center}
   nav.links a{font-size:.94rem;color:var(--ink-soft);font-weight:500;transition:color .15s}
   nav.links a:hover{color:var(--ink)}
@@ -205,8 +207,9 @@
 <header class="nav">
   <div class="wrap nav-inner">
     <a href="#top" class="logo">
-      <span class="bulb"><svg viewBox="0 0 24 24" fill="none" stroke="#e0a528" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2Z"/></svg></span>
-      <span>CB<b>-</b>lighting</span>
+      <img class="logo-img" data-cms="logo_image" alt="CB-lighting" />
+      <span class="logo-default bulb"><svg viewBox="0 0 24 24" fill="none" stroke="#e0a528" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2Z"/></svg></span>
+      <span class="logo-default">CB<b>-</b>lighting</span>
     </a>
     <nav class="links" id="navlinks">
       <a href="#diensten">Diensten</a>
@@ -493,7 +496,7 @@
   <div class="wrap">
     <div class="foot-grid">
       <div>
-        <div class="logo"><span class="bulb"><svg viewBox="0 0 24 24" fill="none" stroke="#e0a528" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2Z"/></svg></span><span>CB<b>-</b>lighting</span></div>
+        <div class="logo"><img class="logo-img logo-img-foot" data-cms="logo_image" alt="CB-lighting" /><span class="logo-default bulb"><svg viewBox="0 0 24 24" fill="none" stroke="#e0a528" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2Z"/></svg></span><span class="logo-default">CB<b>-</b>lighting</span></div>
         <p>Concreet en Betrouwbaar. Onafhankelijke lichtberekeningen en lichtplannen voor binnen- en buitenverlichting, met beide benen op de grond.</p>
       </div>
       <div>
@@ -533,6 +536,7 @@
       if(el.tagName==='IMG'){
         el.src=v; el.style.display='block';
         if(k==='hero_image'){ var hc=document.getElementById('heroCard'); if(hc) hc.style.display='none'; var fb=document.querySelector('.float-badge'); if(fb) fb.style.display='none'; }
+        if(k==='logo_image'){ document.querySelectorAll('.logo-default').forEach(function(x){ x.style.display='none'; }); }
         return;
       }
       if(type==='bullets'){
