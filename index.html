@@ -388,7 +388,7 @@
 </section>
 
 <!-- ECHT GEBEURD -->
-<section>
+<section id="verhalen">
   <div class="wrap">
     <div class="sec-head">
       <span class="eyebrow" data-cms="stories_eyebrow">Echt gebeurd</span>
@@ -596,7 +596,16 @@
     }catch(e){}
   }
 
-  loadSettings(); loadFaq(); loadGallery(); loadLinkedIn();
+  var _inFrame = false; try{ _inFrame = (window.self !== window.top); }catch(e){ _inFrame = true; }
+  if(!_inFrame){ loadSettings(); }
+  loadFaq(); loadGallery(); loadLinkedIn();
+
+  // Live voorbeeld vanuit het dashboard
+  window.addEventListener('message', function(ev){
+    var d = ev.data || {};
+    if(d.type==='cbl_preview' && d.settings){ applySettings(d.settings); }
+    if(d.type==='cbl_scroll' && d.sel){ var t=document.querySelector(d.sel); if(t){ t.scrollIntoView({behavior:'smooth',block:'start'}); } }
+  });
 
   var form = document.getElementById('contactForm');
   var msg = document.getElementById('formMsg');
