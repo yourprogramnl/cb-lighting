@@ -137,6 +137,9 @@
   var pvr=$('pvReload'); if(pvr) pvr.addEventListener('click',reloadPreview);
 
   var SECTIONS=[
+    {id:'logo',label:'Logo',sub:'Upload je eigen logo. Laat je dit leeg, dan toont de site het tekstlogo "CB-lighting".',fields:[
+      {k:'logo_image',l:'Logo (bij voorkeur een PNG met transparante achtergrond)',t:'image'}
+    ]},
     {id:'hero',label:'Hero (bovenaan)',sub:'De eerste indruk: titel, inleiding en de grote foto.',fields:[
       {k:'hero_eyebrow',l:'Kleine tekst boven de titel',t:'text'},
       {k:'hero_title',l:'Titel, eerste deel',t:'text'},
