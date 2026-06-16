@@ -32,7 +32,12 @@
   textarea{min-height:90px;resize:vertical}
 
   /* APP LAYOUT */
-  .app{display:none;min-height:100vh;grid-template-columns:240px 1fr}
+  .app{display:none;min-height:100vh;grid-template-columns:220px minmax(340px,460px) 1fr}
+  .preview{position:sticky;top:0;height:100vh;border-left:1px solid var(--line);background:#fff;display:flex;flex-direction:column}
+  .preview .pv-bar{display:flex;align-items:center;gap:9px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--bg);font-size:.82rem;color:var(--muted)}
+  .preview .pv-bar .dot{width:9px;height:9px;border-radius:50%;background:var(--amber)}
+  .preview .pv-bar button{margin-left:auto;font-size:.8rem;padding:6px 12px}
+  .preview iframe{flex:1;width:100%;border:none;background:#fff}
   .side{background:var(--navy);color:#cdd4e0;padding:22px 16px;position:sticky;top:0;height:100vh;overflow:auto}
   .side .brand{display:flex;align-items:center;gap:9px;font-family:'Fraunces',serif;font-size:1.1rem;color:#fff;margin-bottom:6px;padding:0 8px}
   .side .brand b{color:var(--amber)}
@@ -45,7 +50,7 @@
   .side .foot a{color:#8b94a6;font-size:.85rem;text-decoration:none}
   .side .foot a:hover{color:#fff}
 
-  main{padding:30px 34px 70px;max-width:760px}
+  main{padding:30px 30px 70px}
   .head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:6px}
   .head h1{font-size:1.6rem}
   .panel-sub{color:var(--muted);font-size:.92rem;margin-bottom:24px}
@@ -67,6 +72,7 @@
   .item .meta strong{display:block;font-size:.95rem}
   .item .meta span{font-size:.82rem;color:var(--muted);display:block}
   .topmsg{position:fixed;top:14px;right:16px;z-index:99}
+  @media(max-width:1180px){.app{grid-template-columns:220px 1fr}.preview{display:none}}
   @media(max-width:760px){.app{grid-template-columns:1fr}.side{position:static;height:auto}main{padding:22px 18px 60px}.grid2{grid-template-columns:1fr}}
 </style>
 </head>
@@ -102,6 +108,10 @@
     <p class="panel-sub" id="panelSub"></p>
     <div id="panel"></div>
   </main>
+  <aside class="preview" id="previewPane">
+    <div class="pv-bar"><span class="dot"></span> Live voorbeeld van je site <button class="btn btn-light" id="pvReload">Verversen</button></div>
+    <iframe id="preview" src="index.html" title="Voorbeeld"></iframe>
+  </aside>
 </div>
 
 <div id="topmsg" class="topmsg"></div>
@@ -114,6 +124,17 @@
   var sb=window.supabase.createClient(SUPA_URL,SUPA_KEY);
   var $=function(id){return document.getElementById(id);};
   var settings={};
+  var currentSec=null;
+  var ANCH={hero:'#top',strip:'#top',diensten:'#diensten',banner:'#diensten',over:'#over',projecten:'#projecten',werkwijze:'#werkwijze',verhalen:'#verhalen',updates:'#updates',faq:'#faq',contact:'#contact'};
+
+  function postPv(obj){ var f=$('preview'); if(f && f.contentWindow){ try{ f.contentWindow.postMessage(obj,'*'); }catch(e){} } }
+  function currentMap(){ var m={}; for(var k in settings){ m[k]=settings[k]; } document.querySelectorAll('#panel [data-k]').forEach(function(el){ m[el.getAttribute('data-k')]=el.value; }); return m; }
+  function pushPreview(){ postPv({type:'cbl_preview',settings:currentMap()}); }
+  function scrollPreview(){ if(currentSec && ANCH[currentSec]) postPv({type:'cbl_scroll',sel:ANCH[currentSec]}); }
+  function reloadPreview(){ var f=$('preview'); if(f){ try{ f.contentWindow.location.reload(); }catch(e){ f.src=f.src; } } }
+  var _t; function debouncedPreview(){ clearTimeout(_t); _t=setTimeout(pushPreview,250); }
+  (function(){ var f=$('preview'); if(f){ f.addEventListener('load',function(){ pushPreview(); setTimeout(scrollPreview,150); }); } })();
+  var pvr=$('pvReload'); if(pvr) pvr.addEventListener('click',reloadPreview);
 
   var SECTIONS=[
     {id:'hero',label:'Hero (bovenaan)',sub:'De eerste indruk: titel, inleiding en de grote foto.',fields:[
@@ -215,6 +236,7 @@
     $('loginView').style.display='none'; $('appView').style.display='grid';
     $('hello').textContent='Ingelogd als ' + (session.user && session.user.email ? session.user.email : '');
     await loadSettings(); buildSidebar(); selectSection(SECTIONS[0].id);
+    setTimeout(pushPreview, 300);
   }
   $('loginBtn').addEventListener('click', async function(){
     var email=$('lemail').value.trim(), pass=$('lpass').value;
@@ -243,9 +265,11 @@
   function selectSection(id){
     document.querySelectorAll('#sidenav button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-sec')===id); });
     var sec=SECTIONS.filter(function(s){return s.id===id;})[0];
+    currentSec=id;
     $('panelTitle').textContent=sec.label; $('panelSub').textContent=sec.sub||'';
     renderPanel(sec);
     window.scrollTo(0,0);
+    scrollPreview();
   }
 
   // UPLOAD
@@ -285,6 +309,7 @@
       var r=await sb.from('cbl_settings').upsert({key:key,value:url,updated_at:new Date().toISOString()});
       if(r.error) throw r.error;
       settings[key]=url; var p=$('prev_'+key); p.src=url; p.style.display='block';
+      pushPreview();
       flash('Foto opgeslagen.',true);
     }catch(e){ flash('Mislukt: '+(e.message||e),false); }
     $('up_'+key).className='uploading'; inp.value='';
@@ -302,6 +327,7 @@
     if(sec.custom==='gallery') renderGallery(panel);
     if(sec.custom==='linkedin') renderLinkedIn(panel);
     if(sec.custom==='faq') renderFaq(panel);
+    panel.querySelectorAll('[data-k]').forEach(function(el){ el.addEventListener('input', debouncedPreview); });
   }
 
   async function saveTexts(panel,btn){
@@ -336,7 +362,7 @@
         var r=await sb.from('cbl_gallery').insert({image_url:url,title:$('gTitle').value.trim()||null,description:$('gDesc').value.trim()||null,sort_order:parseInt($('gOrder').value||'0',10)});
         if(r.error) throw r.error;
         f.value='';$('gTitle').value='';$('gDesc').value='';$('gOrder').value='0';
-        flash('Project toegevoegd.',true); listGallery(listWrap);
+        flash('Project toegevoegd.',true); listGallery(listWrap); reloadPreview();
       }catch(e){ flash('Mislukt: '+(e.message||e),false); }
       $('gUp').className='uploading'; add.disabled=false;
     });
@@ -356,7 +382,7 @@
       d.innerHTML='<img src="'+it.image_url+'"><div class="meta"><strong></strong><span></span></div>';
       d.querySelector('strong').textContent=it.title||'(geen titel)'; d.querySelector('span').textContent=it.description||'';
       var del=document.createElement('button'); del.className='btn btn-danger'; del.textContent='Verwijderen';
-      del.addEventListener('click',async function(){ if(!confirm('Dit project verwijderen?'))return; var x=await sb.from('cbl_gallery').delete().eq('id',it.id); if(x.error){flash('Mislukt: '+x.error.message,false);}else{listGallery(wrap);flash('Verwijderd.',true);} });
+      del.addEventListener('click',async function(){ if(!confirm('Dit project verwijderen?'))return; var x=await sb.from('cbl_gallery').delete().eq('id',it.id); if(x.error){flash('Mislukt: '+x.error.message,false);}else{listGallery(wrap);flash('Verwijderd.',true);reloadPreview();} });
       d.appendChild(del); box.appendChild(d);
     });
   }
@@ -376,7 +402,7 @@
       var r=await sb.from('cbl_linkedin').insert({embed_html:code,sort_order:parseInt($('liOrder').value||'0',10)});
       add.disabled=false;
       if(r.error){ flash('Mislukt: '+r.error.message,false); return; }
-      $('liCode').value='';$('liOrder').value='0'; flash('Post toegevoegd.',true); listLi(listWrap);
+      $('liCode').value='';$('liOrder').value='0'; flash('Post toegevoegd.',true); listLi(listWrap); reloadPreview();
     });
     block.appendChild(add); panel.appendChild(block);
     var listWrap=document.createElement('div'); listWrap.className='block'; listWrap.innerHTML='<h3>Geplaatste posts</h3><div data-list></div>'; panel.appendChild(listWrap);
@@ -392,7 +418,7 @@
       var d=document.createElement('div'); d.className='item';
       d.innerHTML='<div class="meta"><strong>LinkedIn-post</strong><span></span></div>'; d.querySelector('span').textContent=(it.embed_html||'').slice(0,70)+'…';
       var del=document.createElement('button'); del.className='btn btn-danger'; del.textContent='Verwijderen';
-      del.addEventListener('click',async function(){ if(!confirm('Deze post verwijderen?'))return; var x=await sb.from('cbl_linkedin').delete().eq('id',it.id); if(x.error){flash('Mislukt: '+x.error.message,false);}else{listLi(wrap);flash('Verwijderd.',true);} });
+      del.addEventListener('click',async function(){ if(!confirm('Deze post verwijderen?'))return; var x=await sb.from('cbl_linkedin').delete().eq('id',it.id); if(x.error){flash('Mislukt: '+x.error.message,false);}else{listLi(wrap);flash('Verwijderd.',true);reloadPreview();} });
       d.appendChild(del); box.appendChild(d);
     });
   }
@@ -413,7 +439,7 @@
       var r=await sb.from('cbl_faq').insert({question:$('fq').value.trim(),answer:$('fa').value.trim(),sort_order:parseInt($('fo').value||'0',10)});
       add.disabled=false;
       if(r.error){ flash('Mislukt: '+r.error.message,false); return; }
-      $('fq').value='';$('fa').value='';$('fo').value='0'; flash('Vraag toegevoegd.',true); listFaq(listWrap);
+      $('fq').value='';$('fa').value='';$('fo').value='0'; flash('Vraag toegevoegd.',true); listFaq(listWrap); reloadPreview();
     });
     block.appendChild(add); panel.appendChild(block);
     var listWrap=document.createElement('div'); listWrap.className='block'; listWrap.innerHTML='<h3>Bestaande vragen</h3><div data-list></div>'; panel.appendChild(listWrap);
@@ -432,9 +458,9 @@
       var oi=document.createElement('input'); oi.type='number'; oi.value=it.sort_order; oi.style.maxWidth='120px';
       var bar=document.createElement('div'); bar.style.display='flex'; bar.style.gap='10px'; bar.style.alignItems='center';
       var save=document.createElement('button'); save.className='btn btn-light'; save.textContent='Opslaan'; save.style.padding='8px 14px'; save.style.fontSize='.85rem';
-      save.addEventListener('click',async function(){ var x=await sb.from('cbl_faq').update({question:qi.value.trim(),answer:ai.value.trim(),sort_order:parseInt(oi.value||'0',10)}).eq('id',it.id); if(x.error){flash('Mislukt: '+x.error.message,false);}else{flash('Opgeslagen.',true);} });
+      save.addEventListener('click',async function(){ var x=await sb.from('cbl_faq').update({question:qi.value.trim(),answer:ai.value.trim(),sort_order:parseInt(oi.value||'0',10)}).eq('id',it.id); if(x.error){flash('Mislukt: '+x.error.message,false);}else{flash('Opgeslagen.',true);reloadPreview();} });
       var del=document.createElement('button'); del.className='btn btn-danger'; del.textContent='Verwijderen';
-      del.addEventListener('click',async function(){ if(!confirm('Deze vraag verwijderen?'))return; var x=await sb.from('cbl_faq').delete().eq('id',it.id); if(x.error){flash('Mislukt: '+x.error.message,false);}else{listFaq(wrap);flash('Verwijderd.',true);} });
+      del.addEventListener('click',async function(){ if(!confirm('Deze vraag verwijderen?'))return; var x=await sb.from('cbl_faq').delete().eq('id',it.id); if(x.error){flash('Mislukt: '+x.error.message,false);}else{listFaq(wrap);flash('Verwijderd.',true);reloadPreview();} });
       bar.appendChild(save); bar.appendChild(del);
       var lo=document.createElement('label'); lo.textContent='Volgorde'; lo.style.marginTop='4px';
       d.appendChild(qi); d.appendChild(ai); d.appendChild(lo); d.appendChild(oi); d.appendChild(bar);
