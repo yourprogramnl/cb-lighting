@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CB-lighting | Lichtberekeningen &amp; verlichtingsadvies | Concreet en Betrouwbaar</title>
+<meta name="description" content="CB-lighting maakt professionele lichtberekeningen en lichtplannen voor binnen- en buitenverlichting. Ruim 20 jaar ervaring, gevestigd in Capelle aan den IJssel. Concreet en betrouwbaar." />
+<meta property="og:title" content="CB-lighting, lichtberekeningen en verlichtingsadvies" />
+<meta property="og:description" content="Professionele lichtberekeningen voor binnen- en buitenverlichting. Concreet en betrouwbaar, ruim 20 jaar ervaring." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#16181d;
+    --ink-soft:#41454d;
+    --muted:#6b7280;
+    --line:#e7e3da;
+    --bg:#ffffff;
+    --bg-soft:#faf8f3;
+    --bg-tint:#f4f0e7;
+    --amber:#e0a528;
+    --amber-deep:#c4861a;
+    --amber-soft:#fbf3dd;
+    --navy:#1c2533;
+    --radius:16px;
+    --shadow:0 1px 2px rgba(20,24,29,.04), 0 8px 30px rgba(20,24,29,.06);
+    --shadow-lg:0 20px 60px rgba(20,24,29,.12);
+    --maxw:1120px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    color:var(--ink);
+    background:var(--bg);
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Fraunces',Georgia,serif;line-height:1.12;font-weight:600;letter-spacing:-.01em}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--amber-deep);margin-bottom:18px;
+  }
+  .eyebrow::before{content:"";width:22px;height:2px;background:var(--amber);border-radius:2px}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:9px;
+    padding:14px 26px;border-radius:999px;font-weight:600;font-size:.97rem;
+    transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+    cursor:pointer;border:none;white-space:nowrap;
+  }
+  .btn-primary{background:var(--ink);color:#fff;box-shadow:var(--shadow)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+  .btn-amber{background:var(--amber);color:#241c06}
+  .btn-amber:hover{transform:translateY(-2px);background:var(--amber-deep);color:#fff}
+  .btn-ghost{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
+  .btn-ghost:hover{border-color:var(--ink);transform:translateY(-2px)}
+
+  /* NAV */
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.86);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:72px}
+  .logo{display:flex;align-items:center;gap:11px;font-family:'Fraunces',serif;font-weight:600;font-size:1.3rem;letter-spacing:-.02em}
+  .logo .bulb{
+    width:34px;height:34px;border-radius:9px;background:var(--navy);
+    display:grid;place-items:center;flex:none;
+  }
+  .logo .bulb svg{width:19px;height:19px}
+  .logo b{color:var(--amber-deep)}
+  nav.links{display:flex;gap:30px;align-items:center}
+  nav.links a{font-size:.94rem;color:var(--ink-soft);font-weight:500;transition:color .15s}
+  nav.links a:hover{color:var(--ink)}
+  .nav-cta{display:inline-flex}
+  .burger{display:none;background:none;border:none;cursor:pointer;padding:8px}
+  .burger span{display:block;width:24px;height:2px;background:var(--ink);margin:5px 0;border-radius:2px;transition:.2s}
+
+  /* HERO */
+  .hero{position:relative;overflow:hidden;background:
+     radial-gradient(1100px 540px at 78% -8%, var(--amber-soft) 0%, rgba(251,243,221,0) 60%),
+     linear-gradient(180deg,#fff 0%, var(--bg-soft) 100%)}
+  .hero-inner{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;padding:84px 0 92px}
+  .hero h1{font-size:clamp(2.5rem,5.2vw,4rem);margin-bottom:22px}
+  .hero h1 .hl{color:var(--amber-deep);position:relative}
+  .hero p.lead{font-size:1.18rem;color:var(--ink-soft);max-width:33ch;margin-bottom:32px}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:30px}
+  .hero-trust{display:flex;gap:26px;flex-wrap:wrap;font-size:.9rem;color:var(--muted)}
+  .hero-trust b{color:var(--ink);font-weight:600}
+  .hero-visual{position:relative}
+  .hero-card{
+    background:var(--navy);border-radius:24px;padding:34px;color:#eef1f6;box-shadow:var(--shadow-lg);
+    position:relative;overflow:hidden;
+  }
+  .hero-card::after{content:"";position:absolute;inset:0;background:radial-gradient(420px 220px at 80% 0%, rgba(224,165,40,.30), transparent 60%);pointer-events:none}
+  .hero-card .tag{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);font-weight:600}
+  .hero-card h3{color:#fff;font-size:1.45rem;margin:10px 0 18px}
+  .lux-row{display:flex;align-items:flex-end;gap:9px;height:120px;margin:22px 0 8px}
+  .lux-bar{flex:1;background:linear-gradient(180deg,var(--amber),#7c5a12);border-radius:6px 6px 3px 3px;opacity:.92}
+  .hero-card .cap{font-size:.86rem;color:#aab2c2;display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.12);padding-top:14px;margin-top:8px}
+  .float-badge{
+    position:absolute;left:-22px;bottom:34px;background:#fff;border-radius:14px;padding:14px 18px;
+    box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:12px;
+  }
+  .float-badge .dot{width:38px;height:38px;border-radius:10px;background:var(--amber-soft);display:grid;place-items:center;flex:none}
+  .float-badge small{display:block;color:var(--muted);font-size:.74rem}
+  .float-badge strong{font-size:1rem}
+
+  /* LOGOS / strip */
+  .strip{background:var(--bg-tint);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .strip-inner{padding:26px 0;display:flex;align-items:center;gap:36px;flex-wrap:wrap;justify-content:center;color:var(--ink-soft);font-size:.95rem}
+  .strip-inner .label{font-weight:600;color:var(--muted);font-size:.82rem;letter-spacing:.08em;text-transform:uppercase}
+  .strip-inner span.c{display:inline-flex;align-items:center;gap:8px;font-weight:600}
+  .strip-inner .d{width:5px;height:5px;border-radius:50%;background:var(--amber)}
+
+  /* SECTION */
+  section{padding:92px 0}
+  .sec-head{max-width:640px;margin-bottom:52px}
+  .sec-head.center{margin-left:auto;margin-right:auto;text-align:center}
+  .sec-head h2{font-size:clamp(2rem,3.6vw,2.7rem);margin-bottom:16px}
+  .sec-head p{font-size:1.08rem;color:var(--ink-soft)}
+
+  /* ABOUT */
+  .about{background:var(--bg-soft)}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+  .about-grid .body p{color:var(--ink-soft);margin-bottom:16px}
+  .quote-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow);position:relative}
+  .quote-card .mark{font-family:'Fraunces',serif;font-size:4rem;line-height:.6;color:var(--amber);height:34px}
+  .quote-card blockquote{font-family:'Fraunces',serif;font-size:1.35rem;color:var(--ink);margin:8px 0 18px;font-weight:500}
+  .quote-card .who{font-weight:600;font-size:.95rem}
+  .quote-card .who small{display:block;color:var(--muted);font-weight:400}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:30px}
+  .stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px}
+  .stat b{font-family:'Fraunces',serif;font-size:1.9rem;display:block;color:var(--amber-deep)}
+  .stat small{color:var(--muted);font-size:.85rem}
+
+  /* SERVICES */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .card{
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:32px;
+    box-shadow:var(--shadow);transition:transform .18s ease, box-shadow .18s ease, border-color .18s;
+  }
+  .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:#dcd6c8}
+  .card .ic{width:52px;height:52px;border-radius:13px;background:var(--amber-soft);display:grid;place-items:center;margin-bottom:20px}
+  .card .ic svg{width:26px;height:26px}
+  .card h3{font-size:1.3rem;margin-bottom:10px}
+  .card p{color:var(--ink-soft);font-size:.98rem;margin-bottom:16px}
+  .card ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+  .card li{display:flex;gap:10px;align-items:flex-start;font-size:.92rem;color:var(--ink-soft)}
+  .card li svg{width:18px;height:18px;flex:none;margin-top:2px;color:var(--amber-deep)}
+
+  /* PROCESS */
+  .process{background:var(--navy);color:#e9edf4}
+  .process .sec-head h2{color:#fff}
+  .process .sec-head p{color:#aab2c2}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;counter-reset:s}
+  .step{padding:28px;border:1px solid rgba(255,255,255,.1);border-radius:var(--radius);background:rgba(255,255,255,.03);position:relative}
+  .step .n{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:600;color:#241c06;background:var(--amber);width:38px;height:38px;border-radius:10px;display:grid;place-items:center;margin-bottom:18px}
+  .step h3{color:#fff;font-size:1.18rem;margin-bottom:8px}
+  .step p{color:#aab2c2;font-size:.93rem}
+
+  /* STORY / echt gebeurd */
+  .story-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .story{background:var(--bg-soft);border:1px solid var(--line);border-radius:var(--radius);padding:30px}
+  .story .date{font-size:.8rem;color:var(--amber-deep);font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+  .story h3{font-size:1.3rem;margin:8px 0 12px}
+  .story p{color:var(--ink-soft);font-size:.97rem}
+
+  /* FAQ */
+  .faq{background:var(--bg-soft)}
+  .faq-list{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+  details{background:#fff;border:1px solid var(--line);border-radius:14px;padding:4px 24px;box-shadow:var(--shadow)}
+  details summary{cursor:pointer;list-style:none;padding:20px 0;font-weight:600;font-size:1.06rem;display:flex;justify-content:space-between;align-items:center;gap:16px}
+  details summary::-webkit-details-marker{display:none}
+  details summary .pl{flex:none;width:26px;height:26px;border-radius:50%;background:var(--amber-soft);color:var(--amber-deep);display:grid;place-items:center;font-size:1.2rem;transition:transform .2s}
+  details[open] summary .pl{transform:rotate(45deg)}
+  details .ans{padding:0 0 22px;color:var(--ink-soft)}
+
+  /* CONTACT */
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+  .contact-info h2{font-size:clamp(2rem,3.6vw,2.6rem);margin-bottom:16px}
+  .contact-info > p{color:var(--ink-soft);margin-bottom:28px;font-size:1.05rem}
+  .contact-actions{display:flex;flex-direction:column;gap:14px;margin-bottom:30px}
+  .ci-row{display:flex;align-items:center;gap:16px;padding:16px 20px;border:1px solid var(--line);border-radius:14px;background:#fff;transition:border-color .15s, transform .15s}
+  .ci-row:hover{border-color:var(--amber);transform:translateX(3px)}
+  .ci-row .ic{width:46px;height:46px;border-radius:12px;background:var(--amber-soft);display:grid;place-items:center;flex:none}
+  .ci-row .ic svg{width:22px;height:22px}
+  .ci-row small{display:block;color:var(--muted);font-size:.8rem;text-transform:uppercase;letter-spacing:.06em}
+  .ci-row strong{font-size:1.02rem}
+  form{background:#fff;border:1px solid var(--line);border-radius:20px;padding:34px;box-shadow:var(--shadow-lg)}
+  form h3{font-size:1.35rem;margin-bottom:6px}
+  form .fnote{color:var(--muted);font-size:.9rem;margin-bottom:22px}
+  .field{margin-bottom:18px}
+  .field label{display:block;font-weight:600;font-size:.88rem;margin-bottom:7px}
+  .field input,.field textarea,.field select{
+    width:100%;padding:13px 15px;border:1.5px solid var(--line);border-radius:11px;font:inherit;color:var(--ink);
+    background:var(--bg-soft);transition:border-color .15s, background .15s;
+  }
+  .field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--amber);background:#fff}
+  .field textarea{resize:vertical;min-height:120px}
+  form .btn{width:100%;margin-top:6px}
+  .hp{position:absolute;left:-9999px}
+  .form-msg{display:none;margin-top:16px;padding:14px 16px;border-radius:11px;font-size:.94rem}
+  .form-msg.ok{display:block;background:#eaf7ec;color:#1c6b2c;border:1px solid #bfe5c5}
+  .form-msg.err{display:block;background:#fdecea;color:#a32616;border:1px solid #f3c4bd}
+
+  /* FOOTER */
+  footer.site{background:var(--ink);color:#c9ccd3;padding:60px 0 30px}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;margin-bottom:40px}
+  footer.site .logo{color:#fff;margin-bottom:14px}
+  footer.site .logo b{color:var(--amber)}
+  footer.site p{font-size:.94rem;max-width:36ch}
+  footer.site h4{color:#fff;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+  footer.site ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+  footer.site ul a{font-size:.94rem;color:#c9ccd3;transition:color .15s}
+  footer.site ul a:hover{color:var(--amber)}
+  .foot-bottom{border-top:1px solid rgba(255,255,255,.12);padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:.85rem;color:#878c96}
+
+  @media(max-width:900px){
+    .hero-inner,.about-grid,.contact-grid{grid-template-columns:1fr;gap:40px}
+    .cards,.steps,.story-grid,.foot-grid{grid-template-columns:1fr}
+    .stats{grid-template-columns:repeat(3,1fr)}
+    nav.links{display:none}
+    .nav-cta{display:none}
+    .burger{display:block}
+    nav.links.open{display:flex;position:absolute;top:72px;left:0;right:0;background:#fff;flex-direction:column;gap:0;padding:8px 0;border-bottom:1px solid var(--line);box-shadow:var(--shadow-lg)}
+    nav.links.open a{padding:14px 24px;width:100%}
+    .hero-visual{order:-1}
+    .float-badge{left:auto;right:10px}
+    section{padding:64px 0}
+  }
+  @media(max-width:560px){
+    .strip-inner{gap:18px}
+    .stats{grid-template-columns:1fr}
+    .steps{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="logo">
+      <span class="bulb">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#e0a528" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2Z"/></svg>
+      </span>
+      <span>CB<b>-</b>lighting</span>
+    </a>
+    <nav class="links" id="navlinks">
+      <a href="#diensten">Diensten</a>
+      <a href="#over">Over</a>
+      <a href="#werkwijze">Werkwijze</a>
+      <a href="#projecten">Echt gebeurd</a>
+      <a href="#faq">Veelgesteld</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a href="#contact" class="btn btn-amber nav-cta">Aanvraag doen</a>
+    <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top" style="padding:0">
+  <div class="wrap hero-inner">
+    <div>
+      <span class="eyebrow">Concreet &amp; Betrouwbaar</span>
+      <h1>Lichtberekeningen die <span class="hl">echt kloppen</span>.</h1>
+      <p class="lead">Professionele lichtberekeningen en lichtplannen voor binnen- en buitenverlichting. Onderbouwd, helder en zonder bla bla.</p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-primary">Vraag een lichtberekening aan
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#diensten" class="btn btn-ghost">Bekijk diensten</a>
+      </div>
+      <div class="hero-trust">
+        <span><b>20+ jaar</b> ervaring met licht</span>
+        <span><b>DIALux evo</b> &amp; HVK-opgeleid</span>
+        <span><b>NPR &amp; NEN 12464</b> richtlijnen</span>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card">
+        <span class="tag">Lichtberekening</span>
+        <h3>Voldoende én gelijkmatig licht</h3>
+        <div class="lux-row">
+          <div class="lux-bar" style="height:52%"></div>
+          <div class="lux-bar" style="height:74%"></div>
+          <div class="lux-bar" style="height:88%"></div>
+          <div class="lux-bar" style="height:96%"></div>
+          <div class="lux-bar" style="height:84%"></div>
+          <div class="lux-bar" style="height:70%"></div>
+          <div class="lux-bar" style="height:58%"></div>
+          <div class="lux-bar" style="height:46%"></div>
+        </div>
+        <div class="cap"><span>Gemiddelde sterkte</span><span>Gelijkmatigheid Uo</span></div>
+      </div>
+      <div class="float-badge">
+        <span class="dot">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c4861a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        </span>
+        <div><small>Onderbouwd volgens</small><strong>de richtlijnen</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STRIP -->
+<div class="strip">
+  <div class="wrap strip-inner">
+    <span class="label">Ervaring opgedaan bij</span>
+    <span class="c"><span class="d"></span>Industria</span>
+    <span class="c"><span class="d"></span>Indal</span>
+    <span class="c"><span class="d"></span>Philips / Signify</span>
+    <span class="c"><span class="d"></span>Glamox</span>
+    <span class="c"><span class="d"></span>Gemeente Amsterdam</span>
+  </div>
+</div>
+
+<!-- DIENSTEN -->
+<section id="diensten">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Diensten</span>
+      <h2>Voor elke toepassing de juiste berekening</h2>
+      <p>Of het nu om een straat, plein, parkeerterrein, kantoor, school of bedrijfshal gaat: wij rekenen het voor u uit en adviseren over de beste oplossing.</p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#c4861a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4M15 3h4a2 2 0 0 1 2 2v4M9 21H5a2 2 0 0 1-2-2v-4M15 21h4a2 2 0 0 0 2-2v-4"/><circle cx="12" cy="12" r="3"/></svg></span>
+        <h3>Lichtberekeningen</h3>
+        <p>Nauwkeurige berekeningen met DIALux evo, op basis van uw tekeningen. We tonen aan dat de verlichting voldoet, in plaats van "volgens mij zou het genoeg moeten zijn".</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Binnen- én buitenverlichting</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Volgens NPR (buiten) &amp; NEN 12464 (binnen)</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Heldere rapportage als bewijs</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#c4861a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2Z"/><path d="M9 18h6M10 21h4"/></svg></span>
+        <h3>Verlichtingsadvies</h3>
+        <p>Welke armaturen, welke lichtkleur, montagehoogte en lichtverdeling? We helpen u de juiste keuzes maken voor een resultaat dat klopt.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Kennis van de nieuwste technologieën</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Juiste plaatsing van armaturen</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Advies op maat voor uw situatie</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#c4861a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg></span>
+        <h3>Lichtplan op maat</h3>
+        <p>Elk gebouw en elke straat is anders: net wat breder, parkeervakken, afwijkende lichtpunthoogte. Wij maken een plan dat past bij úw uitdaging.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Maatwerk i.p.v. standaardplan</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Bespaart u tijd en geld</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>U focust op uw core­business</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OVER -->
+<section class="about" id="over">
+  <div class="wrap about-grid">
+    <div class="body">
+      <span class="eyebrow">Over CB-lighting</span>
+      <h2 style="font-size:clamp(2rem,3.6vw,2.7rem);margin-bottom:18px">Iemand die écht wat van licht weet</h2>
+      <p>Mijn passie voor licht begon in 2002 bij Industria technische verlichting in Capelle aan den IJssel. Daar maakte ik mijn eerste lichtberekeningen. Industria werd overgenomen door het Spaanse Indal en later door Philips, waar ik werkte voor het LIAS, de licht-technische afdeling.</p>
+      <p>Daarna werkte ik voor het ingenieursbureau van de gemeente Amsterdam, afdeling openbare verlichting. Mijn kennis over binnenverlichting, voor kantoren, scholen, kazernes en bedrijfshallen, deed ik op bij Glamox. Ik mocht onder andere de gemeenten Amsterdam, Dordrecht en Den Haag helpen bij het verledden van hun stad.</p>
+      <p>Begin 2025 ben ik mijn eigen bureau gestart: CB-lighting. Mijn doel is om Groningse nuchterheid terug te brengen in de (openbare) verlichting. Wilt u een lichtplan zonder veel bla bla, maar met een oprecht en eerlijk verhaal? Neem dan gerust contact op.</p>
+      <div class="stats">
+        <div class="stat"><b>2002</b><small>Begonnen met licht</small></div>
+        <div class="stat"><b>20+ jr</b><small>Praktijkervaring</small></div>
+        <div class="stat"><b>HVK</b><small>Hogere Verlichtingskunde</small></div>
+      </div>
+    </div>
+    <div class="quote-card">
+      <div class="mark">&ldquo;</div>
+      <blockquote>Ik zeg liever dat ik wél wat van verlichting weet, dan dat ik zou zeggen: "ik heb verstand van licht".</blockquote>
+      <div class="who">Chris Bakker<small>Oprichter CB-lighting · Capelle a/d IJssel</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- WERKWIJZE -->
+<section class="process" id="werkwijze">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow" style="color:var(--amber)">Werkwijze</span>
+      <h2>Zo gaan we te werk</h2>
+      <p>Elk plan is uniek en afgestemd op uw wensen. In een paar heldere stappen naar verlichting die klopt.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><h3>Kennismaken</h3><p>We bespreken telefonisch of per mail wat de bedoeling is en wat u nodig heeft.</p></div>
+      <div class="step"><div class="n">2</div><h3>Aanleveren</h3><p>U levert tekeningen of schetsen aan van de ruimte, straat of het terrein.</p></div>
+      <div class="step"><div class="n">3</div><h3>Berekenen</h3><p>Wij rekenen met DIALux evo en stemmen de verlichting af op de richtlijnen.</p></div>
+      <div class="step"><div class="n">4</div><h3>Rapportage</h3><p>U ontvangt een heldere lichtberekening die voldoet aan uw wensen.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ECHT GEBEURD -->
+<section id="projecten">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Echt gebeurd</span>
+      <h2>Verhalen uit de praktijk</h2>
+      <p>Na ruim 20 jaar in het verlichtingsvak kom je bijzondere vragen tegen. Een paar die zijn bijgebleven.</p>
+    </div>
+    <div class="story-grid">
+      <div class="story">
+        <span class="date">Uit de praktijk</span>
+        <h3>Een parkeerterrein met "boldertjes"</h3>
+        <p>Een klant wilde een parkeerterrein verlichten met boldertjes: paaltjes van een kleine meter hoog met een lampje erin. Prima als oriëntatieverlichting in tuinen of op campings, maar voor een parkeerterrein? In gedachten zag ik de order voor tientallen paaltjes al binnenkomen. Die order hebben we (natuurlijk) nooit ontvangen.</p>
+      </div>
+      <div class="story">
+        <span class="date">Richtlijnen</span>
+        <h3>Richtlijnen, wat doe je ermee?</h3>
+        <p>Wie iets doet met openbare verlichting komt al gauw richtlijnen tegen. Gelukkig maar, want richtlijnen geven houvast: je weet of je 3, 5, 10 lux of misschien wel veel meer licht nodig hebt. Een discussie is dan snel ten einde, want het voldoet immers aan de richtlijnen, zoals de NPR. Wij proberen daaraan te voldoen, tenzij u het anders wenst.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="wrap">
+    <div class="sec-head center">
+      <span class="eyebrow">Veelgestelde vragen</span>
+      <h2>Goed om te weten</h2>
+    </div>
+    <div class="faq-list">
+      <details open>
+        <summary>Wat voor soort projecten doen jullie? <span class="pl">+</span></summary>
+        <div class="ans">Projecten variërend van kantoren en scholen tot het verlichten van straten, pleinen of hele wijken. Binnen én buiten.</div>
+      </details>
+      <details>
+        <summary>Hoe gaat het adviesproces in zijn werk? <span class="pl">+</span></summary>
+        <div class="ans">Het begint met een (telefoon)gesprek. We bespreken wat de bedoeling is, u levert tekeningen of schetsen aan en vervolgens gaan we voor u aan de slag. Elk plan is uniek en afgestemd op uw behoeften.</div>
+      </details>
+      <details>
+        <summary>Maken jullie berekeningen voor binnen- én buitenverlichting? <span class="pl">+</span></summary>
+        <div class="ans">Ja. Of het nu om binnenverlichting of straatverlichting gaat, met ruim 20 jaar ervaring kunnen we u vrijwel altijd van dienst zijn.</div>
+      </details>
+      <details>
+        <summary>Waarom zou ik het niet zelf doen met gratis software? <span class="pl">+</span></summary>
+        <div class="ans">Dat kan, maar het kost tijd om DIALux echt onder de knie te krijgen, plus kennis van armaturen, lichtverdelingen en lichtpunthoogtes. Net als een huis bouw je niet steen voor steen zelf. Uitbesteden scheelt u tijd en geld, zodat u zich op uw eigen werk kunt richten.</div>
+      </details>
+      <details>
+        <summary>Welke richtlijnen houden jullie aan? <span class="pl">+</span></summary>
+        <div class="ans">Voor buiten bij voorkeur de NPR-richtlijnen, voor binnen de NEN 12464. Wenst u een lagere of juist hogere verlichtingssterkte? Daar kunnen we over praten, als we er maar achter kunnen staan.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="wrap contact-grid">
+    <div class="contact-info">
+      <span class="eyebrow">Contact</span>
+      <h2>Doe gerust een aanvraag</h2>
+      <p>Vraag om advies, een lichtberekening of een lichtplan op maat. We denken graag met u mee, concreet en betrouwbaar.</p>
+      <div class="contact-actions">
+        <a class="ci-row" href="mailto:chris.bakker_31juli@icloud.com?subject=Aanvraag%20lichtberekening">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#c4861a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></span>
+          <span><small>E-mail</small><strong>chris.bakker_31juli@icloud.com</strong></span>
+        </a>
+        <div class="ci-row">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#c4861a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 11-9 11s-9-4-9-11a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <span><small>Locatie</small><strong>Zijpenberg 115, 2905 RN Capelle a/d IJssel</strong></span>
+        </div>
+        <!-- Telefoonknop: vul hieronder het nummer in en haal de comment-tekens weg
+        <a class="ci-row" href="tel:+31600000000">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#c4861a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.4-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg></span>
+          <span><small>Telefoon</small><strong>06 00 00 00 00</strong></span>
+        </a>
+        -->
+      </div>
+    </div>
+
+    <form id="contactForm" action="https://formspree.io/f/JOUW_FORMSPREE_ID" method="POST">
+      <h3>Aanvraag of vraag stellen</h3>
+      <p class="fnote">Vul het formulier in, dan nemen we zo snel mogelijk contact met u op.</p>
+      <div class="field">
+        <label for="naam">Naam *</label>
+        <input type="text" id="naam" name="naam" required />
+      </div>
+      <div class="field">
+        <label for="email">E-mailadres *</label>
+        <input type="email" id="email" name="email" required />
+      </div>
+      <div class="field">
+        <label for="onderwerp">Onderwerp</label>
+        <select id="onderwerp" name="onderwerp">
+          <option>Lichtberekening buitenverlichting</option>
+          <option>Lichtberekening binnenverlichting</option>
+          <option>Verlichtingsadvies</option>
+          <option>Lichtplan op maat</option>
+          <option>Iets anders</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="bericht">Bericht *</label>
+        <textarea id="bericht" name="bericht" placeholder="Vertel kort over uw project, ruimte of terrein…" required></textarea>
+      </div>
+      <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" />
+      <button type="submit" class="btn btn-amber">Verzenden
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+      </button>
+      <div class="form-msg" id="formMsg"></div>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="logo">
+          <span class="bulb"><svg viewBox="0 0 24 24" fill="none" stroke="#e0a528" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2Z"/></svg></span>
+          <span>CB<b>-</b>lighting</span>
+        </div>
+        <p>Concreet en Betrouwbaar. Professionele lichtberekeningen en lichtplannen voor binnen- en buitenverlichting, met beide benen op de grond.</p>
+      </div>
+      <div>
+        <h4>Diensten</h4>
+        <ul>
+          <li><a href="#diensten">Lichtberekeningen</a></li>
+          <li><a href="#diensten">Verlichtingsadvies</a></li>
+          <li><a href="#diensten">Lichtplan op maat</a></li>
+          <li><a href="#werkwijze">Werkwijze</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:chris.bakker_31juli@icloud.com">chris.bakker_31juli@icloud.com</a></li>
+          <li>Zijpenberg 115</li>
+          <li>2905 RN Capelle a/d IJssel</li>
+          <li><a href="#contact">Aanvraag doen</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2025-2026 CB-lighting · Concreet en Betrouwbaar</span>
+      <span>Capelle aan den IJssel, Nederland</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Mobiel menu
+  var burger = document.getElementById('burger');
+  var navlinks = document.getElementById('navlinks');
+  burger.addEventListener('click', function(){ navlinks.classList.toggle('open'); });
+  navlinks.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ navlinks.classList.remove('open'); });
+  });
+
+  // Contactformulier: werkt via Formspree zodra het ID is ingevuld.
+  // Zonder geldig ID valt het netjes terug op de e-mailknop.
+  var form = document.getElementById('contactForm');
+  var msg = document.getElementById('formMsg');
+  form.addEventListener('submit', function(e){
+    var action = form.getAttribute('action') || '';
+    if (action.indexOf('JOUW_FORMSPREE_ID') !== -1){
+      // Nog niet gekoppeld: open e-mailprogramma met de inhoud
+      e.preventDefault();
+      var naam = encodeURIComponent(document.getElementById('naam').value);
+      var ond  = encodeURIComponent(document.getElementById('onderwerp').value);
+      var ber  = encodeURIComponent(document.getElementById('bericht').value + '\n\nVan: ' + document.getElementById('naam').value + ' (' + document.getElementById('email').value + ')');
+      window.location.href = 'mailto:chris.bakker_31juli@icloud.com?subject=' + ond + ' - ' + naam + '&body=' + ber;
+      return;
+    }
+    // Met Formspree: async versturen
+    e.preventDefault();
+    var data = new FormData(form);
+    fetch(action, { method:'POST', body:data, headers:{'Accept':'application/json'} })
+      .then(function(r){
+        if(r.ok){
+          form.reset();
+          msg.className = 'form-msg ok';
+          msg.textContent = 'Bedankt! Uw bericht is verstuurd. We nemen zo snel mogelijk contact op.';
+        } else {
+          msg.className = 'form-msg err';
+          msg.textContent = 'Er ging iets mis. Mail ons gerust direct via chris.bakker_31juli@icloud.com.';
+        }
+      })
+      .catch(function(){
+        msg.className = 'form-msg err';
+        msg.textContent = 'Er ging iets mis. Mail ons gerust direct via chris.bakker_31juli@icloud.com.';
+      });
+  });
+</script>
+</body>
+</html>
