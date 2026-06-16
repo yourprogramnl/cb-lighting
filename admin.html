@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="robots" content="noindex,nofollow" />
-<title>Beheer | CB-lighting</title>
+<title>Dashboard | CB-lighting</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style>
@@ -14,258 +14,434 @@
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased}
   h1,h2,h3{font-family:'Fraunces',serif;font-weight:600;letter-spacing:-.01em}
-  .wrap{max-width:880px;margin:0 auto;padding:0 20px}
-  .topbar{background:var(--navy);color:#fff;padding:16px 0}
-  .topbar .wrap{display:flex;align-items:center;justify-content:space-between}
-  .brand{display:flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-size:1.15rem}
-  .brand .bulb{width:30px;height:30px;border-radius:8px;background:rgba(224,165,40,.18);display:grid;place-items:center}
-  .brand b{color:var(--amber)}
   .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border-radius:999px;font-weight:600;font-size:.92rem;border:none;cursor:pointer;transition:transform .15s,background .15s,box-shadow .15s;font-family:inherit}
-  .btn-amber{background:var(--amber);color:#241c06}
-  .btn-amber:hover{background:var(--amber-deep);color:#fff}
-  .btn-dark{background:#fff;color:var(--navy)}
+  .btn-amber{background:var(--amber);color:#241c06}.btn-amber:hover{background:var(--amber-deep);color:#fff}
   .btn-ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.4)}
-  .btn-danger{background:#fff;color:var(--err);border:1px solid #f0ccc6;padding:7px 14px;font-size:.85rem}
+  .btn-light{background:#fff;color:var(--navy);border:1px solid var(--line)}
+  .btn-danger{background:#fff;color:var(--err);border:1px solid #f0ccc6;padding:8px 14px;font-size:.85rem}
   .btn-danger:hover{background:#fdecea}
   .btn:disabled{opacity:.5;cursor:not-allowed}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow);margin-bottom:24px}
-  .card h2{font-size:1.3rem;margin-bottom:4px}
-  .card .sub{color:var(--muted);font-size:.9rem;margin-bottom:20px}
+
+  /* LOGIN */
+  .login-wrap{min-height:100vh;display:grid;place-items:center;padding:40px 20px}
+  .login-box{max-width:380px;width:100%;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:30px;box-shadow:var(--shadow)}
+  .login-box h2{font-size:1.4rem;margin-bottom:4px}.login-box .sub{color:var(--muted);font-size:.9rem;margin-bottom:20px}
   label{display:block;font-weight:600;font-size:.85rem;margin:0 0 6px}
-  input,textarea{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;font:inherit;background:var(--bg);margin-bottom:16px}
+  input,textarea{width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;font:inherit;background:var(--bg);margin-bottom:14px}
   input:focus,textarea:focus{outline:none;border-color:var(--amber);background:#fff}
-  textarea{min-height:110px;resize:vertical}
-  .row{display:flex;gap:14px;flex-wrap:wrap}
-  .row > div{flex:1;min-width:160px}
-  .login-wrap{min-height:70vh;display:grid;place-items:center;padding:40px 20px}
-  .login-box{max-width:380px;width:100%}
-  .msg{padding:11px 14px;border-radius:10px;font-size:.9rem;margin-bottom:14px;display:none}
-  .msg.show{display:block}
+  textarea{min-height:90px;resize:vertical}
+
+  /* APP LAYOUT */
+  .app{display:none;min-height:100vh;grid-template-columns:240px 1fr}
+  .side{background:var(--navy);color:#cdd4e0;padding:22px 16px;position:sticky;top:0;height:100vh;overflow:auto}
+  .side .brand{display:flex;align-items:center;gap:9px;font-family:'Fraunces',serif;font-size:1.1rem;color:#fff;margin-bottom:6px;padding:0 8px}
+  .side .brand b{color:var(--amber)}
+  .side .hello{font-size:.78rem;color:#8b94a6;padding:0 8px;margin-bottom:18px;word-break:break-all}
+  .side nav{display:flex;flex-direction:column;gap:3px}
+  .side nav button{text-align:left;background:none;border:none;color:#cdd4e0;font:inherit;font-size:.93rem;padding:10px 12px;border-radius:9px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:background .12s,color .12s}
+  .side nav button:hover{background:rgba(255,255,255,.06);color:#fff}
+  .side nav button.active{background:var(--amber);color:#241c06;font-weight:600}
+  .side .foot{margin-top:18px;padding:0 8px;display:flex;flex-direction:column;gap:8px}
+  .side .foot a{color:#8b94a6;font-size:.85rem;text-decoration:none}
+  .side .foot a:hover{color:#fff}
+
+  main{padding:30px 34px 70px;max-width:760px}
+  .head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:6px}
+  .head h1{font-size:1.6rem}
+  .panel-sub{color:var(--muted);font-size:.92rem;margin-bottom:24px}
+  .fld{margin-bottom:18px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+  .current-img{width:100%;max-width:300px;border-radius:10px;border:1px solid var(--line);margin-bottom:10px}
+  .hint{font-size:.8rem;color:var(--muted);margin:-8px 0 14px}.hint b{color:var(--ink-soft)}
+  .uploading{font-size:.85rem;color:var(--amber-deep);margin-bottom:10px;display:none}.uploading.show{display:block}
+  .savebar{position:sticky;bottom:0;background:linear-gradient(180deg,rgba(250,248,243,0),var(--bg) 40%);padding:18px 0 4px;display:flex;align-items:center;gap:14px}
+  .msg{padding:10px 14px;border-radius:10px;font-size:.9rem;display:none}
+  .msg.show{display:inline-block}
   .msg.ok{background:#eaf7ec;color:var(--ok);border:1px solid #bfe5c5}
   .msg.err{background:#fdecea;color:var(--err);border:1px solid #f3c4bd}
-  .thumb{display:flex;gap:14px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:10px;margin-bottom:10px;background:var(--bg)}
-  .thumb img{width:84px;height:64px;object-fit:cover;border-radius:7px;flex:none;background:#ddd}
-  .thumb .meta{flex:1;min-width:0}
-  .thumb .meta strong{display:block;font-size:.95rem}
-  .thumb .meta span{font-size:.82rem;color:var(--muted);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .current-img{width:100%;max-width:280px;border-radius:10px;border:1px solid var(--line);margin-bottom:12px}
-  .hint{font-size:.82rem;color:var(--muted);margin:-8px 0 16px}
-  .hint a{color:var(--amber-deep)}
-  main{padding:32px 0 60px}
-  .uploading{font-size:.85rem;color:var(--amber-deep);margin-bottom:12px;display:none}
-  .uploading.show{display:block}
+  .block{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;margin-bottom:18px;box-shadow:var(--shadow)}
+  .block h3{font-size:1.05rem;margin-bottom:14px}
+  .item{display:flex;gap:14px;align-items:flex-start;padding:12px;border:1px solid var(--line);border-radius:10px;margin-bottom:10px;background:var(--bg)}
+  .item img{width:90px;height:66px;object-fit:cover;border-radius:7px;flex:none;background:#ddd}
+  .item .meta{flex:1;min-width:0}
+  .item .meta strong{display:block;font-size:.95rem}
+  .item .meta span{font-size:.82rem;color:var(--muted);display:block}
+  .topmsg{position:fixed;top:14px;right:16px;z-index:99}
+  @media(max-width:760px){.app{grid-template-columns:1fr}.side{position:static;height:auto}main{padding:22px 18px 60px}.grid2{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="wrap">
-    <div class="brand"><span class="bulb">💡</span><span>CB<b>-</b>lighting beheer</span></div>
-    <button class="btn btn-ghost" id="logoutBtn" style="display:none">Uitloggen</button>
-  </div>
-</div>
-
 <!-- LOGIN -->
 <div class="login-wrap" id="loginView">
   <div class="login-box">
-    <div class="card">
-      <h2>Inloggen</h2>
-      <p class="sub">Alleen voor de beheerder van CB-lighting.</p>
-      <div class="msg err" id="loginMsg"></div>
-      <label for="lemail">E-mailadres</label>
-      <input type="email" id="lemail" autocomplete="username" />
-      <label for="lpass">Wachtwoord</label>
-      <input type="password" id="lpass" autocomplete="current-password" />
-      <button class="btn btn-amber" id="loginBtn" style="width:100%">Inloggen</button>
-    </div>
+    <h2>CB-lighting dashboard</h2>
+    <p class="sub">Inloggen voor de beheerder.</p>
+    <div class="msg err" id="loginMsg" style="margin-bottom:14px"></div>
+    <label for="lemail">E-mailadres</label>
+    <input type="email" id="lemail" autocomplete="username" />
+    <label for="lpass">Wachtwoord</label>
+    <input type="password" id="lpass" autocomplete="current-password" />
+    <button class="btn btn-amber" id="loginBtn" style="width:100%">Inloggen</button>
   </div>
 </div>
 
-<!-- ADMIN -->
-<main id="adminView" style="display:none">
-  <div class="wrap">
-
-    <!-- FOTOPLEKKEN -->
-    <div class="card">
-      <h2>Vaste foto's</h2>
-      <p class="sub">De grote foto bovenaan (hero) en de foto bij "Over CB-lighting".</p>
-      <div class="msg" id="setMsg"></div>
-
-      <label>Hero-foto (bovenaan de site)</label>
-      <img class="current-img" id="heroPreview" style="display:none" />
-      <div class="uploading" id="heroUploading">Bezig met uploaden…</div>
-      <input type="file" id="heroFile" accept="image/*" />
-
-      <label>Over-foto (bij jouw verhaal)</label>
-      <img class="current-img" id="aboutPreview" style="display:none" />
-      <div class="uploading" id="aboutUploading">Bezig met uploaden…</div>
-      <input type="file" id="aboutFile" accept="image/*" />
+<!-- APP -->
+<div class="app" id="appView">
+  <aside class="side">
+    <div class="brand"><span>💡</span><span>CB<b>-</b>lighting</span></div>
+    <div class="hello" id="hello"></div>
+    <nav id="sidenav"></nav>
+    <div class="foot">
+      <a href="index.html" target="_blank">↗ Bekijk de site</a>
+      <a href="#" id="logoutLink">Uitloggen</a>
     </div>
+  </aside>
+  <main>
+    <div class="head"><h1 id="panelTitle"></h1></div>
+    <p class="panel-sub" id="panelSub"></p>
+    <div id="panel"></div>
+  </main>
+</div>
 
-    <!-- GALERIJ -->
-    <div class="card">
-      <h2>Projecten</h2>
-      <p class="sub">Voeg projectfoto's of DIALux-beelden toe met een titel en korte tekst.</p>
-      <div class="msg" id="galMsg"></div>
-
-      <label>Foto kiezen</label>
-      <input type="file" id="galFile" accept="image/*" />
-      <div class="row">
-        <div><label>Titel</label><input type="text" id="galTitle" placeholder="Bijv. Parkeerterrein Capelle" /></div>
-        <div><label>Volgorde (laag = eerst)</label><input type="number" id="galOrder" value="0" /></div>
-      </div>
-      <label>Korte omschrijving</label>
-      <textarea id="galDesc" placeholder="Bijv. Lichtberekening volgens NPR, gelijkmatige verlichting van het hele terrein."></textarea>
-      <div class="uploading" id="galUploading">Bezig met uploaden…</div>
-      <button class="btn btn-amber" id="galAddBtn">Project toevoegen</button>
-
-      <div style="margin-top:24px" id="galList"></div>
-    </div>
-
-    <!-- LINKEDIN -->
-    <div class="card">
-      <h2>LinkedIn-posts</h2>
-      <p class="sub">Toon gekozen LinkedIn-posts op de site.</p>
-      <p class="hint">Hoe kom je aan de code? Open je post op LinkedIn, klik op de drie puntjes (…) rechtsboven de post, kies <b>Insluiten in deze post / Embed this post</b> en kopieer de getoonde code. Plak die hieronder.</p>
-      <div class="msg" id="liMsg"></div>
-      <label>Insluitcode (begint met &lt;iframe …)</label>
-      <textarea id="liCode" placeholder="<iframe src=&quot;https://www.linkedin.com/embed/feed/update/...&quot; ...></iframe>"></textarea>
-      <div class="row"><div><label>Volgorde (laag = eerst)</label><input type="number" id="liOrder" value="0" /></div><div></div></div>
-      <button class="btn btn-amber" id="liAddBtn">Post toevoegen</button>
-
-      <div style="margin-top:24px" id="liList"></div>
-    </div>
-
-  </div>
-</main>
+<div id="topmsg" class="topmsg"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  var SUPA_URL = 'https://grcwjxtelyfpgwaodciz.supabase.co';
-  var SUPA_KEY = 'sb_publishable_aLb324REz4wXN6URiOD_ig_lxL_OWLP';
-  var BUCKET = 'cbl-media';
-  var sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+  var SUPA_URL='https://grcwjxtelyfpgwaodciz.supabase.co';
+  var SUPA_KEY='sb_publishable_aLb324REz4wXN6URiOD_ig_lxL_OWLP';
+  var BUCKET='cbl-media';
+  var sb=window.supabase.createClient(SUPA_URL,SUPA_KEY);
+  var $=function(id){return document.getElementById(id);};
+  var settings={};
 
-  var $ = function(id){ return document.getElementById(id); };
-  function showMsg(el, text, ok){ el.textContent=text; el.className='msg ' + (ok?'ok':'err') + ' show'; if(ok) setTimeout(function(){ el.className='msg'; },4000); }
+  var SECTIONS=[
+    {id:'hero',label:'Hero (bovenaan)',sub:'De eerste indruk: titel, inleiding en de grote foto.',fields:[
+      {k:'hero_eyebrow',l:'Kleine tekst boven de titel',t:'text'},
+      {k:'hero_title',l:'Titel, eerste deel',t:'text'},
+      {k:'hero_title_accent',l:'Titel, gekleurde deel',t:'text'},
+      {k:'hero_lead',l:'Inleidende tekst',t:'textarea'},
+      {k:'hero_cta',l:'Tekst op de knop',t:'text'},
+      {k:'hero_card_title',l:'Titel op het donkere kaartje',t:'text'},
+      {k:'hero_image',l:'Grote foto (vervangt het donkere kaartje)',t:'image'}
+    ]},
+    {id:'strip',label:'Logobalk',sub:'De rij met namen onder de hero.',fields:[
+      {k:'strip_label',l:'Label',t:'text'},
+      {k:'strip_items',l:'Namen, gescheiden door een komma',t:'textarea',hint:'Bijv. Industria, Indal, Philips / Signify'}
+    ]},
+    {id:'diensten',label:'Diensten',sub:'De drie dienstenblokken.',fields:[
+      {k:'services_eyebrow',l:'Kleine tekst',t:'text'},
+      {k:'services_title',l:'Titel',t:'text'},
+      {k:'services_intro',l:'Inleiding',t:'textarea'},
+      {k:'service1_title',l:'Dienst 1: titel',t:'text'},
+      {k:'service1_text',l:'Dienst 1: tekst',t:'textarea'},
+      {k:'service1_bullets',l:'Dienst 1: punten',t:'textarea',hint:'Eén punt per regel.'},
+      {k:'service2_title',l:'Dienst 2: titel',t:'text'},
+      {k:'service2_text',l:'Dienst 2: tekst',t:'textarea'},
+      {k:'service2_bullets',l:'Dienst 2: punten',t:'textarea',hint:'Eén punt per regel.'},
+      {k:'service3_title',l:'Dienst 3: titel',t:'text'},
+      {k:'service3_text',l:'Dienst 3: tekst',t:'textarea'},
+      {k:'service3_bullets',l:'Dienst 3: punten',t:'textarea',hint:'Eén punt per regel.'}
+    ]},
+    {id:'banner',label:'Onafhankelijk-blok',sub:'Het donkere blok over je onafhankelijkheid.',fields:[
+      {k:'banner_badge',l:'Label',t:'text'},
+      {k:'banner_title',l:'Titel',t:'text'},
+      {k:'banner_text',l:'Tekst',t:'textarea'},
+      {k:'banner_cta',l:'Tekst op de knop',t:'text'}
+    ]},
+    {id:'over',label:'Over CB-lighting',sub:'Jouw verhaal, foto, citaat en de cijfers.',fields:[
+      {k:'about_eyebrow',l:'Kleine tekst',t:'text'},
+      {k:'about_title',l:'Titel',t:'text'},
+      {k:'about_p1',l:'Alinea 1',t:'textarea'},
+      {k:'about_p2',l:'Alinea 2',t:'textarea'},
+      {k:'about_p3',l:'Alinea 3',t:'textarea'},
+      {k:'about_image',l:'Foto bij jouw verhaal',t:'image'},
+      {k:'about_quote',l:'Citaat',t:'textarea'},
+      {k:'about_quote_who',l:'Naam onder citaat',t:'text'},
+      {k:'about_quote_role',l:'Functie onder citaat',t:'text'},
+      {k:'stat1_num',l:'Cijfer 1',t:'text'},{k:'stat1_label',l:'Cijfer 1: label',t:'text'},
+      {k:'stat2_num',l:'Cijfer 2',t:'text'},{k:'stat2_label',l:'Cijfer 2: label',t:'text'},
+      {k:'stat3_num',l:'Cijfer 3',t:'text'},{k:'stat3_label',l:'Cijfer 3: label',t:'text'}
+    ]},
+    {id:'projecten',label:'Projecten (foto\'s)',sub:'Voeg projectfoto\'s en DIALux-beelden toe.',custom:'gallery',fields:[
+      {k:'projects_eyebrow',l:'Kleine tekst',t:'text'},
+      {k:'projects_title',l:'Titel',t:'text'},
+      {k:'projects_intro',l:'Inleiding',t:'textarea'}
+    ]},
+    {id:'werkwijze',label:'Werkwijze',sub:'De vier stappen.',fields:[
+      {k:'process_eyebrow',l:'Kleine tekst',t:'text'},
+      {k:'process_title',l:'Titel',t:'text'},
+      {k:'process_intro',l:'Inleiding',t:'textarea'},
+      {k:'step1_title',l:'Stap 1: titel',t:'text'},{k:'step1_text',l:'Stap 1: tekst',t:'textarea'},
+      {k:'step2_title',l:'Stap 2: titel',t:'text'},{k:'step2_text',l:'Stap 2: tekst',t:'textarea'},
+      {k:'step3_title',l:'Stap 3: titel',t:'text'},{k:'step3_text',l:'Stap 3: tekst',t:'textarea'},
+      {k:'step4_title',l:'Stap 4: titel',t:'text'},{k:'step4_text',l:'Stap 4: tekst',t:'textarea'}
+    ]},
+    {id:'verhalen',label:'Echt gebeurd',sub:'Twee verhalen uit de praktijk.',fields:[
+      {k:'stories_eyebrow',l:'Kleine tekst',t:'text'},
+      {k:'stories_title',l:'Titel',t:'text'},
+      {k:'stories_intro',l:'Inleiding',t:'textarea'},
+      {k:'story1_tag',l:'Verhaal 1: label',t:'text'},
+      {k:'story1_title',l:'Verhaal 1: titel',t:'text'},
+      {k:'story1_text',l:'Verhaal 1: tekst',t:'textarea'},
+      {k:'story2_tag',l:'Verhaal 2: label',t:'text'},
+      {k:'story2_title',l:'Verhaal 2: titel',t:'text'},
+      {k:'story2_text',l:'Verhaal 2: tekst',t:'textarea'}
+    ]},
+    {id:'updates',label:'LinkedIn',sub:'Toon gekozen LinkedIn-posts en de link naar je profiel.',custom:'linkedin',fields:[
+      {k:'updates_eyebrow',l:'Kleine tekst',t:'text'},
+      {k:'updates_title',l:'Titel',t:'text'},
+      {k:'updates_intro',l:'Inleiding',t:'textarea'},
+      {k:'linkedin_url',l:'Link naar je LinkedIn-profiel',t:'text'}
+    ]},
+    {id:'faq',label:'Veelgestelde vragen',sub:'Beheer de vragen en antwoorden.',custom:'faq',fields:[
+      {k:'faq_eyebrow',l:'Kleine tekst',t:'text'},
+      {k:'faq_title',l:'Titel',t:'text'}
+    ]},
+    {id:'contact',label:'Contact',sub:'E-mail, adres en contactteksten.',fields:[
+      {k:'contact_eyebrow',l:'Kleine tekst',t:'text'},
+      {k:'contact_title',l:'Titel',t:'text'},
+      {k:'contact_intro',l:'Inleiding',t:'textarea'},
+      {k:'contact_email',l:'E-mailadres',t:'text'},
+      {k:'contact_address',l:'Adres',t:'text'}
+    ]}
+  ];
 
-  // ---------- AUTH ----------
-  async function refresh(){
-    var s = await sb.auth.getSession();
-    if(s.data.session){ showAdmin(); } else { showLogin(); }
+  function flash(text,ok){ var t=$('topmsg'); t.innerHTML='<div class="msg '+(ok?'ok':'err')+' show">'+text+'</div>'; setTimeout(function(){t.innerHTML='';}, ok?3500:6000); }
+
+  // AUTH
+  async function refresh(){ var s=await sb.auth.getSession(); if(s.data.session){ enterApp(s.data.session); } else { $('loginView').style.display='grid'; $('appView').style.display='none'; } }
+  async function enterApp(session){
+    $('loginView').style.display='none'; $('appView').style.display='grid';
+    $('hello').textContent='Ingelogd als ' + (session.user && session.user.email ? session.user.email : '');
+    await loadSettings(); buildSidebar(); selectSection(SECTIONS[0].id);
   }
-  function showLogin(){ $('loginView').style.display='grid'; $('adminView').style.display='none'; $('logoutBtn').style.display='none'; }
-  function showAdmin(){ $('loginView').style.display='none'; $('adminView').style.display='block'; $('logoutBtn').style.display='inline-flex'; loadAll(); }
-
   $('loginBtn').addEventListener('click', async function(){
-    var email = $('lemail').value.trim(), pass = $('lpass').value;
-    if(!email || !pass){ showMsg($('loginMsg'),'Vul e-mail en wachtwoord in.',false); return; }
-    $('loginBtn').disabled = true; $('loginBtn').textContent='Bezig…';
-    var r = await sb.auth.signInWithPassword({ email:email, password:pass });
-    $('loginBtn').disabled = false; $('loginBtn').textContent='Inloggen';
-    if(r.error){ showMsg($('loginMsg'),'Inloggen mislukt: ' + r.error.message,false); return; }
-    showAdmin();
+    var email=$('lemail').value.trim(), pass=$('lpass').value;
+    if(!email||!pass){ showLogin('Vul e-mail en wachtwoord in.'); return; }
+    $('loginBtn').disabled=true; $('loginBtn').textContent='Bezig…';
+    var r=await sb.auth.signInWithPassword({email:email,password:pass});
+    $('loginBtn').disabled=false; $('loginBtn').textContent='Inloggen';
+    if(r.error){ showLogin('Inloggen mislukt: '+r.error.message); return; }
+    enterApp(r.data.session);
   });
-  $('lpass').addEventListener('keydown', function(e){ if(e.key==='Enter') $('loginBtn').click(); });
-  $('logoutBtn').addEventListener('click', async function(){ await sb.auth.signOut(); showLogin(); });
+  function showLogin(m){ var el=$('loginMsg'); el.textContent=m; el.className='msg err show'; }
+  $('lpass').addEventListener('keydown',function(e){ if(e.key==='Enter') $('loginBtn').click(); });
+  $('logoutLink').addEventListener('click', async function(e){ e.preventDefault(); await sb.auth.signOut(); location.reload(); });
 
-  // ---------- UPLOAD HELPER ----------
+  async function loadSettings(){ var r=await sb.from('cbl_settings').select('key,value'); settings={}; if(!r.error&&r.data){ r.data.forEach(function(x){ settings[x.key]=x.value; }); } }
+
+  // SIDEBAR
+  function buildSidebar(){
+    var nav=$('sidenav'); nav.innerHTML='';
+    SECTIONS.forEach(function(sec){
+      var b=document.createElement('button'); b.textContent=sec.label; b.setAttribute('data-sec',sec.id);
+      b.addEventListener('click',function(){ selectSection(sec.id); });
+      nav.appendChild(b);
+    });
+  }
+  function selectSection(id){
+    document.querySelectorAll('#sidenav button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-sec')===id); });
+    var sec=SECTIONS.filter(function(s){return s.id===id;})[0];
+    $('panelTitle').textContent=sec.label; $('panelSub').textContent=sec.sub||'';
+    renderPanel(sec);
+    window.scrollTo(0,0);
+  }
+
+  // UPLOAD
   async function uploadFile(file){
-    var ext = (file.name.split('.').pop()||'jpg').toLowerCase();
-    var path = Date.now() + '-' + Math.random().toString(36).slice(2,8) + '.' + ext;
-    var up = await sb.storage.from(BUCKET).upload(path, file, { cacheControl:'3600', upsert:false });
+    var ext=(file.name.split('.').pop()||'jpg').toLowerCase();
+    var path=Date.now()+'-'+Math.random().toString(36).slice(2,8)+'.'+ext;
+    var up=await sb.storage.from(BUCKET).upload(path,file,{cacheControl:'3600',upsert:false});
     if(up.error) throw up.error;
-    var pub = sb.storage.from(BUCKET).getPublicUrl(path);
-    return pub.data.publicUrl;
+    return sb.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
   }
 
-  // ---------- SETTINGS (vaste foto's) ----------
-  async function loadSettings(){
-    var r = await sb.from('cbl_settings').select('key,value');
-    if(r.error) return;
-    var map={}; (r.data||[]).forEach(function(x){ map[x.key]=x.value; });
-    if(map.hero_image){ $('heroPreview').src=map.hero_image; $('heroPreview').style.display='block'; }
-    if(map.about_image){ $('aboutPreview').src=map.about_image; $('aboutPreview').style.display='block'; }
+  function fieldEl(f){
+    var w=document.createElement('div'); w.className='fld';
+    var lab=document.createElement('label'); lab.textContent=f.l; w.appendChild(lab);
+    if(f.t==='image'){
+      var prev=document.createElement('img'); prev.className='current-img'; prev.id='prev_'+f.k;
+      if(settings[f.k]){ prev.src=settings[f.k]; } else { prev.style.display='none'; }
+      w.appendChild(prev);
+      var up=document.createElement('div'); up.className='uploading'; up.id='up_'+f.k; up.textContent='Bezig met uploaden…'; w.appendChild(up);
+      var inp=document.createElement('input'); inp.type='file'; inp.accept='image/*';
+      inp.addEventListener('change',function(){ doImage(f.k,inp); });
+      w.appendChild(inp);
+    } else if(f.t==='textarea'){
+      var ta=document.createElement('textarea'); ta.setAttribute('data-k',f.k); ta.value=settings[f.k]||''; w.appendChild(ta);
+      if(f.hint){ var h=document.createElement('p'); h.className='hint'; h.textContent=f.hint; w.appendChild(h); }
+    } else {
+      var ip=document.createElement('input'); ip.type='text'; ip.setAttribute('data-k',f.k); ip.value=settings[f.k]||''; w.appendChild(ip);
+    }
+    return w;
   }
-  async function handleSlot(fileInput, key, previewId, uploadingId){
-    var file = fileInput.files[0]; if(!file) return;
-    $(uploadingId).className='uploading show';
+
+  async function doImage(key,inp){
+    var file=inp.files[0]; if(!file) return;
+    $('up_'+key).className='uploading show';
     try{
-      var url = await uploadFile(file);
-      var r = await sb.from('cbl_settings').upsert({ key:key, value:url, updated_at:new Date().toISOString() });
+      var url=await uploadFile(file);
+      var r=await sb.from('cbl_settings').upsert({key:key,value:url,updated_at:new Date().toISOString()});
       if(r.error) throw r.error;
-      $(previewId).src=url; $(previewId).style.display='block';
-      showMsg($('setMsg'),'Foto opgeslagen.',true);
-    }catch(e){ showMsg($('setMsg'),'Mislukt: ' + (e.message||e),false); }
-    $(uploadingId).className='uploading'; fileInput.value='';
+      settings[key]=url; var p=$('prev_'+key); p.src=url; p.style.display='block';
+      flash('Foto opgeslagen.',true);
+    }catch(e){ flash('Mislukt: '+(e.message||e),false); }
+    $('up_'+key).className='uploading'; inp.value='';
   }
-  $('heroFile').addEventListener('change', function(){ handleSlot($('heroFile'),'hero_image','heroPreview','heroUploading'); });
-  $('aboutFile').addEventListener('change', function(){ handleSlot($('aboutFile'),'about_image','aboutPreview','aboutUploading'); });
 
-  // ---------- GALERIJ ----------
-  async function loadGallery(){
-    var r = await sb.from('cbl_gallery').select('*').order('sort_order',{ascending:true}).order('created_at',{ascending:true});
-    var list = $('galList'); list.innerHTML='';
-    if(r.error){ return; }
-    if(!r.data.length){ list.innerHTML='<p style="color:var(--muted);font-size:.9rem">Nog geen projecten toegevoegd.</p>'; return; }
-    r.data.forEach(function(item){
-      var div=document.createElement('div'); div.className='thumb';
-      div.innerHTML = '<img src="'+item.image_url+'"><div class="meta"><strong></strong><span></span></div>';
-      div.querySelector('strong').textContent = item.title || '(geen titel)';
-      div.querySelector('span').textContent = item.description || '';
-      var btn=document.createElement('button'); btn.className='btn btn-danger'; btn.textContent='Verwijderen';
-      btn.addEventListener('click', async function(){
-        if(!confirm('Dit project verwijderen?')) return;
-        var d = await sb.from('cbl_gallery').delete().eq('id', item.id);
-        if(d.error){ showMsg($('galMsg'),'Verwijderen mislukt: '+d.error.message,false); } else { loadGallery(); }
-      });
-      div.appendChild(btn); list.appendChild(div);
+  function renderPanel(sec){
+    var panel=$('panel'); panel.innerHTML='';
+    (sec.fields||[]).forEach(function(f){ panel.appendChild(fieldEl(f)); });
+    if(sec.fields && sec.fields.some(function(f){return f.t!=='image';})){
+      var bar=document.createElement('div'); bar.className='savebar';
+      var btn=document.createElement('button'); btn.className='btn btn-amber'; btn.textContent='Wijzigingen opslaan';
+      btn.addEventListener('click',function(){ saveTexts(panel,btn); });
+      bar.appendChild(btn); panel.appendChild(bar);
+    }
+    if(sec.custom==='gallery') renderGallery(panel);
+    if(sec.custom==='linkedin') renderLinkedIn(panel);
+    if(sec.custom==='faq') renderFaq(panel);
+  }
+
+  async function saveTexts(panel,btn){
+    var rows=[]; var now=new Date().toISOString();
+    panel.querySelectorAll('[data-k]').forEach(function(el){ rows.push({key:el.getAttribute('data-k'),value:el.value,updated_at:now}); });
+    if(!rows.length) return;
+    btn.disabled=true; btn.textContent='Opslaan…';
+    var r=await sb.from('cbl_settings').upsert(rows);
+    btn.disabled=false; btn.textContent='Wijzigingen opslaan';
+    if(r.error){ flash('Opslaan mislukt: '+r.error.message,false); return; }
+    rows.forEach(function(x){ settings[x.key]=x.value; });
+    flash('Opgeslagen. Ververs de site om het te zien.',true);
+  }
+
+  // GALLERY
+  async function renderGallery(panel){
+    var block=document.createElement('div'); block.className='block';
+    block.innerHTML='<h3>Nieuw project toevoegen</h3>';
+    var f=document.createElement('input'); f.type='file'; f.accept='image/*';
+    var lf=document.createElement('label'); lf.textContent='Foto kiezen'; block.appendChild(lf); block.appendChild(f);
+    var g=document.createElement('div'); g.className='grid2';
+    g.innerHTML='<div><label>Titel</label><input type="text" id="gTitle"></div><div><label>Volgorde (laag = eerst)</label><input type="number" id="gOrder" value="0"></div>';
+    block.appendChild(g);
+    var ld=document.createElement('label'); ld.textContent='Korte omschrijving'; block.appendChild(ld);
+    var td=document.createElement('textarea'); td.id='gDesc'; block.appendChild(td);
+    var up=document.createElement('div'); up.className='uploading'; up.id='gUp'; up.textContent='Bezig met uploaden…'; block.appendChild(up);
+    var add=document.createElement('button'); add.className='btn btn-amber'; add.textContent='Project toevoegen';
+    add.addEventListener('click',async function(){
+      if(!f.files[0]){ flash('Kies eerst een foto.',false); return; }
+      $('gUp').className='uploading show'; add.disabled=true;
+      try{ var url=await uploadFile(f.files[0]);
+        var r=await sb.from('cbl_gallery').insert({image_url:url,title:$('gTitle').value.trim()||null,description:$('gDesc').value.trim()||null,sort_order:parseInt($('gOrder').value||'0',10)});
+        if(r.error) throw r.error;
+        f.value='';$('gTitle').value='';$('gDesc').value='';$('gOrder').value='0';
+        flash('Project toegevoegd.',true); listGallery(listWrap);
+      }catch(e){ flash('Mislukt: '+(e.message||e),false); }
+      $('gUp').className='uploading'; add.disabled=false;
+    });
+    block.appendChild(add); panel.appendChild(block);
+
+    var listWrap=document.createElement('div'); listWrap.className='block'; listWrap.innerHTML='<h3>Bestaande projecten</h3><div data-list></div>'; panel.appendChild(listWrap);
+    listGallery(listWrap);
+  }
+  async function listGallery(wrap){
+    var box=wrap.querySelector('[data-list]'); box.innerHTML='Laden…';
+    var r=await sb.from('cbl_gallery').select('*').order('sort_order',{ascending:true}).order('created_at',{ascending:true});
+    box.innerHTML='';
+    if(r.error){ box.textContent='Kon niet laden.'; return; }
+    if(!r.data.length){ box.innerHTML='<p style="color:var(--muted);font-size:.9rem">Nog geen projecten.</p>'; return; }
+    r.data.forEach(function(it){
+      var d=document.createElement('div'); d.className='item';
+      d.innerHTML='<img src="'+it.image_url+'"><div class="meta"><strong></strong><span></span></div>';
+      d.querySelector('strong').textContent=it.title||'(geen titel)'; d.querySelector('span').textContent=it.description||'';
+      var del=document.createElement('button'); del.className='btn btn-danger'; del.textContent='Verwijderen';
+      del.addEventListener('click',async function(){ if(!confirm('Dit project verwijderen?'))return; var x=await sb.from('cbl_gallery').delete().eq('id',it.id); if(x.error){flash('Mislukt: '+x.error.message,false);}else{listGallery(wrap);flash('Verwijderd.',true);} });
+      d.appendChild(del); box.appendChild(d);
     });
   }
-  $('galAddBtn').addEventListener('click', async function(){
-    var file=$('galFile').files[0];
-    if(!file){ showMsg($('galMsg'),'Kies eerst een foto.',false); return; }
-    $('galUploading').className='uploading show'; $('galAddBtn').disabled=true;
-    try{
-      var url = await uploadFile(file);
-      var r = await sb.from('cbl_gallery').insert({ image_url:url, title:$('galTitle').value.trim()||null, description:$('galDesc').value.trim()||null, sort_order:parseInt($('galOrder').value||'0',10) });
-      if(r.error) throw r.error;
-      $('galFile').value=''; $('galTitle').value=''; $('galDesc').value=''; $('galOrder').value='0';
-      showMsg($('galMsg'),'Project toegevoegd.',true); loadGallery();
-    }catch(e){ showMsg($('galMsg'),'Mislukt: '+(e.message||e),false); }
-    $('galUploading').className='uploading'; $('galAddBtn').disabled=false;
-  });
 
-  // ---------- LINKEDIN ----------
-  async function loadLinkedIn(){
-    var r = await sb.from('cbl_linkedin').select('*').order('sort_order',{ascending:true}).order('created_at',{ascending:true});
-    var list=$('liList'); list.innerHTML='';
-    if(r.error) return;
-    if(!r.data.length){ list.innerHTML='<p style="color:var(--muted);font-size:.9rem">Nog geen posts toegevoegd.</p>'; return; }
-    r.data.forEach(function(item){
-      var div=document.createElement('div'); div.className='thumb';
-      div.innerHTML = '<div class="meta"><strong>LinkedIn-post</strong><span></span></div>';
-      div.querySelector('span').textContent = (item.embed_html||'').slice(0,80) + '…';
-      var btn=document.createElement('button'); btn.className='btn btn-danger'; btn.textContent='Verwijderen';
-      btn.addEventListener('click', async function(){
-        if(!confirm('Deze post verwijderen?')) return;
-        var d = await sb.from('cbl_linkedin').delete().eq('id', item.id);
-        if(d.error){ showMsg($('liMsg'),'Verwijderen mislukt: '+d.error.message,false); } else { loadLinkedIn(); }
-      });
-      div.appendChild(btn); list.appendChild(div);
+  // LINKEDIN
+  function renderLinkedIn(panel){
+    var block=document.createElement('div'); block.className='block';
+    block.innerHTML='<h3>LinkedIn-post toevoegen</h3><p class="hint">Open je post op LinkedIn, klik op de drie puntjes (…), kies <b>Insluiten in deze post</b> en kopieer de code. Plak die hieronder.</p>';
+    var lab=document.createElement('label'); lab.textContent='Insluitcode (begint met <iframe …)'; block.appendChild(lab);
+    var ta=document.createElement('textarea'); ta.id='liCode'; block.appendChild(ta);
+    var g=document.createElement('div'); g.className='grid2'; g.innerHTML='<div><label>Volgorde (laag = eerst)</label><input type="number" id="liOrder" value="0"></div><div></div>'; block.appendChild(g);
+    var add=document.createElement('button'); add.className='btn btn-amber'; add.textContent='Post toevoegen';
+    add.addEventListener('click',async function(){
+      var code=$('liCode').value.trim();
+      if(code.indexOf('linkedin.com/embed')===-1){ flash('Plak de officiële LinkedIn-insluitcode (met linkedin.com/embed).',false); return; }
+      add.disabled=true;
+      var r=await sb.from('cbl_linkedin').insert({embed_html:code,sort_order:parseInt($('liOrder').value||'0',10)});
+      add.disabled=false;
+      if(r.error){ flash('Mislukt: '+r.error.message,false); return; }
+      $('liCode').value='';$('liOrder').value='0'; flash('Post toegevoegd.',true); listLi(listWrap);
+    });
+    block.appendChild(add); panel.appendChild(block);
+    var listWrap=document.createElement('div'); listWrap.className='block'; listWrap.innerHTML='<h3>Geplaatste posts</h3><div data-list></div>'; panel.appendChild(listWrap);
+    listLi(listWrap);
+  }
+  async function listLi(wrap){
+    var box=wrap.querySelector('[data-list]'); box.innerHTML='Laden…';
+    var r=await sb.from('cbl_linkedin').select('*').order('sort_order',{ascending:true}).order('created_at',{ascending:true});
+    box.innerHTML='';
+    if(r.error){box.textContent='Kon niet laden.';return;}
+    if(!r.data.length){ box.innerHTML='<p style="color:var(--muted);font-size:.9rem">Nog geen posts.</p>'; return; }
+    r.data.forEach(function(it){
+      var d=document.createElement('div'); d.className='item';
+      d.innerHTML='<div class="meta"><strong>LinkedIn-post</strong><span></span></div>'; d.querySelector('span').textContent=(it.embed_html||'').slice(0,70)+'…';
+      var del=document.createElement('button'); del.className='btn btn-danger'; del.textContent='Verwijderen';
+      del.addEventListener('click',async function(){ if(!confirm('Deze post verwijderen?'))return; var x=await sb.from('cbl_linkedin').delete().eq('id',it.id); if(x.error){flash('Mislukt: '+x.error.message,false);}else{listLi(wrap);flash('Verwijderd.',true);} });
+      d.appendChild(del); box.appendChild(d);
     });
   }
-  $('liAddBtn').addEventListener('click', async function(){
-    var code=$('liCode').value.trim();
-    if(code.indexOf('linkedin.com/embed')===-1){ showMsg($('liMsg'),'Plak de officiële LinkedIn-insluitcode (die linkedin.com/embed bevat).',false); return; }
-    $('liAddBtn').disabled=true;
-    var r = await sb.from('cbl_linkedin').insert({ embed_html:code, sort_order:parseInt($('liOrder').value||'0',10) });
-    $('liAddBtn').disabled=false;
-    if(r.error){ showMsg($('liMsg'),'Mislukt: '+r.error.message,false); return; }
-    $('liCode').value=''; $('liOrder').value='0'; showMsg($('liMsg'),'Post toegevoegd.',true); loadLinkedIn();
-  });
 
-  function loadAll(){ loadSettings(); loadGallery(); loadLinkedIn(); }
+  // FAQ (toevoegen + bewerken + verwijderen)
+  function renderFaq(panel){
+    var block=document.createElement('div'); block.className='block';
+    block.innerHTML='<h3>Nieuwe vraag toevoegen</h3>';
+    var l1=document.createElement('label'); l1.textContent='Vraag'; block.appendChild(l1);
+    var q=document.createElement('input'); q.type='text'; q.id='fq'; block.appendChild(q);
+    var l2=document.createElement('label'); l2.textContent='Antwoord'; block.appendChild(l2);
+    var a=document.createElement('textarea'); a.id='fa'; block.appendChild(a);
+    var g=document.createElement('div'); g.className='grid2'; g.innerHTML='<div><label>Volgorde (laag = eerst)</label><input type="number" id="fo" value="0"></div><div></div>'; block.appendChild(g);
+    var add=document.createElement('button'); add.className='btn btn-amber'; add.textContent='Vraag toevoegen';
+    add.addEventListener('click',async function(){
+      if(!$('fq').value.trim()||!$('fa').value.trim()){ flash('Vul een vraag en antwoord in.',false); return; }
+      add.disabled=true;
+      var r=await sb.from('cbl_faq').insert({question:$('fq').value.trim(),answer:$('fa').value.trim(),sort_order:parseInt($('fo').value||'0',10)});
+      add.disabled=false;
+      if(r.error){ flash('Mislukt: '+r.error.message,false); return; }
+      $('fq').value='';$('fa').value='';$('fo').value='0'; flash('Vraag toegevoegd.',true); listFaq(listWrap);
+    });
+    block.appendChild(add); panel.appendChild(block);
+    var listWrap=document.createElement('div'); listWrap.className='block'; listWrap.innerHTML='<h3>Bestaande vragen</h3><div data-list></div>'; panel.appendChild(listWrap);
+    listFaq(listWrap);
+  }
+  async function listFaq(wrap){
+    var box=wrap.querySelector('[data-list]'); box.innerHTML='Laden…';
+    var r=await sb.from('cbl_faq').select('*').order('sort_order',{ascending:true}).order('created_at',{ascending:true});
+    box.innerHTML='';
+    if(r.error){box.textContent='Kon niet laden.';return;}
+    if(!r.data.length){ box.innerHTML='<p style="color:var(--muted);font-size:.9rem">Nog geen vragen.</p>'; return; }
+    r.data.forEach(function(it){
+      var d=document.createElement('div'); d.className='item'; d.style.flexDirection='column';
+      var qi=document.createElement('input'); qi.type='text'; qi.value=it.question; qi.style.fontWeight='600';
+      var ai=document.createElement('textarea'); ai.value=it.answer;
+      var oi=document.createElement('input'); oi.type='number'; oi.value=it.sort_order; oi.style.maxWidth='120px';
+      var bar=document.createElement('div'); bar.style.display='flex'; bar.style.gap='10px'; bar.style.alignItems='center';
+      var save=document.createElement('button'); save.className='btn btn-light'; save.textContent='Opslaan'; save.style.padding='8px 14px'; save.style.fontSize='.85rem';
+      save.addEventListener('click',async function(){ var x=await sb.from('cbl_faq').update({question:qi.value.trim(),answer:ai.value.trim(),sort_order:parseInt(oi.value||'0',10)}).eq('id',it.id); if(x.error){flash('Mislukt: '+x.error.message,false);}else{flash('Opgeslagen.',true);} });
+      var del=document.createElement('button'); del.className='btn btn-danger'; del.textContent='Verwijderen';
+      del.addEventListener('click',async function(){ if(!confirm('Deze vraag verwijderen?'))return; var x=await sb.from('cbl_faq').delete().eq('id',it.id); if(x.error){flash('Mislukt: '+x.error.message,false);}else{listFaq(wrap);flash('Verwijderd.',true);} });
+      bar.appendChild(save); bar.appendChild(del);
+      var lo=document.createElement('label'); lo.textContent='Volgorde'; lo.style.marginTop='4px';
+      d.appendChild(qi); d.appendChild(ai); d.appendChild(lo); d.appendChild(oi); d.appendChild(bar);
+      box.appendChild(d);
+    });
+  }
+
   refresh();
 </script>
 </body>
