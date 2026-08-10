@@ -154,6 +154,8 @@
     var naam = form.naam.value.trim();
     var email = form.email.value.trim();
     var bericht = form.bericht.value.trim();
+    var telefoon = form.telefoon.value.trim();
+    var onderwerp = form.onderwerp.value;
     var emailOk = /.+@.+\..+/.test(email);
 
     toonFout("naam", !naam);
@@ -174,10 +176,28 @@
     cblStuur("cbl_aanvragen", {
       naam: naam,
       email: email,
-      telefoon: form.telefoon.value.trim() || null,
-      onderwerp: form.onderwerp.value,
+      telefoon: telefoon || null,
+      onderwerp: onderwerp,
       bericht: bericht
     }).then(function () {
+      // Ook direct een mailtje naar CB-lighting sturen (als dat is ingesteld)
+      window.cblTekstenKlaar.then(function (map) {
+        var url = (map["_melding_url"] || "").trim();
+        if (!url) return;
+        fetch(url, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain" },
+          body: JSON.stringify({
+            geheim: "cbl-melding-2026",
+            naam: naam,
+            email: email,
+            telefoon: telefoon,
+            onderwerp: onderwerp,
+            bericht: bericht
+          })
+        }).catch(function () {});
+      });
       form.reset();
       melding.className = "melding ok";
       melding.textContent = "Bedankt voor uw bericht. U hoort zo snel mogelijk van ons.";
