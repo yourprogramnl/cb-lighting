@@ -72,6 +72,15 @@
     .aanvraag p.tekst { white-space: pre-line; }
 
     .itemfoto { width: 120px; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid var(--lijn); }
+
+    /* Rekentool */
+    .rekenregel { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
+    .rekenregel input[type=text] { flex: 1; }
+    .rekenregel input[type=number] { width: 92px; flex: none; }
+    .rekenregel .weg { background: var(--wolk); border: 1px solid var(--lijn); border-radius: 8px; width: 40px; height: 40px; cursor: pointer; font-size: 1rem; flex: none; }
+    .totaalregel { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; }
+    .totaalregel.eind { border-top: 2px solid var(--lijn); font-weight: 800; font-size: 1.1rem; margin-top: 4px; padding-top: 10px; }
+    #deel-reken .voorbeeldkolom { position: static; }
     .inlogkader { max-width: 440px; margin: 60px auto; }
     .klein { color: var(--grijs); font-size: .92rem; }
   </style>
@@ -131,6 +140,11 @@
         <span class="emoji">❓</span>
         <b>Veelgestelde vragen</b>
         <span>De vragen en antwoorden op de pagina Lichtberekeningen.</span>
+      </button>
+      <button class="tegel" data-open="reken">
+        <span class="emoji">💶</span>
+        <b>Een prijs berekenen</b>
+        <span>Reken uit wat een klus moet kosten en maak een offertetekst.</span>
       </button>
       <button class="tegel" data-open="gegevens">
         <span class="emoji">📇</span>
@@ -247,6 +261,53 @@
         <details open><summary id="fv-vraag-3"></summary><div class="antwoord" id="fv-antwoord-3"></div></details>
         <details open><summary id="fv-vraag-4"></summary><div class="antwoord" id="fv-antwoord-4"></div></details>
         <details open><summary id="fv-vraag-5"></summary><div class="antwoord" id="fv-antwoord-5"></div></details>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <!-- Prijs berekenen -->
+  <div class="deel" id="deel-reken">
+    <button class="terug" data-terug>← Terug naar het begin</button>
+    <div class="formgrid">
+    <div class="blok">
+      <h3>Een prijs berekenen</h3>
+      <p class="subtekst">Vul in wat u gaat doen en hoeveel uur het kost. Rechts ziet u meteen het bedrag en een offertetekst die u kunt kopiëren in een e-mail.</p>
+      <div class="rijtje">
+        <label for="r-tarief">Uw uurtarief (euro, zonder btw)</label>
+        <input type="number" id="r-tarief" min="0" step="5">
+        <div class="klein">Ter vergelijking: een zelfstandig adviseur rekent in Nederland gemiddeld zo'n 110 euro per uur, een zelfstandig ingenieur zo'n 90 euro. Met uw ervaring is 90 tot 110 euro per uur een redelijk tarief. Het tarief wordt onthouden voor de volgende keer.</div>
+      </div>
+      <div class="rijtje">
+        <label>Wat gaat u doen?</label>
+        <div id="r-regels"></div>
+        <div class="knopjes" style="margin-top:0">
+          <button class="kn stil r-snel" data-oms="Lichtberekening" data-uren="8">+ Lichtberekening</button>
+          <button class="kn stil r-snel" data-oms="Advies en overleg" data-uren="2">+ Advies</button>
+          <button class="kn stil r-snel" data-oms="Bezoek op locatie" data-uren="3">+ Locatiebezoek</button>
+          <button class="kn stil r-snel" data-oms="" data-uren="">+ Lege regel</button>
+        </div>
+        <div class="klein">Hulp bij het inschatten: een kleine berekening (één straat of ruimte) kost al gauw 4 tot 8 uur, een gemiddeld project (terrein of gebouw) 8 tot 16 uur, een hele wijk 16 tot 40 uur. Een kort advies: 2 tot 4 uur. Vergeet de reistijd niet.</div>
+      </div>
+      <div class="rijtje">
+        <label for="r-overig">Overige kosten (euro, zonder btw, bijvoorbeeld reiskosten)</label>
+        <input type="number" id="r-overig" min="0" step="1" value="0">
+      </div>
+    </div>
+    <div class="voorbeeldkolom">
+      <div class="kopje">Dit komt eruit:</div>
+      <div class="blok">
+        <div class="totaalregel"><span>Uren totaal</span><span id="rk-uren">0 uur</span></div>
+        <div class="totaalregel"><span>Subtotaal (zonder btw)</span><span id="rk-sub">€ 0,00</span></div>
+        <div class="totaalregel"><span>Btw (21%)</span><span id="rk-btw">€ 0,00</span></div>
+        <div class="totaalregel eind"><span>Totaal (met btw)</span><span id="rk-tot">€ 0,00</span></div>
+        <div class="klein" style="margin-top:8px">Tip: rond het totaal af op een net bedrag en noem in de offerte altijd eerst het bedrag zonder btw. Zakelijke klanten zoals gemeenten rekenen daarmee.</div>
+      </div>
+      <div class="kopje">Offertetekst voor in uw e-mail:</div>
+      <textarea id="r-tekst" readonly style="min-height:300px;font-size:.88rem"></textarea>
+      <div class="knopjes">
+        <button class="kn hoofd" id="r-kopieer">Kopieer de tekst</button>
+        <span class="status" id="r-status"></span>
       </div>
     </div>
     </div>
@@ -676,6 +737,76 @@
         doel.appendChild(regel);
       });
     }).catch(function () { el("f-taal").textContent = "De taalcontrole is even niet bereikbaar."; });
+  });
+
+  // ---------- Prijs berekenen ----------
+  function geld(n) { return n.toLocaleString("nl-NL", { style: "currency", currency: "EUR" }); }
+  function getal(veld) { return parseFloat(String(veld.value).replace(",", ".")) || 0; }
+  function maakRekenregel(oms, uren) {
+    var rij = document.createElement("div");
+    rij.className = "rekenregel";
+    rij.innerHTML = '<input type="text" placeholder="Bijvoorbeeld: Lichtberekening parkeerterrein">' +
+      '<input type="number" min="0" step="0.5" placeholder="uur">' +
+      '<button type="button" class="weg" title="Regel weghalen">✕</button>';
+    var velden = rij.querySelectorAll("input");
+    velden[0].value = oms || "";
+    if (uren) velden[1].value = uren;
+    velden[0].addEventListener("input", updateReken);
+    velden[1].addEventListener("input", updateReken);
+    rij.querySelector(".weg").addEventListener("click", function () { rij.remove(); updateReken(); });
+    el("r-regels").appendChild(rij);
+  }
+  function updateReken() {
+    var tarief = getal(el("r-tarief"));
+    try { localStorage.setItem("cbl_uurtarief", el("r-tarief").value); } catch (e) {}
+    var totUren = 0;
+    var regelTeksten = [];
+    document.querySelectorAll("#r-regels .rekenregel").forEach(function (rij) {
+      var v = rij.querySelectorAll("input");
+      var uren = getal(v[1]);
+      if (v[0].value.trim() || uren) {
+        totUren += uren;
+        regelTeksten.push("- " + (v[0].value.trim() || "Werkzaamheden") + ": " + String(uren).replace(".", ",") + " uur");
+      }
+    });
+    var overig = getal(el("r-overig"));
+    var sub = totUren * tarief + overig;
+    var btw = sub * 0.21;
+    el("rk-uren").textContent = String(totUren).replace(".", ",") + " uur";
+    el("rk-sub").textContent = geld(sub);
+    el("rk-btw").textContent = geld(btw);
+    el("rk-tot").textContent = geld(sub + btw);
+    var r = ["Geachte heer/mevrouw [naam],", "", "Hartelijk dank voor uw aanvraag. Graag doe ik u een voorstel voor de volgende werkzaamheden:", ""];
+    r = r.concat(regelTeksten.length ? regelTeksten : ["- [nog in te vullen]"]);
+    if (overig) r.push("- Overige kosten: " + geld(overig) + " (zonder btw)");
+    r.push("", "Uurtarief: " + geld(tarief) + " per uur (zonder btw)");
+    r.push("", "Subtotaal: " + geld(sub) + " (zonder btw)", "Btw (21%): " + geld(btw), "Totaal: " + geld(sub + btw) + " (met btw)");
+    r.push("", "Dit voorstel is 30 dagen geldig. Na afronding van het werk ontvangt u de factuur, met een betaaltermijn van 14 dagen.");
+    var telefoon = el("g-telefoon").value.trim();
+    var email = el("g-email").value.trim();
+    r.push("", "Met vriendelijke groet,", "", "Chris Bakker", "CB-lighting");
+    if (telefoon) r.push(telefoon);
+    if (email) r.push(email);
+    el("r-tekst").value = r.join("\n");
+  }
+  el("r-tarief").value = (function () { try { return localStorage.getItem("cbl_uurtarief") || 95; } catch (e) { return 95; } })();
+  el("r-tarief").addEventListener("input", updateReken);
+  el("r-overig").addEventListener("input", updateReken);
+  document.querySelectorAll(".r-snel").forEach(function (b) {
+    b.addEventListener("click", function () { maakRekenregel(b.dataset.oms, b.dataset.uren); updateReken(); });
+  });
+  maakRekenregel("", "");
+  updateReken();
+  el("r-kopieer").addEventListener("click", function () {
+    var tekst = el("r-tekst").value;
+    function gelukt() { status("r-status", "Gekopieerd! Plak de tekst in uw e-mail.", "ok"); }
+    function mislukt() {
+      el("r-tekst").focus(); el("r-tekst").select();
+      status("r-status", "Kopiëren lukte niet. De tekst is geselecteerd; druk op Ctrl+C.", "err");
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(tekst).then(gelukt).catch(mislukt);
+    } else { mislukt(); }
   });
 
   // ---------- Gegevens ----------
