@@ -71,10 +71,13 @@
   function huidigeTekst(el, map) {
     var sleutel = el.dataset.tekst;
     if (map[sleutel] !== undefined && map[sleutel] !== "") return map[sleutel];
-    if (el.dataset.enkel !== undefined) return el.textContent.trim();
+    // Lezen uit een kopie zonder de bewerk-knoppen, anders komt "Tekst aanpassen" mee
+    var kopie = el.cloneNode(true);
+    kopie.querySelectorAll(".bw-knop,.bw-fotoknop,input[type=file]").forEach(function (k) { k.remove(); });
+    if (el.dataset.enkel !== undefined) return kopie.textContent.trim();
     var alineas = [];
-    el.querySelectorAll("p").forEach(function (p) { alineas.push(p.textContent.trim()); });
-    return alineas.length ? alineas.join("\n\n") : el.textContent.trim();
+    kopie.querySelectorAll("p").forEach(function (p) { alineas.push(p.textContent.trim()); });
+    return alineas.length ? alineas.join("\n\n") : kopie.textContent.trim();
   }
 
   function maakTekstKnop(el, map) {
