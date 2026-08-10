@@ -15,11 +15,12 @@
     .beheerkop b span { color: var(--amber); }
     .uitlog { background: none; border: 1px solid rgba(255,255,255,.35); color: var(--wit); border-radius: 8px; padding: 8px 14px; cursor: pointer; font-size: 15px; }
 
-    .paneel { max-width: 900px; margin: 26px auto 60px; padding: 0 18px; }
+    .paneel { max-width: 1000px; margin: 26px auto 60px; padding: 0 18px; }
 
     /* Startscherm met grote knoppen */
     .startvraag { font-size: 1.5rem; font-weight: 800; margin: 18px 4px 18px; }
-    .tegels { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .tegels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media (max-width: 900px) { .tegels { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 640px) { .tegels { grid-template-columns: 1fr; } }
     .tegel {
       display: block; width: 100%; text-align: left; cursor: pointer;
@@ -89,7 +90,10 @@
 
 <header class="beheerkop">
   <div class="wrap">
-    <b>CB-<span>lighting</span> · Beheer</b>
+    <a class="logo" href="index.html" aria-label="CB Lighting, naar de site">
+      <img src="assets/logo-wit.png" alt="CB Lighting">
+      <b>Beheer</b>
+    </a>
     <button class="uitlog" id="uitlogknop" style="display:none">Uitloggen</button>
   </div>
 </header>
@@ -119,7 +123,9 @@
 
   <!-- Startscherm -->
   <div class="deel actief" id="deel-start">
-    <p class="startvraag">Wat wilt u doen?</p>
+    <p class="startvraag">📬 Aanvragen <span class="teller" id="aanvraagteller" style="display:none"></span></p>
+    <div id="aanvragenlijst"></div>
+    <p class="startvraag" style="margin-top:34px">Wat wilt u doen?</p>
     <div class="tegels">
       <button class="tegel" id="tegel-site">
         <span class="emoji">✏️</span>
@@ -152,8 +158,6 @@
         <span>Adres, e-mailadres, telefoonnummer en KvK-nummer.</span>
       </button>
     </div>
-    <p class="startvraag" style="margin-top:34px">📬 Aanvragen <span class="teller" id="aanvraagteller" style="display:none"></span></p>
-    <div id="aanvragenlijst"></div>
   </div>
 
   <!-- Nieuws -->
