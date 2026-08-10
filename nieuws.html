@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nieuws en verhalen uit de praktijk | CB-lighting</title>
+  <meta name="description" content="Nieuws, kennis en verhalen uit de praktijk van CB-lighting: over lichtberekeningen, richtlijnen en openbare verlichting.">
+  <link rel="canonical" href="https://cb-lighting.nl/nieuws.html">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/stijl.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html" aria-label="CB-lighting, naar de homepage">
+      <svg viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="17" cy="12" r="6.5" fill="#f2a93b"/>
+        <path d="M17 12 L7 30 H27 Z" fill="#f2a93b" opacity="0.28"/>
+        <rect x="16.2" y="18" width="1.6" height="12" rx="0.8" fill="#cdd8e4"/>
+      </svg>
+      <b>CB-<span>lighting</span></b>
+    </a>
+    <button class="hamburger" aria-label="Menu openen"><span></span><span></span><span></span></button>
+    <nav class="menu">
+      <a href="index.html">Home</a>
+      <a href="lichtberekeningen.html">Lichtberekeningen</a>
+      <a href="projecten.html">Projecten</a>
+      <a href="nieuws.html" class="actief">Nieuws</a>
+      <a href="over-cb-lighting.html">Over CB-lighting</a>
+      <a href="contact.html" class="cta">Vraag een berekening aan</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap" style="padding-bottom:64px">
+    <h1>Nieuws en verhalen uit de praktijk</h1>
+    <p class="sub">Wat we tegenkomen in het vak: richtlijnen, opvallende aanvragen en lessen uit bijna 25 jaar rekenen aan licht.</p>
+  </div>
+</section>
+
+<section class="sectie">
+  <div class="wrap">
+    <div class="nieuwslijst" id="nieuwslijst">
+      <div class="leegmelding">Berichten worden geladen...</div>
+    </div>
+  </div>
+</section>
+
+<section class="ctastrook">
+  <div class="wrap">
+    <div>
+      <h2>Zelf een vraag over verlichting?</h2>
+      <p>Stel hem gerust, meedenken kost niets.</p>
+    </div>
+    <a class="knop vol" href="contact.html">Neem contact op</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <a class="logo" href="index.html" style="margin-bottom:14px"><b>CB-<span style="color:var(--amber)">lighting</span></b></a>
+      <p>Onafhankelijk adviesbureau voor lichtberekeningen en verlichtingsadvies. Openbare verlichting, terreinen, kantoren en bedrijfshallen.</p>
+      <p style="margin-top:12px" data-tekst="contact_adres" data-enkel>Zijpenberg 115, 2905 RN Capelle aan den IJssel</p>
+    </div>
+    <div>
+      <h4>Menu</h4>
+      <ul>
+        <li><a href="lichtberekeningen.html">Lichtberekeningen</a></li>
+        <li><a href="projecten.html">Projecten</a></li>
+        <li><a href="nieuws.html">Nieuws</a></li>
+        <li><a href="over-cb-lighting.html">Over CB-lighting</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <ul>
+        <li><a data-maillink href="contact.html">Stuur een bericht</a></li>
+        <li data-telblok style="display:none"><a data-tellink href="#"></a></li>
+        <li><a href="contact.html">Contactformulier</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="onderbalk">
+    <div class="wrap">
+      <span>© <span data-jaar>2026</span> CB-lighting</span>
+      <span>Concreet en betrouwbaar</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/config.js"></script>
+<script src="js/site.js"></script>
+<script>
+cblLees("cbl_nieuws?select=id,titel,tekst,foto_url,linkedin_url,datum&gepubliceerd=eq.true&order=datum.desc")
+  .then(function (items) {
+    var doel = document.getElementById("nieuwslijst");
+    doel.innerHTML = "";
+    if (!items.length) {
+      doel.innerHTML = '<div class="leegmelding">Nog geen berichten.</div>';
+      return;
+    }
+    var openId = (location.hash || "").replace("#", "");
+    items.forEach(function (n) {
+      var kaart = document.createElement("article");
+      kaart.className = "nieuwsitem";
+      kaart.id = n.id;
+      var foto = n.foto_url ? '<div class="nfoto"><img src="' + n.foto_url + '" alt="" loading="lazy"></div>' : "";
+      var li = n.linkedin_url ? '<a class="linkedinlink" target="_blank" rel="noopener"></a>' : "";
+      kaart.innerHTML = foto +
+        '<div class="inhoud"><time></time><h3></h3><div class="tekst dicht"></div>' +
+        '<div class="voet"><button class="leesmeer" type="button">Lees verder</button>' + li + '</div></div>';
+      kaart.querySelector("time").textContent = cblDatum(n.datum);
+      kaart.querySelector("h3").textContent = n.titel;
+      var tekstEl = kaart.querySelector(".tekst");
+      tekstEl.textContent = n.tekst;
+      if (n.linkedin_url) {
+        var a = kaart.querySelector(".linkedinlink");
+        a.href = n.linkedin_url;
+        a.textContent = "Bekijk op LinkedIn";
+      }
+      var knop = kaart.querySelector(".leesmeer");
+      knop.addEventListener("click", function () {
+        var dicht = tekstEl.classList.toggle("dicht");
+        knop.textContent = dicht ? "Lees verder" : "Inklappen";
+      });
+      if (openId && openId === n.id) {
+        tekstEl.classList.remove("dicht");
+        knop.textContent = "Inklappen";
+        setTimeout(function () { kaart.scrollIntoView({ behavior: "smooth", block: "start" }); }, 150);
+      }
+      doel.appendChild(kaart);
+    });
+  })
+  .catch(function () {
+    document.getElementById("nieuwslijst").innerHTML = '<div class="leegmelding">Berichten konden niet geladen worden.</div>';
+  });
+</script>
+</body>
+</html>

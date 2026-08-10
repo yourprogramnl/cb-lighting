@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /beheer.html
+
+Sitemap: https://cb-lighting.nl/sitemap.xml
