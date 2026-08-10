@@ -127,6 +127,11 @@
         <b>Projecten laten zien</b>
         <span>Laat zien wat u heeft gemaakt, met foto.</span>
       </button>
+      <button class="tegel" data-open="faq">
+        <span class="emoji">❓</span>
+        <b>Veelgestelde vragen</b>
+        <span>De vragen en antwoorden op de pagina Lichtberekeningen.</span>
+      </button>
       <button class="tegel" data-open="gegevens">
         <span class="emoji">📇</span>
         <b>Uw gegevens</b>
@@ -210,6 +215,43 @@
     <div id="projectbeheerlijst"></div>
   </div>
 
+  <!-- Veelgestelde vragen -->
+  <div class="deel" id="deel-faq">
+    <button class="terug" data-terug>← Terug naar het begin</button>
+    <div class="formgrid">
+    <div class="blok">
+      <h3>Veelgestelde vragen</h3>
+      <p class="subtekst">Deze vragen en antwoorden staan op de pagina Lichtberekeningen, onder "Goed om te weten". Pas ze aan en klik onderaan op Opslaan.</p>
+      <div class="rijtje"><label for="f-vraag-1">Vraag 1</label><input type="text" id="f-vraag-1" spellcheck="true" lang="nl"></div>
+      <div class="rijtje"><label for="f-antwoord-1">Antwoord 1</label><textarea id="f-antwoord-1" style="min-height:90px" spellcheck="true" lang="nl"></textarea></div>
+      <div class="rijtje"><label for="f-vraag-2">Vraag 2</label><input type="text" id="f-vraag-2" spellcheck="true" lang="nl"></div>
+      <div class="rijtje"><label for="f-antwoord-2">Antwoord 2</label><textarea id="f-antwoord-2" style="min-height:90px" spellcheck="true" lang="nl"></textarea></div>
+      <div class="rijtje"><label for="f-vraag-3">Vraag 3</label><input type="text" id="f-vraag-3" spellcheck="true" lang="nl"></div>
+      <div class="rijtje"><label for="f-antwoord-3">Antwoord 3</label><textarea id="f-antwoord-3" style="min-height:90px" spellcheck="true" lang="nl"></textarea></div>
+      <div class="rijtje"><label for="f-vraag-4">Vraag 4</label><input type="text" id="f-vraag-4" spellcheck="true" lang="nl"></div>
+      <div class="rijtje"><label for="f-antwoord-4">Antwoord 4</label><textarea id="f-antwoord-4" style="min-height:90px" spellcheck="true" lang="nl"></textarea></div>
+      <div class="rijtje"><label for="f-vraag-5">Vraag 5</label><input type="text" id="f-vraag-5" spellcheck="true" lang="nl"></div>
+      <div class="rijtje"><label for="f-antwoord-5">Antwoord 5</label><textarea id="f-antwoord-5" style="min-height:90px" spellcheck="true" lang="nl"></textarea></div>
+      <div class="knopjes">
+        <button class="kn hoofd" id="f-opslaan">Opslaan</button>
+        <button class="kn stil" id="f-taalknop">Taal controleren</button>
+        <span class="status" id="f-status"></span>
+      </div>
+      <div id="f-taal" class="klein"></div>
+    </div>
+    <div class="voorbeeldkolom">
+      <div class="kopje">Zo komt het op de site:</div>
+      <div class="faq">
+        <details open><summary id="fv-vraag-1"></summary><div class="antwoord" id="fv-antwoord-1"></div></details>
+        <details open><summary id="fv-vraag-2"></summary><div class="antwoord" id="fv-antwoord-2"></div></details>
+        <details open><summary id="fv-vraag-3"></summary><div class="antwoord" id="fv-antwoord-3"></div></details>
+        <details open><summary id="fv-vraag-4"></summary><div class="antwoord" id="fv-antwoord-4"></div></details>
+        <details open><summary id="fv-vraag-5"></summary><div class="antwoord" id="fv-antwoord-5"></div></details>
+      </div>
+    </div>
+    </div>
+  </div>
+
   <!-- Gegevens -->
   <div class="deel" id="deel-gegevens">
     <button class="terug" data-terug>← Terug naar het begin</button>
@@ -236,6 +278,13 @@
   var sb = supabase.createClient(C.SUPABASE_URL, C.SUPABASE_ANON_KEY);
 
   function el(id) { return document.getElementById(id); }
+
+  // Vaktermen die de taalcontrole niet als fout moet melden
+  var VAKWOORDEN = ["dwg", "dxf", "armatuurkeuze", "verledding", "dimprofielen", "dimprofiel", "dialux", "npr", "nen", "lichtberekening", "lichtberekeningen", "gelijkmatigheid", "mastposities", "lichtpunthoogte", "cb-lighting"];
+  function geenVakwoord(x, tekst) {
+    var woord = tekst.substr(x.offset, x.length).trim().toLowerCase();
+    return VAKWOORDEN.indexOf(woord) === -1;
+  }
   function status(id, tekst, soort) {
     var s = el(id); s.textContent = tekst; s.className = "status " + (soort || "");
     if (tekst) setTimeout(function () { if (s.textContent === tekst) { s.textContent = ""; } }, 6000);
@@ -277,7 +326,7 @@
       toonBeheer(true);
       vulNieuwsForm(null);
       vulProjectForm(null);
-      laadAanvragen(); laadNieuws(); laadProjecten(); laadGegevens();
+      laadAanvragen(); laadNieuws(); laadProjecten(); laadGegevens(); laadFaq();
     });
   }
 
@@ -411,7 +460,7 @@
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams({ language: "nl", text: tekst }).toString()
     }).then(function (r) { return r.json(); }).then(function (d) {
-      var m = (d.matches || []).slice(0, 10);
+      var m = (d.matches || []).filter(function (x) { return geenVakwoord(x, tekst); }).slice(0, 10);
       var doel = el("n-taal");
       doel.innerHTML = "";
       if (!m.length) { doel.textContent = "Geen taalfouten gevonden."; doel.style.color = "#14572c"; return; }
@@ -563,6 +612,71 @@
       });
     });
   }
+
+  // ---------- Veelgestelde vragen ----------
+  var FAQ_AANTAL = 5;
+  function updateFaqVoorbeeld() {
+    for (var i = 1; i <= FAQ_AANTAL; i++) {
+      el("fv-vraag-" + i).textContent = el("f-vraag-" + i).value.trim() || "Vraag " + i;
+      el("fv-antwoord-" + i).textContent = el("f-antwoord-" + i).value.trim() || "Het antwoord verschijnt hier zodra u typt.";
+    }
+  }
+  function laadFaq() {
+    sb.from("cbl_teksten").select("*").then(function (res) {
+      var map = {};
+      (res.data || []).forEach(function (r) { map[r.sleutel] = r.inhoud; });
+      for (var i = 1; i <= FAQ_AANTAL; i++) {
+        el("f-vraag-" + i).value = map["lb_faq" + i + "_vraag"] || "";
+        el("f-antwoord-" + i).value = map["lb_faq" + i] || "";
+      }
+      updateFaqVoorbeeld();
+    });
+  }
+  (function () {
+    for (var i = 1; i <= FAQ_AANTAL; i++) {
+      el("f-vraag-" + i).addEventListener("input", updateFaqVoorbeeld);
+      el("f-antwoord-" + i).addEventListener("input", updateFaqVoorbeeld);
+    }
+  })();
+  el("f-opslaan").addEventListener("click", function () {
+    status("f-status", "Bezig...");
+    var rijen = [];
+    for (var i = 1; i <= FAQ_AANTAL; i++) {
+      rijen.push({ sleutel: "lb_faq" + i + "_vraag", inhoud: el("f-vraag-" + i).value.trim(), bijgewerkt: new Date().toISOString() });
+      rijen.push({ sleutel: "lb_faq" + i, inhoud: el("f-antwoord-" + i).value.trim(), bijgewerkt: new Date().toISOString() });
+    }
+    sb.from("cbl_teksten").upsert(rijen).then(function (res) {
+      if (res.error) { status("f-status", "Opslaan is niet gelukt. Probeer het nog eens.", "err"); }
+      else { status("f-status", "Opgeslagen! Het staat meteen op de site.", "ok"); }
+    });
+  });
+  el("f-taalknop").addEventListener("click", function () {
+    var stukken = [];
+    for (var i = 1; i <= FAQ_AANTAL; i++) {
+      stukken.push(el("f-vraag-" + i).value, el("f-antwoord-" + i).value);
+    }
+    var tekst = stukken.join("\n\n").trim();
+    if (!tekst) { el("f-taal").textContent = "Er staat nog geen tekst om te controleren."; return; }
+    el("f-taal").textContent = "Bezig met controleren...";
+    fetch("https://api.languagetool.org/v2/check", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ language: "nl", text: tekst }).toString()
+    }).then(function (r) { return r.json(); }).then(function (d) {
+      var m = (d.matches || []).filter(function (x) { return geenVakwoord(x, tekst); }).slice(0, 10);
+      var doel = el("f-taal");
+      doel.innerHTML = "";
+      if (!m.length) { doel.textContent = "Geen taalfouten gevonden."; doel.style.color = "#14572c"; return; }
+      doel.style.color = "#8c1d18";
+      m.forEach(function (x) {
+        var woord = tekst.substr(x.offset, x.length).trim();
+        var tips = (x.replacements || []).slice(0, 3).map(function (v) { return v.value; }).join(", ");
+        var regel = document.createElement("div");
+        regel.textContent = '"' + woord + '": ' + x.message + (tips ? " Suggestie: " + tips : "");
+        doel.appendChild(regel);
+      });
+    }).catch(function () { el("f-taal").textContent = "De taalcontrole is even niet bereikbaar."; });
+  });
 
   // ---------- Gegevens ----------
   var GEGEVENS_VELDEN = [["contact_adres", "g-adres"], ["contact_email", "g-email"], ["contact_telefoon", "g-telefoon"], ["contact_kvk", "g-kvk"]];

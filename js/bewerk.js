@@ -155,13 +155,17 @@
   }
 
   // Nederlandse taalcontrole via LanguageTool (gratis dienst)
+  // Vaktermen die de controle niet als fout moet melden
+  var VAKWOORDEN = ["dwg", "dxf", "armatuurkeuze", "verledding", "dimprofielen", "dimprofiel", "dialux", "npr", "nen", "lichtberekening", "lichtberekeningen", "gelijkmatigheid", "mastposities", "lichtpunthoogte", "cb-lighting"];
   window.cblTaalcheck = function (tekst) {
     return fetch("https://api.languagetool.org/v2/check", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams({ language: "nl", text: tekst }).toString()
     }).then(function (r) { return r.json(); }).then(function (d) {
-      var m = (d.matches || []).slice(0, 10);
+      var m = (d.matches || []).filter(function (x) {
+        return VAKWOORDEN.indexOf(tekst.substr(x.offset, x.length).trim().toLowerCase()) === -1;
+      }).slice(0, 10);
       if (!m.length) return [{ goed: true, tekst: "Geen taalfouten gevonden." }];
       return m.map(function (x) {
         var woord = tekst.substr(x.offset, x.length).trim();
