@@ -9,7 +9,16 @@
   var knop = document.querySelector(".hamburger");
   var menu = document.querySelector(".menu");
   if (knop && menu) {
-    knop.addEventListener("click", function () { menu.classList.toggle("open"); });
+    knop.addEventListener("click", function (e) {
+      e.stopPropagation();
+      menu.classList.toggle("open");
+    });
+    // Tik je naast het menu, dan gaat het dicht
+    document.addEventListener("click", function (e) {
+      if (menu.classList.contains("open") && !menu.contains(e.target)) {
+        menu.classList.remove("open");
+      }
+    });
   }
 
   // --- Jaartal in de voettekst ---
@@ -91,6 +100,14 @@
         if (blok) blok.style.display = "";
       }
     });
+    // Belknop in de bovenbalk (alleen zichtbaar op telefoons, via CSS)
+    if (tel) {
+      var belknop = document.querySelector(".belknop");
+      if (belknop) {
+        belknop.href = "tel:" + tel.replace(/[^+\d]/g, "");
+        document.body.classList.add("tel-actief");
+      }
+    }
 
     // --- Foto's op vaste plekken ---
     var versie = map["_fotoversie"] || "1";

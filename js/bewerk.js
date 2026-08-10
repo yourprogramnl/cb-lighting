@@ -24,7 +24,8 @@
     ".bw-opslaan{background:#f2a93b;color:#0c1929}",
     ".bw-weg{background:#f5f8fb;color:#1d2733;border:1px solid #e3e9ef !important}",
     ".bw-status{font:400 15px Inter,sans-serif;color:#14572c}",
-    "body{padding-bottom:70px}"
+    "body{padding-bottom:70px}",
+    "@media (max-width:600px){.bw-balk{font-size:13px;gap:8px;padding:10px 12px}.bw-balk a{padding:8px 12px}body{padding-bottom:130px}}"
   ].join("\n");
   document.head.appendChild(stijl);
 
