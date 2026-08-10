@@ -222,7 +222,25 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -.01em; }
 .nieuwsitem .tekst.dicht { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 .nieuwsitem .voet { margin-top: auto; padding-top: 12px; display: flex; gap: 14px; align-items: center; }
 .leesmeer { background: none; border: 0; color: var(--amber-donker); font-weight: 700; cursor: pointer; font-size: .95rem; padding: 0; }
-.linkedinlink { font-size: .88rem; }
+
+.kop-rij { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.li-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: #eef4fb; color: #0a66c2; font-weight: 700; font-size: .74rem;
+  padding: 3px 10px 3px 6px; border-radius: 999px; letter-spacing: .02em;
+}
+.li-chip::before {
+  content: "in"; background: #0a66c2; color: #fff; border-radius: 4px;
+  padding: 0 4px; font-weight: 800; font-size: .8rem;
+}
+.knop-li {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-weight: 700; font-size: .88rem; color: #0a66c2; text-decoration: none;
+  border: 1.5px solid #0a66c2; border-radius: 8px; padding: 7px 14px;
+}
+.knop-li::before { content: "in"; background: #0a66c2; color: #fff; border-radius: 4px; padding: 0 4px; font-weight: 800; }
+.knop-li:hover { background: #0a66c2; color: #fff; }
+.knop-li:hover::before { background: #fff; color: #0a66c2; }
 
 .leegmelding { color: var(--grijs); background: var(--wolk); border: 1px dashed var(--lijn); border-radius: 12px; padding: 28px; text-align: center; }
 

@@ -84,6 +84,7 @@
         <li><a data-maillink href="contact.html">Stuur een bericht</a></li>
         <li data-telblok style="display:none"><a data-tellink href="#"></a></li>
         <li><a href="contact.html">Contactformulier</a></li>
+        <li><a href="https://www.linkedin.com/in/ccbakker/" target="_blank" rel="noopener">Volg Chris op LinkedIn</a></li>
       </ul>
     </div>
   </div>
@@ -112,18 +113,17 @@ cblLees("cbl_nieuws?select=id,titel,tekst,foto_url,linkedin_url,datum&gepublicee
       kaart.className = "nieuwsitem";
       kaart.id = n.id;
       var foto = n.foto_url ? '<div class="nfoto"><img src="' + n.foto_url + '" alt="" loading="lazy"></div>' : "";
-      var li = n.linkedin_url ? '<a class="linkedinlink" target="_blank" rel="noopener"></a>' : "";
+      var chip = n.linkedin_url ? '<span class="li-chip">LinkedIn-bericht</span>' : "";
+      var li = n.linkedin_url ? '<a class="knop-li" target="_blank" rel="noopener">Bekijk op LinkedIn</a>' : "";
       kaart.innerHTML = foto +
-        '<div class="inhoud"><time></time><h3></h3><div class="tekst dicht"></div>' +
+        '<div class="inhoud"><div class="kop-rij"><time></time>' + chip + '</div><h3></h3><div class="tekst dicht"></div>' +
         '<div class="voet"><button class="leesmeer" type="button">Lees verder</button>' + li + '</div></div>';
       kaart.querySelector("time").textContent = cblDatum(n.datum);
       kaart.querySelector("h3").textContent = n.titel;
       var tekstEl = kaart.querySelector(".tekst");
       tekstEl.textContent = n.tekst;
       if (n.linkedin_url) {
-        var a = kaart.querySelector(".linkedinlink");
-        a.href = n.linkedin_url;
-        a.textContent = "Bekijk op LinkedIn";
+        kaart.querySelector(".knop-li").href = n.linkedin_url;
       }
       var knop = kaart.querySelector(".leesmeer");
       knop.addEventListener("click", function () {

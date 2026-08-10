@@ -62,7 +62,7 @@
 <section class="hero">
   <div class="wrap">
     <h1>Lichtberekeningen en verlichtingsadvies voor de openbare ruimte en gebouwen</h1>
-    <p class="sub">CB-lighting rekent in Dialux evo aan straten, pleinen, parkeerterreinen, kantoren en bedrijfshallen. Volgens de richtlijnen, met bijna 25 jaar ervaring in het verlichtingsvak. Nuchter advies, geen bla bla.</p>
+    <p class="sub">CB-lighting rekent in Dialux evo aan straten, pleinen, parkeerterreinen, kantoren en bedrijfshallen. Volgens de richtlijnen, met bijna 25 jaar ervaring in het verlichtingsvak. Verlichting die klopt: van richtlijn naar praktijk.</p>
     <div class="knoppen">
       <a class="knop vol" href="contact.html">Vraag een lichtberekening aan</a>
       <a class="knop rand" href="lichtberekeningen.html">Bekijk wat we doen</a>
@@ -240,6 +240,7 @@
         <li><a data-maillink href="contact.html">Stuur een bericht</a></li>
         <li data-telblok style="display:none"><a data-tellink href="#"></a></li>
         <li><a href="contact.html">Contactformulier</a></li>
+        <li><a href="https://www.linkedin.com/in/ccbakker/" target="_blank" rel="noopener">Volg Chris op LinkedIn</a></li>
       </ul>
     </div>
   </div>
@@ -267,9 +268,10 @@ cblLees("cbl_nieuws?select=id,titel,tekst,foto_url,linkedin_url,datum&gepublicee
       var kaart = document.createElement("article");
       kaart.className = "nieuwsitem";
       var foto = n.foto_url ? '<div class="nfoto"><img src="' + n.foto_url + '" alt="" loading="lazy"></div>' : "";
+      var chip = n.linkedin_url ? '<span class="li-chip">LinkedIn-bericht</span>' : "";
       kaart.innerHTML = foto +
         '<div class="inhoud">' +
-        '<time></time><h3></h3><div class="tekst dicht"></div>' +
+        '<div class="kop-rij"><time></time>' + chip + '</div><h3></h3><div class="tekst dicht"></div>' +
         '<div class="voet"><a class="leesmeer" href="nieuws.html#' + n.id + '" style="text-decoration:none">Lees verder</a></div>' +
         '</div>';
       kaart.querySelector("time").textContent = cblDatum(n.datum);
