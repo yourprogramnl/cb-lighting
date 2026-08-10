@@ -70,6 +70,16 @@
           <textarea id="bericht" name="bericht" rows="6" required placeholder="Bijvoorbeeld: we willen ons parkeerterrein opnieuw verlichten, er ligt een dwg-tekening klaar."></textarea>
           <span class="fout">Vertel kort waar we u mee kunnen helpen.</span>
         </div>
+        <div class="veld">
+          <label for="bijlage">Bijlage, bijvoorbeeld een tekening of pdf <span style="font-weight:400;color:var(--grijs)">(hoeft niet, max 15 MB)</span></label>
+          <input type="file" id="bijlage" name="bijlage" accept=".pdf,.dwg,.dxf,.png,.jpg,.jpeg,.zip">
+          <span class="fout" id="bijlagefout">Dit bestand is te groot of dit type wordt niet ondersteund.</span>
+        </div>
+        <div class="veld">
+          <label for="som">Spamcontrole: wat is <span id="som-a"></span> plus <span id="som-b"></span>? *</label>
+          <input type="number" id="som" name="som" inputmode="numeric" style="max-width:140px">
+          <span class="fout">Het antwoord klopt niet.</span>
+        </div>
         <div class="veld verstopt" aria-hidden="true">
           <label for="website">Website</label>
           <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
@@ -142,9 +152,37 @@
   var melding = document.getElementById("formmelding");
   var knop = document.getElementById("verstuurknop");
   var geladen = Date.now();
+  var C = window.CBL_CONFIG;
+
+  // Spamcontrole: simpele som die een mens zo oplost
+  var somA = 2 + Math.floor(Math.random() * 7);
+  var somB = 2 + Math.floor(Math.random() * 7);
+  document.getElementById("som-a").textContent = somA;
+  document.getElementById("som-b").textContent = somB;
+
+  var BIJLAGE_TYPES = ["pdf", "dwg", "dxf", "png", "jpg", "jpeg", "zip"];
+  var BIJLAGE_MAX = 15 * 1024 * 1024;
 
   function toonFout(id, mis) {
     document.getElementById(id).closest(".veld").classList.toggle("mis", mis);
+  }
+
+  function uploadBijlage(f) {
+    var schoon = f.name.toLowerCase().replace(/[^a-z0-9._-]+/g, "-").slice(-80);
+    var uniek = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : Date.now() + "-" + Math.random().toString(36).slice(2);
+    var pad = "aanvragen/" + uniek + "-" + schoon;
+    return fetch(C.SUPABASE_URL + "/storage/v1/object/cbl-bijlagen/" + pad, {
+      method: "POST",
+      headers: {
+        apikey: C.SUPABASE_ANON_KEY,
+        Authorization: "Bearer " + C.SUPABASE_ANON_KEY,
+        "Content-Type": f.type || "application/octet-stream"
+      },
+      body: f
+    }).then(function (r) {
+      if (!r.ok) throw new Error("upload mislukt");
+      return pad;
+    });
   }
 
   form.addEventListener("submit", function (e) {
@@ -157,11 +195,21 @@
     var telefoon = form.telefoon.value.trim();
     var onderwerp = form.onderwerp.value;
     var emailOk = /.+@.+\..+/.test(email);
+    var somOk = parseInt(form.som.value, 10) === somA + somB;
+
+    var f = form.bijlage.files[0] || null;
+    var bijlageOk = true;
+    if (f) {
+      var ext = (f.name.split(".").pop() || "").toLowerCase();
+      bijlageOk = BIJLAGE_TYPES.indexOf(ext) > -1 && f.size <= BIJLAGE_MAX;
+    }
 
     toonFout("naam", !naam);
     toonFout("email", !emailOk);
     toonFout("bericht", !bericht);
-    if (!naam || !emailOk || !bericht) return;
+    toonFout("bijlage", !bijlageOk);
+    toonFout("som", !somOk);
+    if (!naam || !emailOk || !bericht || !bijlageOk || !somOk) return;
 
     // Spamcheck: verborgen veld ingevuld of binnen 3 seconden verstuurd = bot
     if (form.website.value || Date.now() - geladen < 3000) {
@@ -173,12 +221,17 @@
     knop.disabled = true;
     knop.textContent = "Versturen...";
 
-    cblStuur("cbl_aanvragen", {
-      naam: naam,
-      email: email,
-      telefoon: telefoon || null,
-      onderwerp: onderwerp,
-      bericht: bericht
+    var bijlageBelofte = f ? uploadBijlage(f) : Promise.resolve(null);
+    bijlageBelofte.then(function (bijlagePad) {
+      return cblStuur("cbl_aanvragen", {
+        naam: naam,
+        email: email,
+        telefoon: telefoon || null,
+        onderwerp: onderwerp,
+        bericht: bericht,
+        bijlage_pad: bijlagePad,
+        bijlage_naam: f ? f.name : null
+      });
     }).then(function () {
       // Ook direct een mailtje naar CB-lighting sturen (als dat is ingesteld)
       window.cblTekstenKlaar.then(function (map) {
@@ -194,7 +247,7 @@
             email: email,
             telefoon: telefoon,
             onderwerp: onderwerp,
-            bericht: bericht
+            bericht: bericht + (f ? "\n\n[Er is een bijlage meegestuurd: " + f.name + ". U kunt hem downloaden via het beheer.]" : "")
           })
         }).catch(function () {});
       });

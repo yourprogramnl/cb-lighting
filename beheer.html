@@ -294,6 +294,7 @@
         b.innerHTML = '<div class="meta"></div><h3></h3><p class="tekst"></p>' +
           '<div class="knopjes">' +
           '<a class="kn hoofd" style="text-decoration:none" target="_blank">Beantwoord per e-mail</a>' +
+          (r.bijlage_pad ? '<button class="kn stil bijlageknop"></button>' : '') +
           '<button class="kn stil klaarknop"></button>' +
           '<button class="kn rood wegknop">Verwijder</button>' +
           '</div>';
@@ -303,6 +304,16 @@
         b.querySelector("h3").textContent = r.naam + " · " + r.email;
         b.querySelector(".tekst").textContent = r.bericht;
         b.querySelector("a").href = "mailto:" + r.email + "?subject=" + encodeURIComponent("Re: uw aanvraag bij CB-lighting");
+        if (r.bijlage_pad) {
+          var bk = b.querySelector(".bijlageknop");
+          bk.textContent = "Open bijlage (" + (r.bijlage_naam || "bestand") + ")";
+          bk.addEventListener("click", function () {
+            sb.storage.from("cbl-bijlagen").createSignedUrl(r.bijlage_pad, 3600).then(function (res) {
+              if (res.data && res.data.signedUrl) window.open(res.data.signedUrl, "_blank");
+              else alert("De bijlage kon niet geopend worden.");
+            });
+          });
+        }
         var kk = b.querySelector(".klaarknop");
         kk.textContent = r.afgehandeld ? "Zet terug op open" : "Klaar, afgehandeld";
         kk.addEventListener("click", function () {
@@ -310,7 +321,12 @@
         });
         b.querySelector(".wegknop").addEventListener("click", function () {
           if (confirm("Deze aanvraag definitief verwijderen?")) {
-            sb.from("cbl_aanvragen").delete().eq("id", r.id).then(laadAanvragen);
+            var opruimen = r.bijlage_pad
+              ? sb.storage.from("cbl-bijlagen").remove([r.bijlage_pad])
+              : Promise.resolve();
+            Promise.resolve(opruimen).then(function () {
+              return sb.from("cbl_aanvragen").delete().eq("id", r.id);
+            }).then(laadAanvragen);
           }
         });
         doel.appendChild(b);
