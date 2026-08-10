@@ -9,50 +9,65 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/stijl.css">
   <style>
-    body { background: var(--wolk); }
+    body { background: var(--wolk); font-size: 17.5px; }
     .beheerkop { background: var(--nacht); color: var(--wit); }
     .beheerkop .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
     .beheerkop b span { color: var(--amber); }
-    .uitlog { background: none; border: 1px solid rgba(255,255,255,.35); color: var(--wit); border-radius: 8px; padding: 8px 14px; cursor: pointer; }
+    .uitlog { background: none; border: 1px solid rgba(255,255,255,.35); color: var(--wit); border-radius: 8px; padding: 8px 14px; cursor: pointer; font-size: 15px; }
 
-    .paneel { max-width: 980px; margin: 30px auto; padding: 0 18px; }
-    .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
-    .tabs button {
-      font: inherit; font-weight: 600; padding: 10px 18px; border-radius: 10px; cursor: pointer;
-      border: 1px solid var(--lijn); background: var(--wit); color: var(--inkt);
+    .paneel { max-width: 900px; margin: 26px auto 60px; padding: 0 18px; }
+
+    /* Startscherm met grote knoppen */
+    .startvraag { font-size: 1.5rem; font-weight: 800; margin: 18px 4px 18px; }
+    .tegels { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 640px) { .tegels { grid-template-columns: 1fr; } }
+    .tegel {
+      display: block; width: 100%; text-align: left; cursor: pointer;
+      background: var(--wit); border: 1px solid var(--lijn); border-radius: 16px;
+      padding: 24px; font: inherit; box-shadow: var(--schaduw);
+      transition: transform .1s ease;
     }
-    .tabs button.actief { background: var(--nacht); color: var(--wit); border-color: var(--nacht); }
-    .tabblad { display: none; }
-    .tabblad.actief { display: block; }
+    .tegel:hover { transform: translateY(-2px); border-color: var(--amber); }
+    .tegel .emoji { font-size: 2rem; display: block; margin-bottom: 10px; }
+    .tegel b { font-size: 1.15rem; display: block; margin-bottom: 6px; }
+    .tegel span { color: var(--grijs); font-size: .98rem; }
+    .tegel .teller { display: inline-block; background: var(--amber); color: var(--nacht); border-radius: 999px; padding: 1px 11px; font-weight: 800; margin-left: 8px; font-size: 1rem; }
 
-    .blok { background: var(--wit); border: 1px solid var(--lijn); border-radius: 14px; padding: 22px; margin-bottom: 16px; }
-    .blok h3 { margin-bottom: 12px; }
+    .terug {
+      background: none; border: 0; cursor: pointer; font: inherit; font-weight: 700;
+      color: var(--amber-donker); padding: 0; margin-bottom: 18px; font-size: 1.05rem;
+    }
+
+    .deel { display: none; }
+    .deel.actief { display: block; }
+
+    .blok { background: var(--wit); border: 1px solid var(--lijn); border-radius: 14px; padding: 24px; margin-bottom: 16px; }
+    .blok h3 { margin-bottom: 6px; }
+    .blok .subtekst { color: var(--grijs); font-size: .95rem; margin-bottom: 14px; }
     .blok textarea, .blok input[type=text], .blok input[type=url], .blok input[type=date], .blok input[type=number], .blok input[type=email], .blok input[type=password] {
-      font: inherit; width: 100%; padding: 10px 12px; border: 1.5px solid var(--lijn); border-radius: 8px; background: var(--wit);
+      font: inherit; width: 100%; padding: 12px 14px; border: 1.5px solid var(--lijn); border-radius: 10px; background: var(--wit);
     }
-    .blok textarea { min-height: 110px; resize: vertical; }
-    .rijtje { display: grid; gap: 10px; margin-bottom: 10px; }
-    .rijtje label { font-weight: 600; font-size: .92rem; }
-    .knopjes { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
-    .kn { font: inherit; font-weight: 700; border: 0; border-radius: 8px; padding: 10px 18px; cursor: pointer; }
+    .blok textarea { min-height: 120px; resize: vertical; }
+    .rijtje { display: grid; gap: 6px; margin-bottom: 14px; }
+    .rijtje label { font-weight: 600; }
+    .rijtje .hint { font-weight: 400; color: var(--grijs); font-size: .9rem; }
+    .knopjes { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+    .kn { font: inherit; font-weight: 700; border: 0; border-radius: 10px; padding: 12px 22px; cursor: pointer; }
     .kn.hoofd { background: var(--amber); color: var(--nacht); }
     .kn.stil { background: var(--wolk); color: var(--inkt); border: 1px solid var(--lijn); }
     .kn.rood { background: #fdeceb; color: #8c1d18; border: 1px solid #f5c6c2; }
-    .status { font-size: .9rem; color: var(--grijs); }
-    .status.ok { color: #14572c; }
-    .status.err { color: #8c1d18; }
+    .status { font-size: .95rem; color: var(--grijs); }
+    .status.ok { color: #14572c; font-weight: 600; }
+    .status.err { color: #8c1d18; font-weight: 600; }
 
-    .aanvraag { border-left: 4px solid var(--amber); }
+    .aanvraag { border-left: 5px solid var(--amber); }
     .aanvraag.klaar { border-left-color: #9db3a8; opacity: .75; }
-    .aanvraag .meta { color: var(--grijs); font-size: .9rem; margin-bottom: 8px; }
+    .aanvraag .meta { color: var(--grijs); font-size: .92rem; margin-bottom: 8px; }
     .aanvraag p.tekst { white-space: pre-line; }
 
     .itemfoto { width: 120px; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid var(--lijn); }
-    .fotoslot { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
-    .fotoslot img { width: 160px; height: 100px; object-fit: cover; border-radius: 8px; border: 1px solid var(--lijn); background: var(--nacht-2); }
-
-    .inlogkader { max-width: 420px; margin: 60px auto; }
-    .klein { color: var(--grijs); font-size: .9rem; }
+    .inlogkader { max-width: 440px; margin: 60px auto; }
+    .klein { color: var(--grijs); font-size: .92rem; }
   </style>
 </head>
 <body>
@@ -68,7 +83,7 @@
 <div class="paneel inlogkader" id="inlogdeel">
   <div class="blok">
     <h3>Inloggen</h3>
-    <p class="klein" style="margin-bottom:14px">Alleen voor beheer van de site.</p>
+    <p class="klein" style="margin-bottom:14px">Alleen voor het beheer van de site.</p>
     <div class="rijtje">
       <label for="inlog-email">E-mailadres</label>
       <input type="email" id="inlog-email" autocomplete="username">
@@ -86,65 +101,106 @@
 
 <!-- Beheer -->
 <div class="paneel" id="beheerdeel" style="display:none">
-  <div class="tabs">
-    <button data-tab="aanvragen" class="actief">Aanvragen <span id="aanvraagteller"></span></button>
-    <button data-tab="nieuws">Nieuws</button>
-    <button data-tab="projecten">Projecten</button>
-    <button data-tab="teksten">Teksten</button>
-    <button data-tab="fotos">Foto's</button>
+
+  <!-- Startscherm -->
+  <div class="deel actief" id="deel-start">
+    <p class="startvraag">Wat wilt u doen?</p>
+    <div class="tegels">
+      <button class="tegel" data-open="aanvragen">
+        <span class="emoji">📬</span>
+        <b>Aanvragen bekijken <span class="teller" id="aanvraagteller" style="display:none"></span></b>
+        <span>Wie heeft er een bericht gestuurd via de site?</span>
+      </button>
+      <button class="tegel" id="tegel-site">
+        <span class="emoji">✏️</span>
+        <b>De site aanpassen</b>
+        <span>Teksten en foto's veranderen door er gewoon op te klikken.</span>
+      </button>
+      <button class="tegel" data-open="nieuws">
+        <span class="emoji">📰</span>
+        <b>Een bericht plaatsen</b>
+        <span>Zet uw LinkedIn-bericht ook op de site, in één minuut.</span>
+      </button>
+      <button class="tegel" data-open="projecten">
+        <span class="emoji">🏗️</span>
+        <b>Projecten laten zien</b>
+        <span>Laat zien wat u heeft gemaakt, met foto.</span>
+      </button>
+      <button class="tegel" data-open="gegevens">
+        <span class="emoji">📇</span>
+        <b>Uw gegevens</b>
+        <span>Adres, e-mailadres, telefoonnummer en KvK-nummer.</span>
+      </button>
+    </div>
   </div>
 
-  <div class="tabblad actief" id="tab-aanvragen">
+  <!-- Aanvragen -->
+  <div class="deel" id="deel-aanvragen">
+    <button class="terug" data-terug>← Terug naar het begin</button>
     <div id="aanvragenlijst"></div>
   </div>
 
-  <div class="tabblad" id="tab-nieuws">
+  <!-- Nieuws -->
+  <div class="deel" id="deel-nieuws">
+    <button class="terug" data-terug>← Terug naar het begin</button>
     <div class="blok">
-      <h3 id="nieuwsformtitel">Nieuw bericht</h3>
-      <p class="klein" style="margin-bottom:12px">Tip: schrijf uw LinkedIn-bericht zoals u gewend bent en plak de tekst hier. Zet eventueel de link naar het LinkedIn-bericht erbij.</p>
+      <h3 id="nieuwsformtitel">Een bericht plaatsen</h3>
+      <p class="subtekst">Schrijf uw LinkedIn-bericht zoals u gewend bent en plak de tekst hieronder. Meer is het niet.</p>
       <input type="hidden" id="n-id">
-      <div class="rijtje"><label>Titel</label><input type="text" id="n-titel"></div>
-      <div class="rijtje"><label>Datum</label><input type="date" id="n-datum"></div>
-      <div class="rijtje"><label>Tekst</label><textarea id="n-tekst" style="min-height:170px"></textarea></div>
-      <div class="rijtje"><label>Link naar LinkedIn-bericht (mag leeg blijven)</label><input type="url" id="n-linkedin" placeholder="https://www.linkedin.com/posts/..."></div>
-      <div class="rijtje"><label>Foto (mag leeg blijven)</label><input type="file" id="n-foto" accept="image/*"></div>
-      <div class="rijtje"><label><input type="checkbox" id="n-publiek" checked> Zichtbaar op de site</label></div>
+      <div class="rijtje"><label for="n-titel">De kop van uw bericht</label><input type="text" id="n-titel" placeholder="Bijvoorbeeld: Nieuwe verlichting voor een parkeerterrein"></div>
+      <div class="rijtje"><label for="n-tekst">Uw verhaal</label><textarea id="n-tekst" style="min-height:180px"></textarea></div>
+      <div class="rijtje"><label for="n-foto">Foto erbij <span class="hint">(hoeft niet)</span></label><input type="file" id="n-foto" accept="image/*"></div>
+      <div class="rijtje"><label for="n-linkedin">Link naar uw LinkedIn-bericht <span class="hint">(hoeft niet)</span></label><input type="url" id="n-linkedin" placeholder="https://www.linkedin.com/posts/..."></div>
+      <div class="rijtje"><label for="n-datum">Datum</label><input type="date" id="n-datum"></div>
+      <div class="rijtje"><label style="font-weight:600"><input type="checkbox" id="n-publiek" checked> Zichtbaar op de site</label></div>
       <div class="knopjes">
-        <button class="kn hoofd" id="n-opslaan">Opslaan</button>
+        <button class="kn hoofd" id="n-opslaan">Zet op de site</button>
         <button class="kn stil" id="n-nieuw" style="display:none">Annuleer bewerken</button>
         <span class="status" id="n-status"></span>
       </div>
     </div>
+    <h3 style="margin:22px 4px 12px">Eerdere berichten</h3>
     <div id="nieuwsbeheerlijst"></div>
   </div>
 
-  <div class="tabblad" id="tab-projecten">
+  <!-- Projecten -->
+  <div class="deel" id="deel-projecten">
+    <button class="terug" data-terug>← Terug naar het begin</button>
     <div class="blok">
-      <h3 id="projectformtitel">Nieuw project</h3>
+      <h3 id="projectformtitel">Een project toevoegen</h3>
+      <p class="subtekst">Een kort verhaaltje en een foto zijn genoeg. Het komt op de pagina Projecten te staan.</p>
       <input type="hidden" id="p-id">
-      <div class="rijtje"><label>Titel</label><input type="text" id="p-titel" placeholder="Bijv. Parkeerterrein bedrijventerrein"></div>
-      <div class="rijtje"><label>Plaats</label><input type="text" id="p-plaats" placeholder="Bijv. Capelle aan den IJssel"></div>
-      <div class="rijtje"><label>Omschrijving</label><textarea id="p-tekst"></textarea></div>
-      <div class="rijtje"><label>Volgorde (laag nummer staat bovenaan)</label><input type="number" id="p-sort" value="0"></div>
-      <div class="rijtje"><label>Foto (mag leeg blijven)</label><input type="file" id="p-foto" accept="image/*"></div>
-      <div class="rijtje"><label><input type="checkbox" id="p-publiek" checked> Zichtbaar op de site</label></div>
+      <div class="rijtje"><label for="p-titel">Naam van het project</label><input type="text" id="p-titel" placeholder="Bijvoorbeeld: Verlichting parkeerterrein bedrijvenpark"></div>
+      <div class="rijtje"><label for="p-plaats">Plaats <span class="hint">(hoeft niet)</span></label><input type="text" id="p-plaats" placeholder="Bijvoorbeeld: Capelle aan den IJssel"></div>
+      <div class="rijtje"><label for="p-tekst">Wat heeft u gedaan?</label><textarea id="p-tekst"></textarea></div>
+      <div class="rijtje"><label for="p-foto">Foto erbij <span class="hint">(hoeft niet)</span></label><input type="file" id="p-foto" accept="image/*"></div>
+      <div class="rijtje"><label for="p-sort">Volgorde <span class="hint">(1 staat bovenaan, 2 daaronder, enzovoort)</span></label><input type="number" id="p-sort" value="1"></div>
+      <div class="rijtje"><label style="font-weight:600"><input type="checkbox" id="p-publiek" checked> Zichtbaar op de site</label></div>
       <div class="knopjes">
-        <button class="kn hoofd" id="p-opslaan">Opslaan</button>
+        <button class="kn hoofd" id="p-opslaan">Zet op de site</button>
         <button class="kn stil" id="p-nieuw" style="display:none">Annuleer bewerken</button>
         <span class="status" id="p-status"></span>
       </div>
     </div>
+    <h3 style="margin:22px 4px 12px">Uw projecten</h3>
     <div id="projectbeheerlijst"></div>
   </div>
 
-  <div class="tabblad" id="tab-teksten">
-    <p class="klein" style="margin-bottom:14px">Deze teksten staan op vaste plekken op de site. Aanpassen en opslaan is genoeg; de site pakt de nieuwe tekst direct op. Een lege regel tussen twee stukken tekst maakt een nieuwe alinea.</p>
-    <div id="tekstenlijst"></div>
-  </div>
-
-  <div class="tabblad" id="tab-fotos">
-    <p class="klein" style="margin-bottom:14px">Dit zijn de vaste fotoplekken op de site. Upload een foto en hij staat er direct op. Liggende foto's werken het beste.</p>
-    <div id="fotoslots"></div>
+  <!-- Gegevens -->
+  <div class="deel" id="deel-gegevens">
+    <button class="terug" data-terug>← Terug naar het begin</button>
+    <div class="blok">
+      <h3>Uw gegevens</h3>
+      <p class="subtekst">Deze gegevens staan onderaan de site en op de contactpagina.</p>
+      <div class="rijtje"><label for="g-adres">Adres</label><input type="text" id="g-adres"></div>
+      <div class="rijtje"><label for="g-email">E-mailadres <span class="hint">(hierop ontvangt u post via de site)</span></label><input type="email" id="g-email"></div>
+      <div class="rijtje"><label for="g-telefoon">Telefoonnummer <span class="hint">(leeg laten = niet op de site)</span></label><input type="text" id="g-telefoon"></div>
+      <div class="rijtje"><label for="g-kvk">KvK-nummer <span class="hint">(leeg laten = niet op de site)</span></label><input type="text" id="g-kvk"></div>
+      <div class="knopjes">
+        <button class="kn hoofd" id="g-opslaan">Opslaan</button>
+        <span class="status" id="g-status"></span>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -155,31 +211,10 @@
   var C = window.CBL_CONFIG;
   var sb = supabase.createClient(C.SUPABASE_URL, C.SUPABASE_ANON_KEY);
 
-  var TEKST_LABELS = [
-    ["home_welkom", "Home: waarom een berekening (blok halverwege de homepage)"],
-    ["diensten_intro", "Lichtberekeningen: intro bovenaan"],
-    ["diensten_buiten", "Lichtberekeningen: buitenverlichting"],
-    ["diensten_binnen", "Lichtberekeningen: binnenverlichting"],
-    ["diensten_advies", "Lichtberekeningen: verlichtingsadvies"],
-    ["projecten_intro", "Projecten: intro bovenaan"],
-    ["over_tekst", "Over CB-lighting: uw verhaal"],
-    ["contact_intro", "Contact: intro bovenaan"],
-    ["contact_adres", "Adres (staat ook onderaan elke pagina)"],
-    ["contact_email", "E-mailadres"],
-    ["contact_telefoon", "Telefoonnummer (leeg = niet tonen op de site)"]
-  ];
-
-  var FOTO_SLOTS = [
-    ["home-zijbeeld", "Homepage: foto naast 'waarom een berekening'"],
-    ["diensten-buiten", "Lichtberekeningen: foto bij buitenverlichting"],
-    ["diensten-binnen", "Lichtberekeningen: foto bij binnenverlichting"],
-    ["portret", "Over CB-lighting: uw portretfoto"]
-  ];
-
   function el(id) { return document.getElementById(id); }
   function status(id, tekst, soort) {
     var s = el(id); s.textContent = tekst; s.className = "status " + (soort || "");
-    if (tekst) setTimeout(function () { if (s.textContent === tekst) { s.textContent = ""; } }, 5000);
+    if (tekst) setTimeout(function () { if (s.textContent === tekst) { s.textContent = ""; } }, 6000);
   }
   function datumNL(iso) {
     try { return new Date(iso + "T12:00:00").toLocaleDateString("nl-NL", { day: "numeric", month: "long", year: "numeric" }); }
@@ -216,7 +251,9 @@
         return;
       }
       toonBeheer(true);
-      laadAanvragen(); laadNieuws(); laadProjecten(); laadTeksten(); laadFotos();
+      vulNieuwsForm(null);
+      vulProjectForm(null);
+      laadAanvragen(); laadNieuws(); laadProjecten(); laadGegevens();
     });
   }
 
@@ -224,14 +261,20 @@
     if (res.data && res.data.session) controleerToegang();
   });
 
-  // ---------- Tabs ----------
-  document.querySelectorAll(".tabs button").forEach(function (b) {
-    b.addEventListener("click", function () {
-      document.querySelectorAll(".tabs button").forEach(function (x) { x.classList.remove("actief"); });
-      document.querySelectorAll(".tabblad").forEach(function (x) { x.classList.remove("actief"); });
-      b.classList.add("actief");
-      el("tab-" + b.dataset.tab).classList.add("actief");
-    });
+  // ---------- Startscherm en delen ----------
+  function toonDeel(naam) {
+    document.querySelectorAll(".deel").forEach(function (d) { d.classList.remove("actief"); });
+    el("deel-" + naam).classList.add("actief");
+    window.scrollTo({ top: 0 });
+  }
+  document.querySelectorAll("[data-open]").forEach(function (b) {
+    b.addEventListener("click", function () { toonDeel(b.dataset.open); });
+  });
+  document.querySelectorAll("[data-terug]").forEach(function (b) {
+    b.addEventListener("click", function () { toonDeel("start"); });
+  });
+  el("tegel-site").addEventListener("click", function () {
+    window.location.href = "index.html#bewerken";
   });
 
   // ---------- Aanvragen ----------
@@ -241,25 +284,27 @@
       doel.innerHTML = "";
       var rijen = res.data || [];
       var open = rijen.filter(function (r) { return !r.afgehandeld; }).length;
-      el("aanvraagteller").textContent = open ? "(" + open + ")" : "";
-      if (!rijen.length) { doel.innerHTML = '<div class="blok">Nog geen aanvragen.</div>'; return; }
+      var teller = el("aanvraagteller");
+      teller.style.display = open ? "" : "none";
+      teller.textContent = open;
+      if (!rijen.length) { doel.innerHTML = '<div class="blok">Er zijn nog geen aanvragen binnengekomen.</div>'; return; }
       rijen.forEach(function (r) {
         var b = document.createElement("div");
         b.className = "blok aanvraag" + (r.afgehandeld ? " klaar" : "");
         b.innerHTML = '<div class="meta"></div><h3></h3><p class="tekst"></p>' +
           '<div class="knopjes">' +
-          '<a class="kn stil" style="text-decoration:none" target="_blank">Beantwoord per e-mail</a>' +
+          '<a class="kn hoofd" style="text-decoration:none" target="_blank">Beantwoord per e-mail</a>' +
           '<button class="kn stil klaarknop"></button>' +
           '<button class="kn rood wegknop">Verwijder</button>' +
           '</div>';
         b.querySelector(".meta").textContent =
           new Date(r.created_at).toLocaleString("nl-NL") + " · " + (r.onderwerp || "Algemeen") +
-          (r.telefoon ? " · " + r.telefoon : "");
+          (r.telefoon ? " · telefoon: " + r.telefoon : "");
         b.querySelector("h3").textContent = r.naam + " · " + r.email;
         b.querySelector(".tekst").textContent = r.bericht;
         b.querySelector("a").href = "mailto:" + r.email + "?subject=" + encodeURIComponent("Re: uw aanvraag bij CB-lighting");
         var kk = b.querySelector(".klaarknop");
-        kk.textContent = r.afgehandeld ? "Zet terug op open" : "Markeer als afgehandeld";
+        kk.textContent = r.afgehandeld ? "Zet terug op open" : "Klaar, afgehandeld";
         kk.addEventListener("click", function () {
           sb.from("cbl_aanvragen").update({ afgehandeld: !r.afgehandeld }).eq("id", r.id).then(laadAanvragen);
         });
@@ -292,7 +337,7 @@
     el("n-linkedin").value = (n && n.linkedin_url) || "";
     el("n-publiek").checked = n ? !!n.gepubliceerd : true;
     el("n-foto").value = "";
-    el("nieuwsformtitel").textContent = n ? "Bericht bewerken" : "Nieuw bericht";
+    el("nieuwsformtitel").textContent = n ? "Bericht bewerken" : "Een bericht plaatsen";
     el("n-nieuw").style.display = n ? "" : "none";
     if (n) window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -301,8 +346,8 @@
   el("n-opslaan").addEventListener("click", function () {
     var titel = el("n-titel").value.trim();
     var tekst = el("n-tekst").value.trim();
-    if (!titel || !tekst) { status("n-status", "Titel en tekst zijn verplicht.", "err"); return; }
-    status("n-status", "Opslaan...");
+    if (!titel || !tekst) { status("n-status", "Vul in elk geval de kop en uw verhaal in.", "err"); return; }
+    status("n-status", "Bezig...");
     var basis = {
       titel: titel,
       tekst: tekst,
@@ -321,10 +366,10 @@
       return actie;
     }).then(function (res) {
       if (res && res.error) throw res.error;
-      status("n-status", "Opgeslagen.", "ok");
+      status("n-status", "Gelukt! Het bericht staat op de site.", "ok");
       vulNieuwsForm(null);
       laadNieuws();
-    }).catch(function () { status("n-status", "Opslaan mislukt.", "err"); });
+    }).catch(function () { status("n-status", "Dat lukte niet. Probeer het nog eens.", "err"); });
   });
 
   function laadNieuws() {
@@ -339,7 +384,7 @@
           '<div style="flex:1;min-width:220px"><h3></h3><p class="klein meta"></p></div></div>' +
           '<div class="knopjes"><button class="kn stil bewerkknop">Bewerk</button><button class="kn rood wegknop">Verwijder</button></div>';
         b.querySelector("h3").textContent = n.titel;
-        b.querySelector(".meta").textContent = datumNL(n.datum) + (n.gepubliceerd ? "" : " · NIET zichtbaar op de site");
+        b.querySelector(".meta").textContent = datumNL(n.datum) + (n.gepubliceerd ? "" : " · staat NIET op de site");
         b.querySelector(".bewerkknop").addEventListener("click", function () { vulNieuwsForm(n); });
         b.querySelector(".wegknop").addEventListener("click", function () {
           if (confirm('Bericht "' + n.titel + '" definitief verwijderen?')) {
@@ -357,10 +402,10 @@
     el("p-titel").value = p ? p.titel : "";
     el("p-plaats").value = (p && p.plaats) || "";
     el("p-tekst").value = p ? p.omschrijving : "";
-    el("p-sort").value = p ? p.sortering : 0;
+    el("p-sort").value = p ? p.sortering : 1;
     el("p-publiek").checked = p ? !!p.gepubliceerd : true;
     el("p-foto").value = "";
-    el("projectformtitel").textContent = p ? "Project bewerken" : "Nieuw project";
+    el("projectformtitel").textContent = p ? "Project bewerken" : "Een project toevoegen";
     el("p-nieuw").style.display = p ? "" : "none";
     if (p) window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -368,13 +413,13 @@
 
   el("p-opslaan").addEventListener("click", function () {
     var titel = el("p-titel").value.trim();
-    if (!titel) { status("p-status", "Titel is verplicht.", "err"); return; }
-    status("p-status", "Opslaan...");
+    if (!titel) { status("p-status", "Geef het project in elk geval een naam.", "err"); return; }
+    status("p-status", "Bezig...");
     var basis = {
       titel: titel,
       plaats: el("p-plaats").value.trim() || null,
       omschrijving: el("p-tekst").value.trim(),
-      sortering: parseInt(el("p-sort").value, 10) || 0,
+      sortering: parseInt(el("p-sort").value, 10) || 1,
       gepubliceerd: el("p-publiek").checked
     };
     var fotoFile = el("p-foto").files[0];
@@ -387,17 +432,19 @@
         : sb.from("cbl_projecten").insert(basis);
     }).then(function (res) {
       if (res && res.error) throw res.error;
-      status("p-status", "Opgeslagen.", "ok");
+      status("p-status", "Gelukt! Het project staat op de site.", "ok");
       vulProjectForm(null);
       laadProjecten();
-    }).catch(function () { status("p-status", "Opslaan mislukt.", "err"); });
+    }).catch(function () { status("p-status", "Dat lukte niet. Probeer het nog eens.", "err"); });
   });
 
   function laadProjecten() {
     sb.from("cbl_projecten").select("*").order("sortering").order("created_at", { ascending: false }).then(function (res) {
       var doel = el("projectbeheerlijst");
       doel.innerHTML = "";
-      (res.data || []).forEach(function (p) {
+      var rijen = res.data || [];
+      if (!rijen.length) { doel.innerHTML = '<div class="blok klein">Nog geen projecten. Het eerste project voegt u hierboven toe.</div>'; return; }
+      rijen.forEach(function (p) {
         var b = document.createElement("div");
         b.className = "blok";
         b.innerHTML = '<div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap">' +
@@ -405,7 +452,7 @@
           '<div style="flex:1;min-width:220px"><h3></h3><p class="klein meta"></p></div></div>' +
           '<div class="knopjes"><button class="kn stil bewerkknop">Bewerk</button><button class="kn rood wegknop">Verwijder</button></div>';
         b.querySelector("h3").textContent = p.titel + (p.plaats ? " · " + p.plaats : "");
-        b.querySelector(".meta").textContent = (p.gepubliceerd ? "Zichtbaar op de site" : "NIET zichtbaar op de site");
+        b.querySelector(".meta").textContent = (p.gepubliceerd ? "Staat op de site" : "Staat NIET op de site");
         b.querySelector(".bewerkknop").addEventListener("click", function () { vulProjectForm(p); });
         b.querySelector(".wegknop").addEventListener("click", function () {
           if (confirm('Project "' + p.titel + '" definitief verwijderen?')) {
@@ -417,77 +464,25 @@
     });
   }
 
-  // ---------- Teksten ----------
-  function laadTeksten() {
+  // ---------- Gegevens ----------
+  var GEGEVENS_VELDEN = [["contact_adres", "g-adres"], ["contact_email", "g-email"], ["contact_telefoon", "g-telefoon"], ["contact_kvk", "g-kvk"]];
+  function laadGegevens() {
     sb.from("cbl_teksten").select("*").then(function (res) {
       var map = {};
       (res.data || []).forEach(function (r) { map[r.sleutel] = r.inhoud; });
-      var doel = el("tekstenlijst");
-      doel.innerHTML = "";
-      TEKST_LABELS.forEach(function (paar) {
-        var sleutel = paar[0], label = paar[1];
-        var b = document.createElement("div");
-        b.className = "blok";
-        var klein = (sleutel.indexOf("contact_") === 0 && sleutel !== "contact_intro");
-        b.innerHTML = '<div class="rijtje"><label></label>' +
-          (klein ? '<input type="text">' : "<textarea></textarea>") +
-          '</div><div class="knopjes"><button class="kn hoofd">Opslaan</button><span class="status"></span></div>';
-        b.querySelector("label").textContent = label;
-        var invoer = b.querySelector(klein ? "input" : "textarea");
-        invoer.value = map[sleutel] || "";
-        var st = b.querySelector(".status");
-        b.querySelector("button").addEventListener("click", function () {
-          st.textContent = "Opslaan..."; st.className = "status";
-          sb.from("cbl_teksten").upsert({ sleutel: sleutel, inhoud: invoer.value, bijgewerkt: new Date().toISOString() })
-            .then(function (r2) {
-              if (r2.error) { st.textContent = "Opslaan mislukt."; st.className = "status err"; }
-              else { st.textContent = "Opgeslagen."; st.className = "status ok"; setTimeout(function(){ st.textContent=""; }, 4000); }
-            });
-        });
-        doel.appendChild(b);
-      });
+      GEGEVENS_VELDEN.forEach(function (paar) { el(paar[1]).value = map[paar[0]] || ""; });
     });
   }
-
-  // ---------- Vaste fotoplekken ----------
-  function fotoSlotUrl(slot) {
-    return C.SUPABASE_URL + "/storage/v1/object/public/" + C.FOTO_BUCKET + "/" + slot + ".jpg?v=" + Date.now();
-  }
-  function laadFotos() {
-    var doel = el("fotoslots");
-    doel.innerHTML = "";
-    FOTO_SLOTS.forEach(function (paar) {
-      var slot = paar[0], label = paar[1];
-      var b = document.createElement("div");
-      b.className = "blok";
-      b.innerHTML = '<h3 style="font-size:1.02rem"></h3><div class="fotoslot">' +
-        '<img alt="Nog geen foto" onerror="this.style.opacity=.25">' +
-        '<div><input type="file" accept="image/*"><div class="knopjes"><button class="kn hoofd">Upload</button><span class="status"></span></div></div>' +
-        '</div>';
-      b.querySelector("h3").textContent = label;
-      var img = b.querySelector("img");
-      img.src = fotoSlotUrl(slot);
-      var st = b.querySelector(".status");
-      b.querySelector("button").addEventListener("click", function () {
-        var f = b.querySelector("input[type=file]").files[0];
-        if (!f) { st.textContent = "Kies eerst een foto."; st.className = "status err"; return; }
-        st.textContent = "Uploaden..."; st.className = "status";
-        sb.storage.from(C.FOTO_BUCKET).upload(slot + ".jpg", f, { upsert: true, contentType: f.type })
-          .then(function (res) {
-            if (res.error) throw res.error;
-            // Versienummer ophogen zodat bezoekers de nieuwe foto zien (geen oude uit het geheugen van de browser)
-            return sb.from("cbl_teksten").upsert({ sleutel: "_fotoversie", inhoud: String(Date.now()) });
-          })
-          .then(function () {
-            st.textContent = "Gelukt, de foto staat op de site."; st.className = "status ok";
-            img.src = fotoSlotUrl(slot);
-            img.style.opacity = 1;
-          })
-          .catch(function () { st.textContent = "Uploaden mislukt."; st.className = "status err"; });
-      });
-      doel.appendChild(b);
+  el("g-opslaan").addEventListener("click", function () {
+    status("g-status", "Bezig...");
+    var rijen = GEGEVENS_VELDEN.map(function (paar) {
+      return { sleutel: paar[0], inhoud: el(paar[1]).value.trim(), bijgewerkt: new Date().toISOString() };
     });
-  }
+    sb.from("cbl_teksten").upsert(rijen).then(function (res) {
+      if (res.error) { status("g-status", "Opslaan is niet gelukt. Probeer het nog eens.", "err"); }
+      else { status("g-status", "Opgeslagen! Het staat meteen op de site.", "ok"); }
+    });
+  });
 })();
 </script>
 </body>

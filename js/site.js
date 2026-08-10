@@ -106,10 +106,32 @@
       img.src = url;
     });
 
+    // KvK-nummer in de onderbalk, zodra het via het beheer is ingevuld
+    var kvk = (map["contact_kvk"] || "").trim();
+    if (kvk) {
+      document.querySelectorAll(".onderbalk .wrap").forEach(function (balk) {
+        var s = document.createElement("span");
+        s.textContent = "KvK " + kvk;
+        balk.appendChild(s);
+      });
+    }
+
     return map;
   }).catch(function (e) {
     // Als de database niet bereikbaar is, blijft de vaste tekst uit de pagina staan.
     console.warn("Teksten laden lukte niet:", e);
     return {};
   });
+
+  // --- Bewerk-stand: alleen laden als er #bewerken (of ?bewerken=1) in het adres staat ---
+  if (new URLSearchParams(location.search).has("bewerken") || location.hash === "#bewerken") {
+    var s1 = document.createElement("script");
+    s1.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js";
+    s1.onload = function () {
+      var s2 = document.createElement("script");
+      s2.src = "js/bewerk.js";
+      document.body.appendChild(s2);
+    };
+    document.body.appendChild(s1);
+  }
 })();
