@@ -11,8 +11,9 @@
     ".bw-balk b{color:#f2a93b}",
     ".bw-balk a{background:#f2a93b;color:#0c1929;font-weight:700;text-decoration:none;padding:10px 18px;border-radius:8px}",
     ".bw-balk a.stil{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.4)}",
-    "[data-tekst]{outline:2px dashed rgba(242,169,59,.65);outline-offset:6px;border-radius:2px}",
-    ".bw-knop{position:absolute;top:-14px;right:-10px;z-index:10;background:#f2a93b;color:#0c1929;border:0;border-radius:999px;padding:7px 14px;font:700 14px Inter,sans-serif;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.25)}",
+    "[data-tekst]{outline:2px dashed rgba(242,169,59,.65);outline-offset:6px;border-radius:2px;cursor:pointer}",
+    "[data-tekst]:hover{outline-style:solid;background:rgba(242,169,59,.1)}",
+    ".bw-knop{position:absolute;top:-16px;right:-14px;z-index:10;width:30px;height:30px;display:flex;align-items:center;justify-content:center;background:#f2a93b;border:0;border-radius:999px;font-size:15px;line-height:1;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.25)}",
     ".bw-fotoknop{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);z-index:10;background:#f2a93b;color:#0c1929;border:0;border-radius:999px;padding:9px 16px;font:700 14px Inter,sans-serif;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.25)}",
     ".bw-sluier{position:fixed;inset:0;background:rgba(12,25,41,.55);z-index:200;display:flex;align-items:center;justify-content:center;padding:16px}",
     ".bw-venster{background:#fff;border-radius:14px;max-width:720px;width:100%;max-height:88vh;display:flex;flex-direction:column;overflow:hidden}",
@@ -44,7 +45,7 @@
     // Balk onderaan
     var balk = document.createElement("div");
     balk.className = "bw-balk";
-    balk.innerHTML = "<span>U kunt de site nu aanpassen: klik op <b>Tekst aanpassen</b> of <b>Foto vervangen</b>.</span>" +
+    balk.innerHTML = "<span>U kunt de site nu aanpassen: klik op een <b>tekst</b> om die te veranderen, of op <b>Foto vervangen</b>.</span>" +
       '<a class="stil" href="beheer.html">Terug naar het beheer</a>' +
       '<a href="#" class="bw-klaar">Klaar met aanpassen</a>';
     document.body.appendChild(balk);
@@ -53,6 +54,9 @@
       history.replaceState(null, "", location.pathname);
       location.reload();
     });
+
+    // Uitklapvragen (FAQ) allemaal open, zodat ook de antwoorden aan te klikken zijn
+    document.querySelectorAll("details").forEach(function (d) { d.open = true; });
 
     // Links binnen de site houden de bewerk-stand vast, zodat u kunt doorklikken
     document.querySelectorAll("a[href]").forEach(function (a) {
@@ -85,8 +89,13 @@
     var knop = document.createElement("button");
     knop.className = "bw-knop";
     knop.type = "button";
-    knop.textContent = "✏️ Tekst aanpassen";
-    knop.addEventListener("click", function () {
+    knop.textContent = "✏️";
+    knop.title = "Tekst aanpassen";
+    knop.setAttribute("aria-label", "Tekst aanpassen");
+    // De hele tekst is klikbaar; het potloodje is het herkenningsteken
+    el.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
       openVenster(huidigeTekst(el, map), el.dataset.enkel !== undefined, function (nieuw, klaar) {
         sb.from("cbl_teksten").upsert({ sleutel: el.dataset.tekst, inhoud: nieuw, bijgewerkt: new Date().toISOString() })
           .then(function (res) {
