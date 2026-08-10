@@ -51,6 +51,8 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -.01em; }
 .logo svg { width: 34px; height: 34px; flex: none; }
 .logo b { color: var(--wit); font-size: 1.15rem; letter-spacing: .01em; }
 .logo b span { color: var(--amber); }
+.logo img { height: 36px; width: auto; display: block; }
+footer .logo img { height: 30px; }
 
 .menu { display: flex; gap: 4px; align-items: center; }
 .menu a {
