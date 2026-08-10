@@ -161,6 +161,7 @@ footer .logo img { height: 30px; }
   min-height: 280px; display: grid; place-items: center;
 }
 .twee .beeld img { width: 100%; height: 100%; object-fit: cover; }
+.beeld.heeft-foto > svg { display: none; }
 
 .tekstblok h2 { font-size: clamp(1.4rem, 2.6vw, 1.9rem); margin-bottom: 14px; }
 .tekstblok p { color: var(--grijs); margin-bottom: 12px; }
