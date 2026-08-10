@@ -19,7 +19,10 @@
     ".bw-venster h3{font:700 19px Inter,sans-serif;color:#1d2733;padding:18px 22px 0}",
     ".bw-venster p.uitleg{font:400 14px Inter,sans-serif;color:#5c6b7a;padding:4px 22px 0}",
     ".bw-venster textarea{flex:1;margin:14px 22px;min-height:220px;font:400 17px/1.6 Inter,sans-serif;padding:12px;border:1.5px solid #e3e9ef;border-radius:10px;resize:vertical}",
-    ".bw-voet{display:flex;gap:10px;align-items:center;padding:0 22px 18px}",
+    ".bw-taal{margin:0 22px 10px;font:400 14px/1.5 Inter,sans-serif;color:#5c6b7a;max-height:140px;overflow:auto}",
+    ".bw-taal .fout{color:#8c1d18}",
+    ".bw-taal .goed{color:#14572c;font-weight:600}",
+    ".bw-voet{display:flex;gap:10px;align-items:center;padding:0 22px 18px;flex-wrap:wrap}",
     ".bw-voet button{font:700 16px Inter,sans-serif;border:0;border-radius:8px;padding:11px 22px;cursor:pointer}",
     ".bw-opslaan{background:#f2a93b;color:#0c1929}",
     ".bw-weg{background:#f5f8fb;color:#1d2733;border:1px solid #e3e9ef !important}",
@@ -104,13 +107,27 @@
     sluier.className = "bw-sluier";
     sluier.innerHTML = '<div class="bw-venster"><h3>Tekst aanpassen</h3>' +
       '<p class="uitleg">' + (enkeleRegel ? "Pas de tekst aan en klik op Opslaan." : "Pas de tekst aan en klik op Opslaan. Een lege regel tussen twee stukken maakt een nieuwe alinea.") + "</p>" +
-      "<textarea></textarea>" +
-      '<div class="bw-voet"><button class="bw-opslaan" type="button">Opslaan</button><button class="bw-weg" type="button">Annuleren</button><span class="bw-status"></span></div></div>';
+      '<textarea spellcheck="true" lang="nl"></textarea>' +
+      '<div class="bw-taal"></div>' +
+      '<div class="bw-voet"><button class="bw-opslaan" type="button">Opslaan</button><button class="bw-weg" type="button">Taal controleren</button><button class="bw-weg bw-sluit" type="button">Annuleren</button><span class="bw-status"></span></div></div>';
     var ta = sluier.querySelector("textarea");
     ta.value = tekst;
     if (enkeleRegel) ta.style.minHeight = "70px";
     var st = sluier.querySelector(".bw-status");
-    sluier.querySelector(".bw-weg").addEventListener("click", function () { sluier.remove(); });
+    var taalUit = sluier.querySelector(".bw-taal");
+    sluier.querySelector(".bw-sluit").addEventListener("click", function () { sluier.remove(); });
+    sluier.querySelectorAll(".bw-weg")[0].addEventListener("click", function () {
+      taalUit.innerHTML = "Bezig met controleren...";
+      window.cblTaalcheck(ta.value).then(function (regels) {
+        taalUit.innerHTML = "";
+        regels.forEach(function (r) {
+          var d = document.createElement("div");
+          d.className = r.goed ? "goed" : "fout";
+          d.textContent = r.tekst;
+          taalUit.appendChild(d);
+        });
+      }).catch(function () { taalUit.textContent = "De taalcontrole is even niet bereikbaar."; });
+    });
     sluier.querySelector(".bw-opslaan").addEventListener("click", function () {
       st.textContent = "Bezig met opslaan...";
       st.style.color = "#5c6b7a";
@@ -124,6 +141,23 @@
     document.body.appendChild(sluier);
     ta.focus();
   }
+
+  // Nederlandse taalcontrole via LanguageTool (gratis dienst)
+  window.cblTaalcheck = function (tekst) {
+    return fetch("https://api.languagetool.org/v2/check", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ language: "nl", text: tekst }).toString()
+    }).then(function (r) { return r.json(); }).then(function (d) {
+      var m = (d.matches || []).slice(0, 10);
+      if (!m.length) return [{ goed: true, tekst: "Geen taalfouten gevonden." }];
+      return m.map(function (x) {
+        var woord = tekst.substr(x.offset, x.length).trim();
+        var tips = (x.replacements || []).slice(0, 3).map(function (v) { return v.value; }).join(", ");
+        return { goed: false, tekst: '"' + woord + '": ' + x.message + (tips ? " Suggestie: " + tips : "") };
+      });
+    });
+  };
 
   function maakFotoKnop(el) {
     el.style.position = "relative";

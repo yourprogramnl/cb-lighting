@@ -31,7 +31,13 @@
     .tegel .emoji { font-size: 2rem; display: block; margin-bottom: 10px; }
     .tegel b { font-size: 1.15rem; display: block; margin-bottom: 6px; }
     .tegel span { color: var(--grijs); font-size: .98rem; }
-    .tegel .teller { display: inline-block; background: var(--amber); color: var(--nacht); border-radius: 999px; padding: 1px 11px; font-weight: 800; margin-left: 8px; font-size: 1rem; }
+    .teller { display: inline-block; background: var(--amber); color: var(--nacht); border-radius: 999px; padding: 1px 11px; font-weight: 800; margin-left: 8px; font-size: 1rem; }
+
+    /* Formulier met levend voorbeeld ernaast */
+    .formgrid { display: grid; grid-template-columns: 1fr 340px; gap: 20px; align-items: start; }
+    .voorbeeldkolom { position: sticky; top: 16px; }
+    .voorbeeldkolom .kopje { font-weight: 700; margin-bottom: 10px; }
+    @media (max-width: 900px) { .formgrid { grid-template-columns: 1fr; } .voorbeeldkolom { position: static; } }
 
     .terug {
       background: none; border: 0; cursor: pointer; font: inherit; font-weight: 700;
@@ -106,11 +112,6 @@
   <div class="deel actief" id="deel-start">
     <p class="startvraag">Wat wilt u doen?</p>
     <div class="tegels">
-      <button class="tegel" data-open="aanvragen">
-        <span class="emoji">📬</span>
-        <b>Aanvragen bekijken <span class="teller" id="aanvraagteller" style="display:none"></span></b>
-        <span>Wie heeft er een bericht gestuurd via de site?</span>
-      </button>
       <button class="tegel" id="tegel-site">
         <span class="emoji">✏️</span>
         <b>De site aanpassen</b>
@@ -132,32 +133,42 @@
         <span>Adres, e-mailadres, telefoonnummer en KvK-nummer.</span>
       </button>
     </div>
-  </div>
-
-  <!-- Aanvragen -->
-  <div class="deel" id="deel-aanvragen">
-    <button class="terug" data-terug>← Terug naar het begin</button>
+    <p class="startvraag" style="margin-top:34px">📬 Aanvragen <span class="teller" id="aanvraagteller" style="display:none"></span></p>
     <div id="aanvragenlijst"></div>
   </div>
 
   <!-- Nieuws -->
   <div class="deel" id="deel-nieuws">
     <button class="terug" data-terug>← Terug naar het begin</button>
+    <div class="formgrid">
     <div class="blok">
       <h3 id="nieuwsformtitel">Een bericht plaatsen</h3>
       <p class="subtekst">Schrijf uw LinkedIn-bericht zoals u gewend bent en plak de tekst hieronder. Meer is het niet.</p>
       <input type="hidden" id="n-id">
       <div class="rijtje"><label for="n-titel">De kop van uw bericht</label><input type="text" id="n-titel" placeholder="Bijvoorbeeld: Nieuwe verlichting voor een parkeerterrein"></div>
-      <div class="rijtje"><label for="n-tekst">Uw verhaal</label><textarea id="n-tekst" style="min-height:180px"></textarea></div>
+      <div class="rijtje"><label for="n-tekst">Uw verhaal</label><textarea id="n-tekst" style="min-height:180px" spellcheck="true" lang="nl"></textarea><div id="n-taal" class="klein"></div></div>
       <div class="rijtje"><label for="n-foto">Foto erbij <span class="hint">(hoeft niet)</span></label><input type="file" id="n-foto" accept="image/*"></div>
       <div class="rijtje"><label for="n-linkedin">Link naar uw LinkedIn-bericht <span class="hint">(hoeft niet)</span></label><input type="url" id="n-linkedin" placeholder="https://www.linkedin.com/posts/..."></div>
       <div class="rijtje"><label for="n-datum">Datum</label><input type="date" id="n-datum"></div>
       <div class="rijtje"><label style="font-weight:600"><input type="checkbox" id="n-publiek" checked> Zichtbaar op de site</label></div>
       <div class="knopjes">
         <button class="kn hoofd" id="n-opslaan">Zet op de site</button>
+        <button class="kn stil" id="n-taalknop">Taal controleren</button>
         <button class="kn stil" id="n-nieuw" style="display:none">Annuleer bewerken</button>
         <span class="status" id="n-status"></span>
       </div>
+    </div>
+    <div class="voorbeeldkolom">
+      <div class="kopje">Zo komt het op de site:</div>
+      <article class="nieuwsitem">
+        <div class="nfoto" id="nv-foto" style="display:none"><img id="nv-fotoimg" alt=""></div>
+        <div class="inhoud">
+          <div class="kop-rij"><time id="nv-datum"></time><span class="li-chip" id="nv-chip" style="display:none">LinkedIn-bericht</span></div>
+          <h3 id="nv-titel" style="font-size:1.12rem">De kop van uw bericht</h3>
+          <div class="tekst" id="nv-tekst" style="white-space:pre-line;color:var(--grijs);font-size:.95rem">Uw verhaal verschijnt hier zodra u typt.</div>
+        </div>
+      </article>
+    </div>
     </div>
     <h3 style="margin:22px 4px 12px">Eerdere berichten</h3>
     <div id="nieuwsbeheerlijst"></div>
@@ -166,13 +177,14 @@
   <!-- Projecten -->
   <div class="deel" id="deel-projecten">
     <button class="terug" data-terug>← Terug naar het begin</button>
+    <div class="formgrid">
     <div class="blok">
       <h3 id="projectformtitel">Een project toevoegen</h3>
       <p class="subtekst">Een kort verhaaltje en een foto zijn genoeg. Het komt op de pagina Projecten te staan.</p>
       <input type="hidden" id="p-id">
       <div class="rijtje"><label for="p-titel">Naam van het project</label><input type="text" id="p-titel" placeholder="Bijvoorbeeld: Verlichting parkeerterrein bedrijvenpark"></div>
       <div class="rijtje"><label for="p-plaats">Plaats <span class="hint">(hoeft niet)</span></label><input type="text" id="p-plaats" placeholder="Bijvoorbeeld: Capelle aan den IJssel"></div>
-      <div class="rijtje"><label for="p-tekst">Wat heeft u gedaan?</label><textarea id="p-tekst"></textarea></div>
+      <div class="rijtje"><label for="p-tekst">Wat heeft u gedaan?</label><textarea id="p-tekst" spellcheck="true" lang="nl"></textarea></div>
       <div class="rijtje"><label for="p-foto">Foto erbij <span class="hint">(hoeft niet)</span></label><input type="file" id="p-foto" accept="image/*"></div>
       <div class="rijtje"><label for="p-sort">Volgorde <span class="hint">(1 staat bovenaan, 2 daaronder, enzovoort)</span></label><input type="number" id="p-sort" value="1"></div>
       <div class="rijtje"><label style="font-weight:600"><input type="checkbox" id="p-publiek" checked> Zichtbaar op de site</label></div>
@@ -181,6 +193,18 @@
         <button class="kn stil" id="p-nieuw" style="display:none">Annuleer bewerken</button>
         <span class="status" id="p-status"></span>
       </div>
+    </div>
+    <div class="voorbeeldkolom">
+      <div class="kopje">Zo komt het op de site:</div>
+      <article class="nieuwsitem">
+        <div class="nfoto" id="pv-foto" style="display:none"><img id="pv-fotoimg" alt=""></div>
+        <div class="inhoud">
+          <time id="pv-plaats"></time>
+          <h3 id="pv-titel" style="font-size:1.12rem">Naam van het project</h3>
+          <div class="tekst" id="pv-tekst" style="white-space:pre-line;color:var(--grijs);font-size:.95rem">De omschrijving verschijnt hier zodra u typt.</div>
+        </div>
+      </article>
+    </div>
     </div>
     <h3 style="margin:22px 4px 12px">Uw projecten</h3>
     <div id="projectbeheerlijst"></div>
@@ -345,6 +369,22 @@
   }
 
   // ---------- Nieuws ----------
+  var nFotoBestaand = null;
+  function updateNieuwsVoorbeeld() {
+    el("nv-titel").textContent = el("n-titel").value.trim() || "De kop van uw bericht";
+    el("nv-tekst").textContent = el("n-tekst").value.trim() || "Uw verhaal verschijnt hier zodra u typt.";
+    el("nv-datum").textContent = datumNL(el("n-datum").value || vandaag());
+    el("nv-chip").style.display = el("n-linkedin").value.trim() ? "" : "none";
+    var f = el("n-foto").files[0];
+    var url = f ? URL.createObjectURL(f) : nFotoBestaand;
+    el("nv-foto").style.display = url ? "" : "none";
+    if (url) el("nv-fotoimg").src = url;
+  }
+  ["n-titel", "n-tekst", "n-datum", "n-linkedin"].forEach(function (id) {
+    el(id).addEventListener("input", updateNieuwsVoorbeeld);
+  });
+  el("n-foto").addEventListener("change", updateNieuwsVoorbeeld);
+
   function vulNieuwsForm(n) {
     el("n-id").value = n ? n.id : "";
     el("n-titel").value = n ? n.titel : "";
@@ -353,11 +393,38 @@
     el("n-linkedin").value = (n && n.linkedin_url) || "";
     el("n-publiek").checked = n ? !!n.gepubliceerd : true;
     el("n-foto").value = "";
+    nFotoBestaand = (n && n.foto_url) || null;
     el("nieuwsformtitel").textContent = n ? "Bericht bewerken" : "Een bericht plaatsen";
     el("n-nieuw").style.display = n ? "" : "none";
+    updateNieuwsVoorbeeld();
     if (n) window.scrollTo({ top: 0, behavior: "smooth" });
   }
   el("n-nieuw").addEventListener("click", function () { vulNieuwsForm(null); });
+
+  // Nederlandse taalcontrole via LanguageTool (gratis dienst)
+  el("n-taalknop").addEventListener("click", function () {
+    var tekst = (el("n-titel").value + "\n\n" + el("n-tekst").value).trim();
+    if (!tekst) { el("n-taal").textContent = "Er staat nog geen tekst om te controleren."; return; }
+    el("n-taal").textContent = "Bezig met controleren...";
+    fetch("https://api.languagetool.org/v2/check", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ language: "nl", text: tekst }).toString()
+    }).then(function (r) { return r.json(); }).then(function (d) {
+      var m = (d.matches || []).slice(0, 10);
+      var doel = el("n-taal");
+      doel.innerHTML = "";
+      if (!m.length) { doel.textContent = "Geen taalfouten gevonden."; doel.style.color = "#14572c"; return; }
+      doel.style.color = "#8c1d18";
+      m.forEach(function (x) {
+        var woord = tekst.substr(x.offset, x.length).trim();
+        var tips = (x.replacements || []).slice(0, 3).map(function (v) { return v.value; }).join(", ");
+        var regel = document.createElement("div");
+        regel.textContent = '"' + woord + '": ' + x.message + (tips ? " Suggestie: " + tips : "");
+        doel.appendChild(regel);
+      });
+    }).catch(function () { el("n-taal").textContent = "De taalcontrole is even niet bereikbaar."; });
+  });
 
   el("n-opslaan").addEventListener("click", function () {
     var titel = el("n-titel").value.trim();
@@ -413,6 +480,21 @@
   }
 
   // ---------- Projecten ----------
+  var pFotoBestaand = null;
+  function updateProjectVoorbeeld() {
+    el("pv-titel").textContent = el("p-titel").value.trim() || "Naam van het project";
+    el("pv-tekst").textContent = el("p-tekst").value.trim() || "De omschrijving verschijnt hier zodra u typt.";
+    el("pv-plaats").textContent = el("p-plaats").value.trim();
+    var f = el("p-foto").files[0];
+    var url = f ? URL.createObjectURL(f) : pFotoBestaand;
+    el("pv-foto").style.display = url ? "" : "none";
+    if (url) el("pv-fotoimg").src = url;
+  }
+  ["p-titel", "p-tekst", "p-plaats"].forEach(function (id) {
+    el(id).addEventListener("input", updateProjectVoorbeeld);
+  });
+  el("p-foto").addEventListener("change", updateProjectVoorbeeld);
+
   function vulProjectForm(p) {
     el("p-id").value = p ? p.id : "";
     el("p-titel").value = p ? p.titel : "";
@@ -421,8 +503,10 @@
     el("p-sort").value = p ? p.sortering : 1;
     el("p-publiek").checked = p ? !!p.gepubliceerd : true;
     el("p-foto").value = "";
+    pFotoBestaand = (p && p.foto_url) || null;
     el("projectformtitel").textContent = p ? "Project bewerken" : "Een project toevoegen";
     el("p-nieuw").style.display = p ? "" : "none";
+    updateProjectVoorbeeld();
     if (p) window.scrollTo({ top: 0, behavior: "smooth" });
   }
   el("p-nieuw").addEventListener("click", function () { vulProjectForm(null); });
