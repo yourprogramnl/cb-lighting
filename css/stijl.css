@@ -114,6 +114,14 @@ footer .logo img { height: 30px; }
 
 .heroscene { display: block; width: 100%; margin-top: 34px; }
 
+.herofoto {
+  margin-top: 34px; border-radius: 14px; overflow: hidden;
+  background-size: cover; background-position: center;
+}
+.herofoto.heeft-foto { height: clamp(120px, 16vw, 200px); box-shadow: 0 12px 34px rgba(0, 0, 0, .35); }
+.herofoto.heeft-foto .heroscene { display: none; }
+.herofoto .heroscene { margin-top: 0; }
+
 /* ---------- Knoppen ---------- */
 
 .knop {
