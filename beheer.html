@@ -371,6 +371,8 @@
 <script>
 (function () {
   var C = window.CBL_CONFIG;
+  // Het adres bewaren vóór Supabase start: die veegt de hash (herstel- en foutcodes) meteen schoon
+  var startHash = location.hash;
   var sb = supabase.createClient(C.SUPABASE_URL, C.SUPABASE_ANON_KEY);
 
   function el(id) { return document.getElementById(id); }
@@ -400,7 +402,7 @@
   }
 
   // Komt de gebruiker binnen via de herstel-link uit de e-mail?
-  var herstelModus = /type=recovery/.test(location.hash);
+  var herstelModus = /type=recovery/.test(startHash);
   sb.auth.onAuthStateChange(function (event) {
     if (event === "PASSWORD_RECOVERY") {
       herstelModus = true;
@@ -410,10 +412,11 @@
     }
   });
   // Verlopen of al gebruikte herstel-link: leg het uit bij het inlogscherm
-  if (/error_description/.test(location.hash)) {
-    setTimeout(function () {
-      status("inlogstatus", "De herstel-link werkt niet meer. Vraag met de knop Wachtwoord vergeten een nieuwe aan.", "err");
-    }, 300);
+  // (bewust zonder de gewone status-helper: deze melding moet blijven staan)
+  if (/error_description/.test(startHash)) {
+    var foutmelding = el("inlogstatus");
+    foutmelding.textContent = "De herstel-link werkt niet meer. Vraag met de knop Wachtwoord vergeten een nieuwe aan.";
+    foutmelding.className = "status err";
     history.replaceState(null, "", location.pathname);
   }
 
