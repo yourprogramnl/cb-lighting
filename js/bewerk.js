@@ -19,7 +19,7 @@
     ".bw-venster{background:#fff;border-radius:14px;max-width:720px;width:100%;max-height:88vh;display:flex;flex-direction:column;overflow:hidden}",
     ".bw-venster h3{font:700 19px Inter,sans-serif;color:#1d2733;padding:18px 22px 0}",
     ".bw-venster p.uitleg{font:400 14px Inter,sans-serif;color:#5c6b7a;padding:4px 22px 0}",
-    ".bw-venster textarea{flex:1;margin:14px 22px;min-height:220px;font:400 17px/1.6 Inter,sans-serif;padding:12px;border:1.5px solid #e3e9ef;border-radius:10px;resize:vertical}",
+    ".bw-venster textarea{flex:1;margin:14px 22px;min-height:220px;font:400 17px/1.6 Inter,sans-serif;padding:12px;border:1.5px solid #e3e9ef;border-radius:10px;resize:none}",
     ".bw-taal{margin:0 22px 10px;font:400 14px/1.5 Inter,sans-serif;color:#5c6b7a;max-height:140px;overflow:auto}",
     ".bw-taal .fout{color:#8c1d18}",
     ".bw-taal .goed{color:#14572c;font-weight:600}",
@@ -125,6 +125,14 @@
     var ta = sluier.querySelector("textarea");
     ta.value = tekst;
     if (enkeleRegel) ta.style.minHeight = "70px";
+    // Het vak groeit mee met de tekst, met wat lucht eronder (tot de helft van het scherm, daarna scrollt het)
+    function groeiMee() {
+      ta.style.flex = "none"; // anders bepaalt de kolom de hoogte en doet onze meting niets
+      ta.style.height = "auto";
+      ta.style.height = Math.min(ta.scrollHeight + 30, Math.round(window.innerHeight * 0.5)) + "px";
+    }
+    ta.addEventListener("input", groeiMee);
+    setTimeout(groeiMee, 0);
     var st = sluier.querySelector(".bw-status");
     var taalUit = sluier.querySelector(".bw-taal");
     sluier.querySelector(".bw-sluit").addEventListener("click", function () { sluier.remove(); });

@@ -54,7 +54,8 @@
     .blok textarea, .blok input[type=text], .blok input[type=url], .blok input[type=date], .blok input[type=number], .blok input[type=email], .blok input[type=password] {
       font: inherit; width: 100%; padding: 12px 14px; border: 1.5px solid var(--lijn); border-radius: 10px; background: var(--wit);
     }
-    .blok textarea { min-height: 120px; resize: vertical; }
+    .blok textarea { min-height: 120px; }
+    textarea { resize: none; overflow: hidden; }
     .rijtje { display: grid; gap: 6px; margin-bottom: 14px; }
     .rijtje label { font-weight: 600; }
     .rijtje .hint { font-weight: 400; color: var(--grijs); font-size: .9rem; }
@@ -403,6 +404,16 @@
 
   function el(id) { return document.getElementById(id); }
 
+  // Tekstvakken groeien vanzelf mee met de inhoud, met wat lucht eronder (geen sleepgreepje)
+  function groeiMee(veld) {
+    veld.style.height = "auto";
+    veld.style.height = (veld.scrollHeight + 30) + "px";
+  }
+  document.querySelectorAll(".blok textarea").forEach(function (veld) {
+    veld.addEventListener("input", function () { groeiMee(veld); });
+    groeiMee(veld);
+  });
+
   // Vaktermen die de taalcontrole niet als fout moet melden
   var VAKWOORDEN = ["dwg", "dxf", "armatuurkeuze", "verledding", "dimprofielen", "dimprofiel", "dialux", "npr", "nen", "lichtberekening", "lichtberekeningen", "gelijkmatigheid", "mastposities", "lichtpunthoogte", "cb-lighting"];
   function geenVakwoord(x, tekst) {
@@ -561,6 +572,8 @@
   function toonDeel(naam) {
     document.querySelectorAll(".deel").forEach(function (d) { d.classList.remove("actief"); });
     el("deel-" + naam).classList.add("actief");
+    // Nu het deel zichtbaar is kunnen de tekstvakken hun echte hoogte meten
+    el("deel-" + naam).querySelectorAll("textarea").forEach(groeiMee);
     window.scrollTo({ top: 0 });
   }
   document.querySelectorAll("[data-open]").forEach(function (b) {
@@ -662,6 +675,7 @@
     el("n-titel").value = n ? n.titel : "";
     el("n-datum").value = n ? n.datum : vandaag();
     el("n-tekst").value = n ? n.tekst : "";
+    groeiMee(el("n-tekst"));
     el("n-linkedin").value = (n && n.linkedin_url) || "";
     el("n-publiek").checked = n ? !!n.gepubliceerd : true;
     el("n-foto").value = "";
@@ -772,6 +786,7 @@
     el("p-titel").value = p ? p.titel : "";
     el("p-plaats").value = (p && p.plaats) || "";
     el("p-tekst").value = p ? p.omschrijving : "";
+    groeiMee(el("p-tekst"));
     el("p-sort").value = p ? p.sortering : 1;
     el("p-publiek").checked = p ? !!p.gepubliceerd : true;
     el("p-foto").value = "";
@@ -851,6 +866,7 @@
       for (var i = 1; i <= FAQ_AANTAL; i++) {
         el("f-vraag-" + i).value = map["lb_faq" + i + "_vraag"] || "";
         el("f-antwoord-" + i).value = map["lb_faq" + i] || "";
+        groeiMee(el("f-antwoord-" + i));
       }
       updateFaqVoorbeeld();
     });
@@ -950,6 +966,7 @@
     if (telefoon) r.push(telefoon);
     if (email) r.push(email);
     el("r-tekst").value = r.join("\n");
+    groeiMee(el("r-tekst"));
   }
   el("r-tarief").value = (function () { try { return localStorage.getItem("cbl_uurtarief") || 95; } catch (e) { return 95; } })();
   el("r-tarief").addEventListener("input", updateReken);
