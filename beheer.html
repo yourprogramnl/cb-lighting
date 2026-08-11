@@ -119,6 +119,32 @@
   </div>
 </div>
 
+<!-- Wachtwoord vergeten: alleen een e-mailadres invullen -->
+<div class="paneel inlogkader" id="vergeetdeel" style="display:none">
+  <div class="blok">
+    <h3>Wachtwoord vergeten</h3>
+    <div id="v-form">
+      <p class="klein" style="margin-bottom:14px">Vul uw e-mailadres in, dan sturen we u een e-mail met een herstel-link.</p>
+      <div class="rijtje">
+        <label for="v-email">E-mailadres</label>
+        <input type="email" id="v-email" autocomplete="username">
+      </div>
+      <div class="knopjes">
+        <button class="kn hoofd" id="v-verstuur">Verstuur de e-mail</button>
+        <button class="kn stil" id="v-terug">Terug naar inloggen</button>
+        <span class="status" id="v-status"></span>
+      </div>
+    </div>
+    <div id="v-klaar" style="display:none">
+      <p style="margin-bottom:14px">De e-mail is verstuurd naar <b id="v-klaaradres"></b>.</p>
+      <p class="klein" style="margin-bottom:14px">Klik op de link in die e-mail om een nieuw wachtwoord te kiezen. Kijk ook even bij de ongewenste post als u niets ziet.</p>
+      <div class="knopjes">
+        <button class="kn stil" id="v-klaarterug">Terug naar inloggen</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Nieuw wachtwoord kiezen (na de herstel-link uit de e-mail) -->
 <div class="paneel inlogkader" id="hersteldeel" style="display:none">
   <div class="blok">
@@ -399,6 +425,7 @@
     el("beheerdeel").style.display = aan ? "" : "none";
     el("uitlogknop").style.display = aan ? "" : "none";
     el("hersteldeel").style.display = "none";
+    el("vergeetdeel").style.display = "none";
   }
 
   // Komt de gebruiker binnen via de herstel-link uit de e-mail?
@@ -408,6 +435,7 @@
       herstelModus = true;
       el("inlogdeel").style.display = "none";
       el("beheerdeel").style.display = "none";
+      el("vergeetdeel").style.display = "none";
       el("hersteldeel").style.display = "";
     }
   });
@@ -454,23 +482,40 @@
     nieuwWachtwoord("w-ww1", "w-ww2", "w-status");
   });
 
-  el("wwvergeten").addEventListener("click", function () {
-    var email = el("inlog-email").value.trim();
-    if (!email) { status("inlogstatus", "Vul eerst uw e-mailadres in, dan sturen we u een herstel-link.", "err"); return; }
-    status("inlogstatus", "Bezig...");
+  // Wachtwoord vergeten: eigen schermpje met alleen een e-mailadres
+  function toonVergeet(aan) {
+    el("inlogdeel").style.display = aan ? "none" : "";
+    el("vergeetdeel").style.display = aan ? "" : "none";
+    if (aan) {
+      el("v-form").style.display = "";
+      el("v-klaar").style.display = "none";
+      el("v-email").value = el("inlog-email").value.trim();
+      el("v-email").focus();
+    }
+  }
+  el("wwvergeten").addEventListener("click", function () { toonVergeet(true); });
+  el("v-terug").addEventListener("click", function () { toonVergeet(false); });
+  el("v-klaarterug").addEventListener("click", function () { toonVergeet(false); });
+  el("v-verstuur").addEventListener("click", function () {
+    var email = el("v-email").value.trim();
+    if (!email || email.indexOf("@") === -1) { status("v-status", "Vul eerst uw e-mailadres in.", "err"); return; }
+    status("v-status", "Bezig met versturen...");
     sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname }).then(function (res) {
       if (res.error) {
         var m = (res.error.message || "").toLowerCase();
         if (m.indexOf("security purposes") > -1 || m.indexOf("rate") > -1) {
-          status("inlogstatus", "Er is net al een e-mail gestuurd. Kijk in uw postvak (ook bij ongewenste post) of probeer het over een paar minuten opnieuw.", "err");
+          status("v-status", "Er is net al een e-mail gestuurd. Kijk in uw postvak (ook bij ongewenste post) of probeer het over een paar minuten opnieuw.", "err");
         } else {
-          status("inlogstatus", "Versturen is niet gelukt. Probeer het later nog eens.", "err");
+          status("v-status", "Versturen is niet gelukt. Probeer het later nog eens.", "err");
         }
         return;
       }
-      status("inlogstatus", "Als dit e-mailadres bekend is, ontvangt u binnen enkele minuten een e-mail met een herstel-link. Kijk ook bij ongewenste post.", "ok");
+      el("v-klaaradres").textContent = email;
+      el("v-form").style.display = "none";
+      el("v-klaar").style.display = "";
     });
   });
+  el("v-email").addEventListener("keydown", function (e) { if (e.key === "Enter") el("v-verstuur").click(); });
 
   el("inlogknop").addEventListener("click", function () {
     status("inlogstatus", "Bezig...");
@@ -505,6 +550,7 @@
     if (herstelModus) {
       el("inlogdeel").style.display = "none";
       el("beheerdeel").style.display = "none";
+      el("vergeetdeel").style.display = "none";
       el("hersteldeel").style.display = "";
     } else {
       controleerToegang();
