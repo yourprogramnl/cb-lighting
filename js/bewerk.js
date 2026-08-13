@@ -210,7 +210,7 @@
           else {
             el.style.backgroundImage = "url('" + url + "')";
             el.style.backgroundSize = "cover";
-            el.style.backgroundPosition = "center";
+            el.style.backgroundPosition = el.dataset.fotofocus || "center";
           }
           el.classList.add("heeft-foto");
           knop.textContent = "✔ Gelukt! Nog eens vervangen?";

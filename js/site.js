@@ -117,7 +117,12 @@
       var img = new Image();
       img.onload = function () {
         if (el.tagName === "IMG") { el.src = url; }
-        else { el.style.backgroundImage = "url('" + url + "')"; el.style.backgroundSize = "cover"; el.style.backgroundPosition = "center"; }
+        else {
+          el.style.backgroundImage = "url('" + url + "')";
+          el.style.backgroundSize = "cover";
+          // data-fotofocus bepaalt welk deel in beeld blijft als het vak niet dezelfde vorm heeft als de foto
+          el.style.backgroundPosition = el.dataset.fotofocus || "center";
+        }
         el.classList.add("heeft-foto");
       };
       img.src = url;
