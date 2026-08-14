@@ -1,0 +1,19 @@
+{
+  "redirects": [
+    { "source": "/contact", "destination": "/contact.html", "permanent": true },
+    { "source": "/diensten", "destination": "/lichtberekeningen.html", "permanent": true },
+    { "source": "/diensten/:pad*", "destination": "/nieuws.html", "permanent": true },
+    { "source": "/echt-gebeurd", "destination": "/nieuws.html", "permanent": true },
+    { "source": "/echt-gebeurd/:pad*", "destination": "/nieuws.html", "permanent": true },
+    { "source": "/know-how", "destination": "/nieuws.html", "permanent": true },
+    { "source": "/know-how/:pad*", "destination": "/nieuws.html", "permanent": true },
+    { "source": "/over-cb-lighting", "destination": "/over-cb-lighting.html", "permanent": true },
+    { "source": "/over-ons", "destination": "/over-cb-lighting.html", "permanent": true },
+    { "source": "/over-mij", "destination": "/over-cb-lighting.html", "permanent": true },
+    { "source": "/nieuws", "destination": "/nieuws.html", "permanent": true },
+    { "source": "/projecten", "destination": "/projecten.html", "permanent": true },
+    { "source": "/lichtberekeningen", "destination": "/lichtberekeningen.html", "permanent": true },
+    { "source": "/blog/:pad*", "destination": "/nieuws.html", "permanent": true },
+    { "source": "/richtlijnen-wat-doe-je-er-mee", "destination": "/nieuws.html", "permanent": true }
+  ]
+}
