@@ -16,12 +16,16 @@ export default async function handler(req, res) {
   ];
 
   let projecten = [];
+  let berichten = [];
   try {
-    const antwoord = await fetch(
-      SUPABASE_URL + "/rest/v1/cbl_projecten?select=slug&gepubliceerd=eq.true&slug=not.is.null&order=sortering.asc",
-      { headers: { apikey: ANON_KEY, Authorization: "Bearer " + ANON_KEY } }
-    );
-    if (antwoord.ok) projecten = await antwoord.json();
+    const kop = { headers: { apikey: ANON_KEY, Authorization: "Bearer " + ANON_KEY } };
+    const [antwoordP, antwoordN] = await Promise.all([
+      fetch(SUPABASE_URL + "/rest/v1/cbl_projecten?select=slug&gepubliceerd=eq.true&slug=not.is.null&order=sortering.asc", kop),
+      // Alleen berichten met een eigen pagina; LinkedIn-berichten verwijzen naar LinkedIn zelf
+      fetch(SUPABASE_URL + "/rest/v1/cbl_nieuws?select=slug&gepubliceerd=eq.true&slug=not.is.null&linkedin_url=is.null&order=datum.desc", kop)
+    ]);
+    if (antwoordP.ok) projecten = await antwoordP.json();
+    if (antwoordN.ok) berichten = await antwoordN.json();
   } catch (fout) {
     // Zonder database blijven in elk geval de vaste pagina's in de sitemap staan
   }
@@ -29,6 +33,7 @@ export default async function handler(req, res) {
   const regels = [];
   vaste.forEach((pad) => regels.push("<url><loc>" + basis + pad + "</loc></url>"));
   projecten.forEach((p) => regels.push("<url><loc>" + basis + "/projecten/" + p.slug + "</loc></url>"));
+  berichten.forEach((b) => regels.push("<url><loc>" + basis + "/nieuws/" + b.slug + "</loc></url>"));
 
   res.setHeader("Content-Type", "application/xml; charset=utf-8");
   res.setHeader("Cache-Control", "s-maxage=3600, stale-while-revalidate=86400");

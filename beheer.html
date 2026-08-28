@@ -757,7 +757,9 @@
         b.innerHTML = '<div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap">' +
           (n.foto_url ? '<img class="itemfoto" src="' + n.foto_url + '" alt="">' : "") +
           '<div style="flex:1;min-width:220px"><h3></h3><p class="klein meta"></p></div></div>' +
-          '<div class="knopjes"><button class="kn stil bewerkknop">Bewerk</button><button class="kn rood wegknop">Verwijder</button></div>';
+          '<div class="knopjes"><button class="kn stil bewerkknop">Bewerk</button>' +
+          (!n.linkedin_url && n.slug && n.gepubliceerd ? '<a class="kn stil" style="text-decoration:none" target="_blank" href="/nieuws/' + n.slug + '">Bekijk op de site</a>' : '') +
+          '<button class="kn rood wegknop">Verwijder</button></div>';
         b.querySelector("h3").textContent = n.titel;
         b.querySelector(".meta").textContent = datumNL(n.datum) + (n.gepubliceerd ? "" : " · staat NIET op de site");
         b.querySelector(".bewerkknop").addEventListener("click", function () { vulNieuwsForm(n); });

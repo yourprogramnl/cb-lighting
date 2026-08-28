@@ -241,7 +241,7 @@
 <script src="js/site.js"></script>
 <script>
 // Laatste drie nieuwsberichten op de homepage
-cblLees("cbl_nieuws?select=id,titel,tekst,foto_url,linkedin_url,datum&gepubliceerd=eq.true&order=datum.desc&limit=3")
+cblLees("cbl_nieuws?select=id,titel,tekst,foto_url,linkedin_url,datum,slug&gepubliceerd=eq.true&order=datum.desc&limit=3")
   .then(function (items) {
     var doel = document.getElementById("nieuws-thuis");
     doel.innerHTML = "";
@@ -252,16 +252,26 @@ cblLees("cbl_nieuws?select=id,titel,tekst,foto_url,linkedin_url,datum&gepublicee
     items.forEach(function (n) {
       var kaart = document.createElement("article");
       kaart.className = "nieuwsitem";
-      var foto = n.foto_url ? '<div class="nfoto"><img src="' + n.foto_url + '" alt="" loading="lazy"></div>' : "";
+      var foto = '<div class="nfoto"><img src="' + (n.foto_url || "assets/nieuws-standaard.png") + '" alt="" loading="lazy"></div>';
       var chip = n.linkedin_url ? '<span class="li-chip">LinkedIn-bericht</span>' : "";
+      var leesTekst = n.linkedin_url ? "Lees verder op LinkedIn &rarr;" : "Lees verder &rarr;";
       kaart.innerHTML = foto +
         '<div class="inhoud">' +
         '<div class="kop-rij"><time></time>' + chip + '</div><h3></h3><div class="tekst dicht"></div>' +
-        '<div class="voet"><a class="leesmeer" href="nieuws.html#' + n.id + '" style="text-decoration:none">Lees verder</a></div>' +
+        '<div class="voet"><a class="leesmeer">' + leesTekst + '</a></div>' +
         '</div>';
+      var lees = kaart.querySelector(".leesmeer");
+      if (n.linkedin_url) {
+        lees.href = n.linkedin_url;
+        lees.target = "_blank";
+        lees.rel = "noopener";
+      } else {
+        lees.href = "/nieuws/" + n.slug;
+      }
       kaart.querySelector("time").textContent = cblDatum(n.datum);
       kaart.querySelector("h3").textContent = n.titel;
       kaart.querySelector(".tekst").textContent = n.tekst;
+      cblFotoPas(kaart.querySelector(".nfoto img"));
       doel.appendChild(kaart);
     });
   })

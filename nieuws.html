@@ -101,7 +101,7 @@
 <script src="js/config.js"></script>
 <script src="js/site.js"></script>
 <script>
-cblLees("cbl_nieuws?select=id,titel,tekst,foto_url,linkedin_url,datum&gepubliceerd=eq.true&order=datum.desc")
+cblLees("cbl_nieuws?select=id,titel,tekst,foto_url,linkedin_url,datum,slug&gepubliceerd=eq.true&order=datum.desc")
   .then(function (items) {
     var doel = document.getElementById("nieuwslijst");
     doel.innerHTML = "";
@@ -109,41 +109,32 @@ cblLees("cbl_nieuws?select=id,titel,tekst,foto_url,linkedin_url,datum&gepublicee
       doel.innerHTML = '<div class="leegmelding">Nog geen berichten.</div>';
       return;
     }
-    var openId = (location.hash || "").replace("#", "");
     items.forEach(function (n) {
-      var kaart = document.createElement("article");
-      kaart.className = "nieuwsitem";
-      kaart.id = n.id;
       // Geen eigen foto? Dan het standaardbeeld met het logo
       var foto = '<div class="nfoto"><img src="' + (n.foto_url || "assets/nieuws-standaard.png") + '" alt="" loading="lazy"></div>';
       var chip = n.linkedin_url ? '<span class="li-chip">LinkedIn-bericht</span>' : "";
+      var kaart;
       if (n.linkedin_url) {
         // LinkedIn-bericht: kort stukje tekst, lees verder gaat naar de post zelf
+        kaart = document.createElement("article");
+        kaart.className = "nieuwsitem";
         kaart.innerHTML = foto +
           '<div class="inhoud"><div class="kop-rij"><time></time>' + chip + '</div><h3></h3><div class="tekst dicht"></div>' +
           '<div class="voet"><a class="leesmeer" target="_blank" rel="noopener">Lees verder op LinkedIn &rarr;</a></div></div>';
         kaart.querySelector(".leesmeer").href = n.linkedin_url;
       } else {
+        // Eigen bericht: de hele kaart opent de eigen berichtpagina
+        kaart = document.createElement("a");
+        kaart.className = "nieuwsitem";
+        kaart.href = "/nieuws/" + n.slug;
         kaart.innerHTML = foto +
           '<div class="inhoud"><div class="kop-rij"><time></time></div><h3></h3><div class="tekst dicht"></div>' +
-          '<div class="voet"><button class="leesmeer" type="button">Lees verder</button></div></div>';
+          '<div class="voet"><span class="leesmeer">Lees verder &rarr;</span></div></div>';
       }
+      kaart.id = n.id;
       kaart.querySelector("time").textContent = cblDatum(n.datum);
       kaart.querySelector("h3").textContent = n.titel;
-      var tekstEl = kaart.querySelector(".tekst");
-      tekstEl.textContent = n.tekst;
-      if (!n.linkedin_url) {
-        var knop = kaart.querySelector(".leesmeer");
-        knop.addEventListener("click", function () {
-          var dicht = tekstEl.classList.toggle("dicht");
-          knop.textContent = dicht ? "Lees verder" : "Inklappen";
-        });
-        if (openId && openId === n.id) {
-          tekstEl.classList.remove("dicht");
-          knop.textContent = "Inklappen";
-          setTimeout(function () { kaart.scrollIntoView({ behavior: "smooth", block: "start" }); }, 150);
-        }
-      }
+      kaart.querySelector(".tekst").textContent = n.tekst;
       cblFotoPas(kaart.querySelector(".nfoto img"));
       doel.appendChild(kaart);
     });
