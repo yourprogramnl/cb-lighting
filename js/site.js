@@ -160,7 +160,8 @@
   });
 
   // --- Bewerk-stand: alleen laden als er #bewerken (of ?bewerken=1) in het adres staat ---
-  if (new URLSearchParams(location.search).has("bewerken") || location.hash === "#bewerken") {
+  var inBewerkStand = new URLSearchParams(location.search).has("bewerken") || location.hash === "#bewerken";
+  if (inBewerkStand) {
     var s1 = document.createElement("script");
     s1.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js";
     s1.onload = function () {
@@ -169,5 +170,31 @@
       document.body.appendChild(s2);
     };
     document.body.appendChild(s1);
+  }
+
+  // --- Aanpasknop rechtsboven, alleen voor het beheer ---
+  // Wie in het beheer is ingelogd heeft daarvan een inlogbewijs in de
+  // browseropslag staan; bezoekers hebben dat niet en zien deze knop dus nooit.
+  var ingelogd = false;
+  try {
+    for (var li = 0; li < localStorage.length; li++) {
+      if (/^sb-.+-auth-token$/.test(localStorage.key(li))) { ingelogd = true; break; }
+    }
+  } catch (e) {}
+  if (ingelogd && !inBewerkStand) {
+    var balkvak = document.querySelector("header.top .wrap");
+    if (balkvak) {
+      var ak = document.createElement("button");
+      ak.className = "aanpasknop";
+      ak.type = "button";
+      ak.title = "Deze pagina aanpassen";
+      ak.setAttribute("aria-label", "Deze pagina aanpassen");
+      ak.textContent = "✏️";
+      ak.addEventListener("click", function () {
+        location.hash = "#bewerken";
+        location.reload();
+      });
+      balkvak.appendChild(ak);
+    }
   }
 })();
