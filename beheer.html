@@ -195,6 +195,11 @@
         <b>Veelgestelde vragen</b>
         <span>De vragen en antwoorden op de pagina Lichtberekeningen.</span>
       </button>
+      <button class="tegel" data-open="ideeen">
+        <span class="emoji">💡</span>
+        <b>Ideeën voor berichten</b>
+        <span>Onderwerpen om over te schrijven. Elke week vijf nieuwe.</span>
+      </button>
       <button class="tegel" data-open="reken">
         <span class="emoji">💶</span>
         <b>Een prijs berekenen</b>
@@ -316,6 +321,16 @@
       </div>
     </div>
     </div>
+  </div>
+
+  <!-- Ideeën voor berichten -->
+  <div class="deel" id="deel-ideeen">
+    <button class="terug" data-terug>← Terug naar het begin</button>
+    <div class="blok">
+      <h3>Ideeën voor berichten</h3>
+      <p class="subtekst">Onderwerpen waar u over zou kunnen schrijven, voor LinkedIn of direct op de site. Er komen elke week vijf nieuwe ideeën bij. Wilt u er niets mee, of heeft u er al over geschreven? Klik dan op Verwijder. Het idee komt daarna niet nog een keer terug.</p>
+    </div>
+    <div id="ideeenlijst"></div>
   </div>
 
   <!-- Prijs berekenen -->
@@ -558,7 +573,7 @@
       toonBeheer(true);
       vulNieuwsForm(null);
       vulProjectForm(null);
-      laadAanvragen(); laadNieuws(); laadProjecten(); laadGegevens(); laadFaq();
+      laadAanvragen(); laadNieuws(); laadProjecten(); laadGegevens(); laadFaq(); laadIdeeen();
     });
   }
 
@@ -767,6 +782,34 @@
           if (confirm('Bericht "' + n.titel + '" definitief verwijderen?')) {
             sb.from("cbl_nieuws").delete().eq("id", n.id).then(laadNieuws);
           }
+        });
+        doel.appendChild(b);
+      });
+    });
+  }
+
+  // ---------- Ideeën voor berichten ----------
+  function laadIdeeen() {
+    sb.from("cbl_artikel_ideeen").select("*").eq("status", "open").order("created_at", { ascending: false }).then(function (res) {
+      var doel = el("ideeenlijst");
+      doel.innerHTML = "";
+      var rijen = res.data || [];
+      if (!rijen.length) {
+        doel.innerHTML = '<div class="blok">Er staan nu geen ideeën klaar. Elke week komen er vijf nieuwe bij.</div>';
+        return;
+      }
+      rijen.forEach(function (r) {
+        var b = document.createElement("div");
+        b.className = "blok";
+        b.innerHTML = '<div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">' +
+          '<p style="flex:1;min-width:220px;margin:0">💡 <span class="ideetekst"></span></p>' +
+          '<button class="kn rood wegknop">Verwijder</button></div>';
+        b.querySelector(".ideetekst").textContent = r.tekst;
+        b.querySelector(".wegknop").addEventListener("click", function () {
+          // Niet echt weggooien maar archiveren, zodat hetzelfde idee later
+          // niet opnieuw kan worden voorgesteld
+          sb.from("cbl_artikel_ideeen").update({ status: "archief", gearchiveerd_op: new Date().toISOString() })
+            .eq("id", r.id).then(laadIdeeen);
         });
         doel.appendChild(b);
       });
