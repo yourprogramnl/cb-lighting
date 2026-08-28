@@ -114,7 +114,8 @@ cblLees("cbl_nieuws?select=id,titel,tekst,foto_url,linkedin_url,datum&gepublicee
       var kaart = document.createElement("article");
       kaart.className = "nieuwsitem";
       kaart.id = n.id;
-      var foto = n.foto_url ? '<div class="nfoto"><img src="' + n.foto_url + '" alt="" loading="lazy"></div>' : "";
+      // Geen eigen foto? Dan het standaardbeeld met het logo
+      var foto = '<div class="nfoto"><img src="' + (n.foto_url || "assets/nieuws-standaard.png") + '" alt="" loading="lazy"></div>';
       var chip = n.linkedin_url ? '<span class="li-chip">LinkedIn-bericht</span>' : "";
       if (n.linkedin_url) {
         // LinkedIn-bericht: kort stukje tekst, lees verder gaat naar de post zelf
