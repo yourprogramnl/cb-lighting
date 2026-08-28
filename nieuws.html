@@ -137,6 +137,7 @@ cblLees("cbl_nieuws?select=id,titel,tekst,foto_url,linkedin_url,datum&gepublicee
         knop.textContent = "Inklappen";
         setTimeout(function () { kaart.scrollIntoView({ behavior: "smooth", block: "start" }); }, 150);
       }
+      cblFotoPas(kaart.querySelector(".nfoto img"));
       doel.appendChild(kaart);
     });
   })

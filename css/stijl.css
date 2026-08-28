@@ -232,8 +232,11 @@ footer .logo img { height: 30px; }
   background: var(--wit); border: 1px solid var(--lijn); border-radius: var(--rond);
   overflow: hidden; box-shadow: var(--schaduw); display: flex; flex-direction: column;
 }
-.nieuwsitem .nfoto { aspect-ratio: 16/9; background: linear-gradient(150deg, var(--nacht-2), var(--nacht-3)); }
-.nieuwsitem .nfoto img { width: 100%; height: 100%; object-fit: cover; }
+.nieuwsitem .nfoto { position: relative; aspect-ratio: 16/9; background: linear-gradient(150deg, var(--nacht-2), var(--nacht-3)); }
+.nieuwsitem .nfoto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* Staande of vierkante foto's: passend tonen met een rustige lichte rand, in plaats van hard afsnijden */
+.nfoto.staand { background: var(--wolk); border-bottom: 1px solid var(--lijn); }
+.nfoto.staand img { object-fit: contain; }
 .nieuwsitem .inhoud { padding: 22px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
 .nieuwsitem time { color: var(--grijs); font-size: .85rem; }
 .nieuwsitem h3 { font-size: 1.12rem; }
@@ -247,8 +250,10 @@ a.nieuwsitem { color: inherit; text-decoration: none; transition: transform .15s
 a.nieuwsitem:hover { transform: translateY(-3px); border-color: var(--amber); }
 .terugregel { margin-bottom: 18px; }
 .terugregel a { color: var(--gloed); font-weight: 700; text-decoration: none; }
-.projectfoto { border-radius: var(--rond); overflow: hidden; box-shadow: var(--schaduw); margin-bottom: 30px; max-width: 900px; }
-.projectfoto img { width: 100%; max-height: 540px; object-fit: cover; display: block; }
+.projectfoto { position: relative; aspect-ratio: 16/9; border-radius: var(--rond); overflow: hidden; box-shadow: var(--schaduw); margin-bottom: 30px; max-width: 900px; background: var(--wolk); }
+.projectfoto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.projectfoto.staand { border: 1px solid var(--lijn); }
+.projectfoto.staand img { object-fit: contain; }
 .projecttekst { max-width: 780px; }
 .projecttekst p { color: var(--grijs); margin-bottom: 14px; font-size: 1.05rem; line-height: 1.7; }
 

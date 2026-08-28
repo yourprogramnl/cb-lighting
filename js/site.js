@@ -58,6 +58,20 @@
     } catch (e) { return iso; }
   };
 
+  // --- Staande foto's passend tonen in plaats van hard afsnijden ---
+  // Kijkt naar de echte vorm van de foto; is hij staand of vierkant, dan krijgt
+  // het fotovak de klasse "staand" (foto passend, lichte rand ernaast).
+  window.cblFotoPas = function (img) {
+    if (!img) return;
+    function check() {
+      if (img.naturalWidth && img.naturalHeight && img.naturalWidth / img.naturalHeight < 1.25) {
+        var vak = img.closest(".nfoto, .projectfoto");
+        if (vak) vak.classList.add("staand");
+      }
+    }
+    if (img.complete) check(); else img.addEventListener("load", check);
+  };
+
   // --- Veilig tekst in een element zetten, met alinea's ---
   window.cblVulTekst = function (el, tekst) {
     el.textContent = "";

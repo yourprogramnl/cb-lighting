@@ -140,6 +140,7 @@
         document.getElementById("p-fotoimg").src = p.foto_url;
         document.getElementById("p-fotoimg").alt = p.titel;
         document.getElementById("p-foto").style.display = "";
+        cblFotoPas(document.getElementById("p-fotoimg"));
       }
       var doel = document.getElementById("p-tekst");
       String(p.omschrijving || "").split(/\n\s*\n/).forEach(function (stuk) {
