@@ -244,6 +244,7 @@ footer .logo img { height: 30px; }
 .nieuwsitem .tekst.dicht { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 .nieuwsitem .voet { margin-top: auto; padding-top: 12px; display: flex; gap: 14px; align-items: center; }
 .leesmeer { background: none; border: 0; color: var(--amber-donker); font-weight: 700; cursor: pointer; font-size: .95rem; padding: 0; }
+a.leesmeer { text-decoration: none; }
 
 /* Klikbare projectkaarten en de losse projectpagina */
 a.nieuwsitem { color: inherit; text-decoration: none; transition: transform .15s ease, border-color .15s ease; }
