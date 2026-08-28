@@ -245,6 +245,11 @@
   <!-- Nieuws -->
   <div class="deel" id="deel-nieuws">
     <button class="terug" data-terug>← Terug naar het begin</button>
+    <div class="blok" id="ideebox" style="display:none;border-left:5px solid var(--amber)">
+      <b>💡 Uw onderwerp</b>
+      <p id="ideebox-tekst" style="margin:6px 0 4px"></p>
+      <p class="klein">Bedenk zelf een pakkende kop en schrijf uw eigen verhaal. Zodra het bericht op de site staat, wordt dit idee vanzelf uit de ideeënlijst gehaald.</p>
+    </div>
     <div class="formgrid">
     <div class="blok">
       <h3 id="nieuwsformtitel">Een bericht plaatsen</h3>
@@ -357,7 +362,7 @@
     <button class="terug" data-terug>← Terug naar het begin</button>
     <div class="blok">
       <h3>Ideeën voor berichten</h3>
-      <p class="subtekst">Onderwerpen waar u over zou kunnen schrijven, voor LinkedIn of direct op de site. Er komen elke week vijf nieuwe ideeën bij. Wilt u er niets mee, of heeft u er al over geschreven? Klik dan op Verwijder. Het idee komt daarna niet nog een keer terug.</p>
+      <p class="subtekst">Onderwerpen waar u over zou kunnen schrijven, voor LinkedIn of direct op de site. Er komen elke week vijf nieuwe ideeën bij. Klik op Schrijven om er meteen een bericht over te maken. Wilt u er niets mee, of heeft u er al over geschreven? Klik dan op Verwijder. Het idee komt daarna niet nog een keer terug.</p>
     </div>
     <div id="ideeenlijst"></div>
   </div>
@@ -705,6 +710,7 @@
 
   // ---------- Nieuws ----------
   var nFotoBestaand = null;
+  var actiefIdee = null; // het idee waarover nu geschreven wordt (uit de ideeënlijst)
   function updateNieuwsVoorbeeld() {
     el("nv-titel").textContent = el("n-titel").value.trim() || "De kop van uw bericht";
     el("nv-tekst").textContent = el("n-tekst").value.trim() || "Uw verhaal verschijnt hier zodra u typt.";
@@ -721,6 +727,8 @@
   el("n-foto").addEventListener("change", updateNieuwsVoorbeeld);
 
   function vulNieuwsForm(n) {
+    actiefIdee = null;
+    el("ideebox").style.display = "none";
     el("n-id").value = n ? n.id : "";
     el("n-titel").value = n ? n.titel : "";
     el("n-datum").value = n ? n.datum : vandaag();
@@ -786,6 +794,12 @@
     }).then(function (res) {
       if (res && res.error) throw res.error;
       status("n-status", "Gelukt! Het bericht staat op de site.", "ok");
+      // Is dit bericht geschreven vanuit een idee? Dan dat idee archiveren,
+      // zodat het uit de ideeënlijst verdwijnt en nooit opnieuw wordt voorgesteld
+      if (actiefIdee) {
+        sb.from("cbl_artikel_ideeen").update({ status: "archief", gearchiveerd_op: new Date().toISOString() })
+          .eq("id", actiefIdee.id).then(laadIdeeen);
+      }
       vulNieuwsForm(null);
       laadNieuws();
     }).catch(function () { status("n-status", "Dat lukte niet. Probeer het nog eens.", "err"); });
@@ -857,8 +871,19 @@
         b.className = "blok";
         b.innerHTML = '<div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">' +
           '<p style="flex:1;min-width:220px;margin:0">💡 <span class="ideetekst"></span></p>' +
-          '<button class="kn rood wegknop">Verwijder</button></div>';
+          '<div style="display:flex;gap:8px;flex:none;flex-wrap:wrap">' +
+          '<button class="kn hoofd schrijfknop">Schrijven</button>' +
+          '<button class="kn rood wegknop">Verwijder</button></div></div>';
         b.querySelector(".ideetekst").textContent = r.tekst;
+        b.querySelector(".schrijfknop").addEventListener("click", function () {
+          // Meteen een bericht over dit onderwerp schrijven: open het
+          // berichtenformulier met het idee als geheugensteuntje erboven
+          vulNieuwsForm(null);
+          actiefIdee = r;
+          el("ideebox-tekst").textContent = r.tekst;
+          el("ideebox").style.display = "";
+          toonDeel("nieuws");
+        });
         b.querySelector(".wegknop").addEventListener("click", function () {
           // Niet echt weggooien maar archiveren, zodat hetzelfde idee later
           // niet opnieuw kan worden voorgesteld
