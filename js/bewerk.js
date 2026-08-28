@@ -58,14 +58,23 @@
     // Uitklapvragen (FAQ) allemaal open, zodat ook de antwoorden aan te klikken zijn
     document.querySelectorAll("details").forEach(function (d) { d.open = true; });
 
-    // Links binnen de site houden de bewerk-stand vast, zodat u kunt doorklikken
-    document.querySelectorAll("a[href]").forEach(function (a) {
+    // Links binnen de site houden de bewerk-stand vast, zodat u kunt doorklikken.
+    // Dit gebeurt op het moment van klikken (niet één keer bij het laden), zodat het
+    // ook werkt voor kaarten en knoppen die pas later verschijnen: de project- en
+    // nieuwskaarten uit de database en de paginering-knoppen.
+    document.addEventListener("click", function (e) {
+      var a = e.target && e.target.closest ? e.target.closest("a[href]") : null;
+      if (!a) return;
       var h = a.getAttribute("href") || "";
+      if (h.indexOf("#") !== -1 || h.indexOf("beheer") !== -1) return;
       var binnen = /^[a-z-]+\.html/.test(h) || /^\/(projecten|nieuws)\//.test(h) || h === "/";
-      if (binnen && h.indexOf("beheer") === -1 && h.indexOf("#") === -1) {
+      if (binnen) {
         a.setAttribute("href", h.split("?")[0] + "#bewerken");
+      } else if (h.charAt(0) === "?") {
+        // Paginering ("?pagina=2"): query behouden, bewerk-stand erachter
+        a.setAttribute("href", h + "#bewerken");
       }
-    });
+    }, true);
 
     window.cblTekstenKlaar.then(function (map) {
       document.querySelectorAll("[data-tekst]").forEach(function (el) { maakTekstKnop(el, map); });
