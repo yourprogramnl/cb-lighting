@@ -184,6 +184,14 @@
   if (ingelogd && !inBewerkStand) {
     var balkvak = document.querySelector("header.top .wrap");
     if (balkvak) {
+      // De aanvraag-knop is voor bezoekers; voor het beheer komen hier de
+      // knoppen Beheer en het potloodje voor in de plaats (via CSS)
+      document.body.classList.add("beheerder");
+      var bk = document.createElement("a");
+      bk.className = "beheerknop";
+      bk.href = "/beheer.html";
+      bk.textContent = "Beheer";
+      balkvak.appendChild(bk);
       var ak = document.createElement("button");
       ak.className = "aanpasknop";
       ak.type = "button";
