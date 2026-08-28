@@ -67,7 +67,9 @@
       if (!a) return;
       var h = a.getAttribute("href") || "";
       if (h.indexOf("#") !== -1 || h.indexOf("beheer") !== -1) return;
-      var binnen = /^[a-z-]+\.html/.test(h) || /^\/(projecten|nieuws)\//.test(h) || h === "/";
+      // Zowel "projecten.html" (op gewone pagina's) als "/projecten.html"
+      // (op project- en berichtpagina's) zijn interne links
+      var binnen = /^\/?[a-z-]+\.html/.test(h) || /^\/(projecten|nieuws)\//.test(h) || h === "/";
       if (binnen) {
         a.setAttribute("href", h.split("?")[0] + "#bewerken");
       } else if (h.charAt(0) === "?") {
