@@ -75,6 +75,35 @@
 
     .itemfoto { width: 120px; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid var(--lijn); }
 
+    /* Compacte lijst met eerdere berichten: kleine regels met ikoontjes */
+    .lijstregel {
+      display: flex; gap: 14px; align-items: center;
+      background: var(--wit); border: 1px solid var(--lijn); border-radius: 12px;
+      padding: 12px 16px; margin-bottom: 10px;
+    }
+    .lijstregel .minifoto { width: 56px; height: 42px; object-fit: cover; border-radius: 6px; border: 1px solid var(--lijn); flex: none; }
+    .lijstregel .info { flex: 1; min-width: 0; }
+    .lijstregel .badges { display: flex; gap: 6px; margin-bottom: 3px; flex-wrap: wrap; }
+    .badge { font-size: .72rem; font-weight: 700; border-radius: 999px; padding: 2px 9px; }
+    .badge.live { background: #e5f4e9; color: #14572c; }
+    .badge.uit { background: #f1f3f5; color: #5c6b7a; }
+    .badge.li { background: #e8f1fb; color: #1a5799; }
+    .lijstregel .info b { display: block; font-size: .98rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .lijstregel .meta { color: var(--grijs); font-size: .85rem; }
+    .ikoontjes { display: flex; gap: 8px; flex: none; }
+    .ikn {
+      display: grid; place-items: center; width: 38px; height: 38px; border-radius: 9px;
+      background: var(--wit); border: 1px solid var(--lijn); cursor: pointer;
+      font-size: 1.05rem; line-height: 1; text-decoration: none; color: var(--inkt);
+    }
+    .ikn:hover { border-color: var(--amber); }
+    .ikn.rood { color: #8c1d18; border-color: #f5c6c2; background: #fdeceb; }
+    .ikn.rood:hover { border-color: #8c1d18; }
+    .lijstpaging { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 4px 2px 0; font-size: .92rem; color: var(--grijs); }
+    .lijstpaging button { font: inherit; font-weight: 600; background: var(--wit); border: 1px solid var(--lijn); border-radius: 9px; padding: 8px 14px; cursor: pointer; }
+    .lijstpaging button:disabled { opacity: .4; cursor: default; }
+    @media (max-width: 640px) { .lijstregel .info b { white-space: normal; } }
+
     /* Rekentool */
     .rekenregel { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
     .rekenregel input[type=text] { flex: 1; }
@@ -762,21 +791,34 @@
     }).catch(function () { status("n-status", "Dat lukte niet. Probeer het nog eens.", "err"); });
   });
 
+  var nieuwsPagina = 1;
   function laadNieuws() {
     sb.from("cbl_nieuws").select("*").order("datum", { ascending: false }).then(function (res) {
       var doel = el("nieuwsbeheerlijst");
       doel.innerHTML = "";
-      (res.data || []).forEach(function (n) {
+      var rijen = res.data || [];
+      // Compacte regels, 10 per pagina, met kleine ikoontjes
+      var PER = 10;
+      var totaalPaginas = Math.max(1, Math.ceil(rijen.length / PER));
+      if (nieuwsPagina > totaalPaginas) nieuwsPagina = totaalPaginas;
+      if (nieuwsPagina < 1) nieuwsPagina = 1;
+      var vanaf = (nieuwsPagina - 1) * PER;
+      rijen.slice(vanaf, vanaf + PER).forEach(function (n) {
         var b = document.createElement("div");
-        b.className = "blok";
-        b.innerHTML = '<div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap">' +
-          (n.foto_url ? '<img class="itemfoto" src="' + n.foto_url + '" alt="">' : "") +
-          '<div style="flex:1;min-width:220px"><h3></h3><p class="klein meta"></p></div></div>' +
-          '<div class="knopjes"><button class="kn stil bewerkknop">Bewerk</button>' +
-          (!n.linkedin_url && n.slug && n.gepubliceerd ? '<a class="kn stil" style="text-decoration:none" target="_blank" href="/nieuws/' + n.slug + '#bewerken">Bekijk en pas aan op de site</a>' : '') +
-          '<button class="kn rood wegknop">Verwijder</button></div>';
-        b.querySelector("h3").textContent = n.titel;
-        b.querySelector(".meta").textContent = datumNL(n.datum) + (n.gepubliceerd ? "" : " · staat NIET op de site");
+        b.className = "lijstregel";
+        b.innerHTML =
+          (n.foto_url ? '<img class="minifoto" src="' + n.foto_url + '" alt="">' : "") +
+          '<div class="info"><div class="badges">' +
+            (n.gepubliceerd ? '<span class="badge live">Op de site</span>' : '<span class="badge uit">Niet op de site</span>') +
+            (n.linkedin_url ? '<span class="badge li">LinkedIn</span>' : "") +
+          '</div><b></b><div class="meta"></div></div>' +
+          '<div class="ikoontjes">' +
+            '<button class="ikn bewerkknop" type="button" title="Bewerk dit bericht">✏️</button>' +
+            (!n.linkedin_url && n.slug && n.gepubliceerd ? '<a class="ikn" title="Bekijk en pas aan op de site" target="_blank" href="/nieuws/' + n.slug + '#bewerken">↗</a>' : "") +
+            '<button class="ikn rood wegknop" type="button" title="Verwijder dit bericht">🗑️</button>' +
+          '</div>';
+        b.querySelector(".info b").textContent = n.titel;
+        b.querySelector(".meta").textContent = datumNL(n.datum);
         b.querySelector(".bewerkknop").addEventListener("click", function () { vulNieuwsForm(n); });
         b.querySelector(".wegknop").addEventListener("click", function () {
           if (confirm('Bericht "' + n.titel + '" definitief verwijderen?')) {
@@ -785,6 +827,18 @@
         });
         doel.appendChild(b);
       });
+      if (rijen.length > PER) {
+        var p = document.createElement("div");
+        p.className = "lijstpaging";
+        p.innerHTML = '<button class="vorig" type="button">&larr; Vorige</button>' +
+          "<span>" + (vanaf + 1) + " - " + Math.min(vanaf + PER, rijen.length) + " van de " + rijen.length + "</span>" +
+          '<button class="volgend" type="button">Volgende &rarr;</button>';
+        p.querySelector(".vorig").disabled = nieuwsPagina <= 1;
+        p.querySelector(".volgend").disabled = nieuwsPagina >= totaalPaginas;
+        p.querySelector(".vorig").addEventListener("click", function () { nieuwsPagina--; laadNieuws(); });
+        p.querySelector(".volgend").addEventListener("click", function () { nieuwsPagina++; laadNieuws(); });
+        doel.appendChild(p);
+      }
     });
   }
 
