@@ -758,7 +758,7 @@
           (n.foto_url ? '<img class="itemfoto" src="' + n.foto_url + '" alt="">' : "") +
           '<div style="flex:1;min-width:220px"><h3></h3><p class="klein meta"></p></div></div>' +
           '<div class="knopjes"><button class="kn stil bewerkknop">Bewerk</button>' +
-          (!n.linkedin_url && n.slug && n.gepubliceerd ? '<a class="kn stil" style="text-decoration:none" target="_blank" href="/nieuws/' + n.slug + '">Bekijk op de site</a>' : '') +
+          (!n.linkedin_url && n.slug && n.gepubliceerd ? '<a class="kn stil" style="text-decoration:none" target="_blank" href="/nieuws/' + n.slug + '#bewerken">Bekijk en pas aan op de site</a>' : '') +
           '<button class="kn rood wegknop">Verwijder</button></div>';
         b.querySelector("h3").textContent = n.titel;
         b.querySelector(".meta").textContent = datumNL(n.datum) + (n.gepubliceerd ? "" : " · staat NIET op de site");
@@ -854,7 +854,7 @@
           (p.foto_url ? '<img class="itemfoto" src="' + p.foto_url + '" alt="">' : "") +
           '<div style="flex:1;min-width:220px"><h3></h3><p class="klein meta"></p></div></div>' +
           '<div class="knopjes"><button class="kn stil bewerkknop">Bewerk</button>' +
-          (p.slug && p.gepubliceerd ? '<a class="kn stil" style="text-decoration:none" target="_blank" href="/projecten/' + p.slug + '">Bekijk op de site</a>' : '') +
+          (p.slug && p.gepubliceerd ? '<a class="kn stil" style="text-decoration:none" target="_blank" href="/projecten/' + p.slug + '#bewerken">Bekijk en pas aan op de site</a>' : '') +
           '<button class="kn rood wegknop">Verwijder</button></div>';
         b.querySelector("h3").textContent = p.titel + (p.plaats ? " · " + p.plaats : "");
         b.querySelector(".meta").textContent = (p.gepubliceerd ? "Staat op de site" : "Staat NIET op de site");
