@@ -176,6 +176,14 @@
         doel.appendChild(alinea);
       });
 
+      // In de bewerk-stand zijn titel, tekst en foto van dit project aanpasbaar
+      var titelEl = document.getElementById("p-titel");
+      titelEl.setAttribute("data-rijtekst", "cbl_projecten|titel|" + p.id);
+      titelEl.setAttribute("data-enkel", "");
+      document.getElementById("p-tekst").setAttribute("data-rijtekst", "cbl_projecten|omschrijving|" + p.id);
+      document.getElementById("p-foto").setAttribute("data-rijfoto", "cbl_projecten|foto_url|" + p.id + "|projecten");
+      if (window.cblBewerkRij) window.cblBewerkRij();
+
       // Deelknoppen vullen met het adres van dit project
       var deelUrl = "https://cb-lighting.nl/projecten/" + p.slug;
       var deelTekst = p.titel + " | CB-lighting";

@@ -11,8 +11,8 @@
     ".bw-balk b{color:#f2a93b}",
     ".bw-balk a{background:#f2a93b;color:#0c1929;font-weight:700;text-decoration:none;padding:10px 18px;border-radius:8px}",
     ".bw-balk a.stil{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.4)}",
-    "[data-tekst]{outline:2px dashed rgba(242,169,59,.65);outline-offset:6px;border-radius:2px;cursor:pointer}",
-    "[data-tekst]:hover{outline-style:solid;background:rgba(242,169,59,.1)}",
+    "[data-tekst],[data-rijtekst]{outline:2px dashed rgba(242,169,59,.65);outline-offset:6px;border-radius:2px;cursor:pointer}",
+    "[data-tekst]:hover,[data-rijtekst]:hover{outline-style:solid;background:rgba(242,169,59,.1)}",
     ".bw-knop{position:absolute;top:-16px;right:-14px;z-index:10;width:30px;height:30px;display:flex;align-items:center;justify-content:center;background:#f2a93b;border:0;border-radius:999px;font-size:15px;line-height:1;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.25)}",
     ".bw-fotoknop{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);z-index:10;background:#f2a93b;color:#0c1929;border:0;border-radius:999px;padding:9px 16px;font:700 14px Inter,sans-serif;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.25)}",
     ".bw-sluier{position:fixed;inset:0;background:rgba(12,25,41,.55);z-index:200;display:flex;align-items:center;justify-content:center;padding:16px}",
@@ -61,7 +61,8 @@
     // Links binnen de site houden de bewerk-stand vast, zodat u kunt doorklikken
     document.querySelectorAll("a[href]").forEach(function (a) {
       var h = a.getAttribute("href") || "";
-      if (/^[a-z-]+\.html/.test(h) && h.indexOf("beheer") === -1 && h.indexOf("#") === -1) {
+      var binnen = /^[a-z-]+\.html/.test(h) || /^\/(projecten|nieuws)\//.test(h) || h === "/";
+      if (binnen && h.indexOf("beheer") === -1 && h.indexOf("#") === -1) {
         a.setAttribute("href", h.split("?")[0] + "#bewerken");
       }
     });
@@ -69,6 +70,89 @@
     window.cblTekstenKlaar.then(function (map) {
       document.querySelectorAll("[data-tekst]").forEach(function (el) { maakTekstKnop(el, map); });
       document.querySelectorAll("[data-foto]").forEach(function (el) { maakFotoKnop(el); });
+    });
+
+    // Ook losse projecten en berichten zijn bewerkbaar; de pagina roept dit
+    // nogmaals aan zodra de inhoud geladen is (die komt uit de database)
+    window.cblBewerkRij = koppelRijen;
+    koppelRijen();
+  }
+
+  // --- Teksten en foto's die bij één project of bericht horen ---
+  function koppelRijen() {
+    document.querySelectorAll("[data-rijtekst]").forEach(function (el) {
+      if (el.dataset.bwKlaar) return;
+      el.dataset.bwKlaar = "1";
+      el.style.position = "relative";
+      var d = el.dataset.rijtekst.split("|"); // tabel|veld|id
+      var knop = document.createElement("button");
+      knop.className = "bw-knop";
+      knop.type = "button";
+      knop.textContent = "✏️";
+      knop.title = "Tekst aanpassen";
+      el.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        openVenster(huidigeTekst(el, {}), el.dataset.enkel !== undefined, function (nieuw, klaar) {
+          var wijziging = {};
+          wijziging[d[1]] = nieuw;
+          sb.from(d[0]).update(wijziging).eq("id", d[2]).then(function (res) {
+            if (res.error) { klaar("Opslaan is niet gelukt. Probeer het nog eens."); return; }
+            var eigenKnop = el.querySelector(".bw-knop");
+            window.cblVulTekst(el, nieuw);
+            if (eigenKnop) el.appendChild(eigenKnop);
+            if (el.tagName === "H1") document.title = nieuw + " | CB-lighting";
+            klaar(null);
+          });
+        });
+      });
+      el.appendChild(knop);
+    });
+
+    document.querySelectorAll("[data-rijfoto]").forEach(function (el) {
+      if (el.dataset.bwKlaar) return;
+      el.dataset.bwKlaar = "1";
+      el.style.position = "relative";
+      el.style.display = ""; // ook tonen als er nog geen foto is, anders valt er niets te kiezen
+      var d = el.dataset.rijfoto.split("|"); // tabel|veld|id|map
+      var img = el.querySelector("img");
+      if (img && !img.getAttribute("src")) img.src = "/assets/nieuws-standaard.png";
+      var knop = document.createElement("button");
+      knop.className = "bw-fotoknop";
+      knop.type = "button";
+      knop.textContent = "📷 Foto vervangen";
+      var invoer = document.createElement("input");
+      invoer.type = "file";
+      invoer.accept = "image/*";
+      invoer.style.display = "none";
+      knop.addEventListener("click", function () { invoer.click(); });
+      invoer.addEventListener("change", function () {
+        var f = invoer.files[0];
+        if (!f) return;
+        knop.textContent = "Bezig met uploaden...";
+        var ext = (f.name.split(".").pop() || "jpg").toLowerCase();
+        var pad = d[3] + "/" + Date.now() + "." + ext;
+        var url = C.SUPABASE_URL + "/storage/v1/object/public/" + C.FOTO_BUCKET + "/" + pad;
+        sb.storage.from(C.FOTO_BUCKET).upload(pad, f, { contentType: f.type })
+          .then(function (res) {
+            if (res.error) throw res.error;
+            var wijziging = {};
+            wijziging[d[1]] = url;
+            return sb.from(d[0]).update(wijziging).eq("id", d[2]);
+          })
+          .then(function (res) {
+            if (res && res.error) throw res.error;
+            if (img) {
+              el.classList.remove("staand");
+              img.src = url;
+              if (window.cblFotoPas) window.cblFotoPas(img);
+            }
+            knop.textContent = "✔ Gelukt! Nog eens vervangen?";
+          })
+          .catch(function () { knop.textContent = "Mislukt, probeer opnieuw"; });
+      });
+      el.appendChild(knop);
+      el.appendChild(invoer);
     });
   }
 

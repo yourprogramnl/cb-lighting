@@ -269,6 +269,13 @@ a.nieuwsitem:hover { transform: translateY(-3px); border-color: var(--amber); }
 .deelknop:hover { border-color: var(--amber); transform: translateY(-2px); }
 .deelknop svg { width: 18px; height: 18px; color: var(--amber-donker); }
 
+/* Paginering onder nieuws en projecten */
+.paginering { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 14px; margin-top: 38px; padding-top: 22px; border-top: 1px solid var(--lijn); color: var(--grijs); font-size: .95rem; }
+.paginering .teller { text-align: center; letter-spacing: .04em; }
+.paginering a { color: var(--amber-donker); font-weight: 700; text-decoration: none; }
+.paginering .vorige { text-align: left; }
+.paginering .volgende { text-align: right; }
+
 .kop-rij { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .li-chip {
   display: inline-flex; align-items: center; gap: 6px;

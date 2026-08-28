@@ -49,6 +49,7 @@
     <div class="nieuwslijst" id="projectenlijst">
       <div class="leegmelding">Projecten worden geladen...</div>
     </div>
+    <div class="paginering" id="paginering" style="display:none"></div>
   </div>
 </section>
 
@@ -109,7 +110,22 @@ cblLees("cbl_projecten?select=titel,plaats,omschrijving,foto_url,slug&gepublicee
       doel.innerHTML = '<div class="leegmelding">De eerste projecten verschijnen hier binnenkort. Benieuwd wat CB-lighting voor u kan doen? <a href="contact.html">Neem gerust contact op</a>.</div>';
       return;
     }
-    items.forEach(function (p) {
+    // Maximaal 12 projecten per pagina
+    var PER_PAGINA = 12;
+    var pagina = Math.max(1, parseInt(new URLSearchParams(location.search).get("pagina"), 10) || 1);
+    var totaalPaginas = Math.max(1, Math.ceil(items.length / PER_PAGINA));
+    if (pagina > totaalPaginas) pagina = totaalPaginas;
+    var vanaf = (pagina - 1) * PER_PAGINA;
+    var balk = document.getElementById("paginering");
+    if (items.length > PER_PAGINA) {
+      balk.style.display = "";
+      balk.innerHTML =
+        '<div class="vorige">' + (pagina > 1 ? '<a href="?pagina=' + (pagina - 1) + '">&larr; Vorige pagina</a>' : "") + "</div>" +
+        '<div class="teller">' + (vanaf + 1) + " - " + Math.min(vanaf + PER_PAGINA, items.length) + " van de " + items.length + "</div>" +
+        '<div class="volgende">' + (pagina < totaalPaginas ? '<a href="?pagina=' + (pagina + 1) + '">Volgende pagina &rarr;</a>' : "") + "</div>";
+    }
+
+    items.slice(vanaf, vanaf + PER_PAGINA).forEach(function (p) {
       var kaart = document.createElement(p.slug ? "a" : "article");
       kaart.className = "nieuwsitem";
       if (p.slug) kaart.href = "/projecten/" + p.slug;
