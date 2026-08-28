@@ -256,6 +256,17 @@ a.nieuwsitem:hover { transform: translateY(-3px); border-color: var(--amber); }
 .projectfoto.staand img { object-fit: contain; }
 .projecttekst { max-width: 780px; }
 .projecttekst p { color: var(--grijs); margin-bottom: 14px; font-size: 1.05rem; line-height: 1.7; }
+.deelblok { margin-top: 36px; padding-top: 26px; border-top: 1px solid var(--lijn); }
+.deelblok h4 { margin-bottom: 14px; }
+.deelrij { display: flex; gap: 10px; flex-wrap: wrap; }
+.deelknop {
+  display: inline-flex; align-items: center; gap: 9px; padding: 11px 16px;
+  background: var(--wit); border: 1px solid var(--lijn); border-radius: 10px;
+  color: var(--inkt); text-decoration: none; font-weight: 600; font-size: .95rem;
+  transition: border-color .15s ease, transform .15s ease;
+}
+.deelknop:hover { border-color: var(--amber); transform: translateY(-2px); }
+.deelknop svg { width: 18px; height: 18px; color: var(--amber-donker); }
 
 .kop-rij { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .li-chip {
