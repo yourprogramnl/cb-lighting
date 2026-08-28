@@ -191,7 +191,12 @@
       document.getElementById("deel-facebook").href = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(deelUrl);
       document.getElementById("deel-x").href = "https://twitter.com/intent/tweet?url=" + encodeURIComponent(deelUrl) + "&text=" + encodeURIComponent(deelTekst);
       document.getElementById("deel-whatsapp").href = "https://wa.me/?text=" + encodeURIComponent(deelTekst + " " + deelUrl);
-      document.getElementById("deel-mail").href = "mailto:?subject=" + encodeURIComponent(deelTekst) + "&body=" + encodeURIComponent("Misschien interessant voor u, een project van CB-lighting:\n\n" + p.titel + "\n" + deelUrl);
+      var teaser = String(p.omschrijving || "").replace(/\s+/g, " ").trim().slice(0, 180);
+      document.getElementById("deel-mail").href = "mailto:?subject=" + encodeURIComponent("Kijk eens: " + p.titel) +
+        "&body=" + encodeURIComponent(
+          "Hoi,\n\nIk kwam dit project tegen en moest aan jou denken.\n\n" +
+          p.titel + (p.plaats ? " (" + p.plaats + ")" : "") + "\n\n\"" + teaser + "...\"\n\n" +
+          "Het hele verhaal met foto staat hier:\n" + deelUrl + "\n\nGroet!");
       document.getElementById("p-delen").style.display = "";
     })
     .catch(nietGevonden);

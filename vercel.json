@@ -1,7 +1,7 @@
 {
   "rewrites": [
-    { "source": "/projecten/:slug", "destination": "/project.html" },
-    { "source": "/nieuws/:slug", "destination": "/bericht.html" },
+    { "source": "/projecten/:slug", "destination": "/api/detail?soort=project&slug=:slug" },
+    { "source": "/nieuws/:slug", "destination": "/api/detail?soort=bericht&slug=:slug" },
     { "source": "/sitemap.xml", "destination": "/api/sitemap" }
   ],
   "redirects": [
