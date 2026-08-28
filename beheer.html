@@ -429,6 +429,12 @@
     catch (e) { return iso || ""; }
   }
   function vandaag() { return new Date().toISOString().slice(0, 10); }
+  // Maakt van een projectnaam een net webadres-naampje, bijv. "Verlichting Plein 5" -> "verlichting-plein-5"
+  function maakSlug(tekst) {
+    return String(tekst || "").toLowerCase()
+      .normalize("NFD").replace(/[̀-ͯ]/g, "")
+      .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 80);
+  }
 
   // ---------- Inloggen ----------
   function toonBeheer(aan) {
@@ -814,9 +820,17 @@
     fotoBelofte.then(function (fotoUrl) {
       if (fotoUrl !== undefined) basis.foto_url = fotoUrl;
       var id = el("p-id").value;
-      return id
-        ? sb.from("cbl_projecten").update(basis).eq("id", id)
-        : sb.from("cbl_projecten").insert(basis);
+      if (id) return sb.from("cbl_projecten").update(basis).eq("id", id);
+      // Nieuw project: het webadres (bijv. /projecten/verlichting-plein-5) komt uit de naam.
+      // Bestaat die naam al, dan komt er een volgnummertje achter.
+      basis.slug = maakSlug(titel);
+      return sb.from("cbl_projecten").insert(basis).then(function (res) {
+        if (res.error && res.error.code === "23505") {
+          basis.slug = basis.slug.slice(0, 72) + "-" + Date.now().toString().slice(-4);
+          return sb.from("cbl_projecten").insert(basis);
+        }
+        return res;
+      });
     }).then(function (res) {
       if (res && res.error) throw res.error;
       status("p-status", "Gelukt! Het project staat op de site.", "ok");
@@ -837,7 +851,9 @@
         b.innerHTML = '<div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap">' +
           (p.foto_url ? '<img class="itemfoto" src="' + p.foto_url + '" alt="">' : "") +
           '<div style="flex:1;min-width:220px"><h3></h3><p class="klein meta"></p></div></div>' +
-          '<div class="knopjes"><button class="kn stil bewerkknop">Bewerk</button><button class="kn rood wegknop">Verwijder</button></div>';
+          '<div class="knopjes"><button class="kn stil bewerkknop">Bewerk</button>' +
+          (p.slug && p.gepubliceerd ? '<a class="kn stil" style="text-decoration:none" target="_blank" href="/projecten/' + p.slug + '">Bekijk op de site</a>' : '') +
+          '<button class="kn rood wegknop">Verwijder</button></div>';
         b.querySelector("h3").textContent = p.titel + (p.plaats ? " · " + p.plaats : "");
         b.querySelector(".meta").textContent = (p.gepubliceerd ? "Staat op de site" : "Staat NIET op de site");
         b.querySelector(".bewerkknop").addEventListener("click", function () { vulProjectForm(p); });

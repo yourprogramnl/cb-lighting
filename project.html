@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project | CB-lighting</title>
+  <meta name="description" content="Een project van CB-lighting: lichtberekeningen en verlichtingsadvies.">
+  <link rel="canonical" href="https://cb-lighting.nl/projecten.html" id="canoniek">
+  <meta property="og:image" content="https://cb-lighting.nl/assets/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/assets/favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/stijl.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="/" aria-label="CB Lighting, naar de homepage">
+      <img src="/assets/logo-wit.png" alt="CB Lighting, lichtberekeningen">
+    </a>
+    <a class="belknop" href="#" aria-label="Bel CB-lighting"><svg viewBox="0 0 24 24" fill="none" stroke="#0c1929" stroke-width="2" stroke-linecap="round"><path d="M5 4h4l2 5-2.5 1.5a12 12 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></a>
+    <button class="hamburger" aria-label="Menu openen"><span></span><span></span><span></span></button>
+    <nav class="menu">
+      <a href="/">Home</a>
+      <a href="/over-cb-lighting.html">Over CB-lighting</a>
+      <a href="/lichtberekeningen.html">Lichtberekeningen</a>
+      <a href="/nieuws.html">Nieuws</a>
+      <a href="/projecten.html" class="actief">Projecten</a>
+      <a href="/contact.html">Contact</a>
+      <a href="/contact.html" class="cta">Vraag een berekening aan</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap" style="padding-bottom:56px">
+    <p class="terugregel"><a href="/projecten.html">&larr; Alle projecten</a></p>
+    <h1 id="p-titel">Project wordt geladen...</h1>
+    <p class="sub" id="p-plaats" style="display:none"></p>
+  </div>
+</section>
+
+<section class="sectie">
+  <div class="wrap">
+    <div class="projectfoto" id="p-foto" style="display:none"><img id="p-fotoimg" src="" alt=""></div>
+    <div class="projecttekst" id="p-tekst"></div>
+  </div>
+</section>
+
+<section class="ctastrook">
+  <div class="wrap">
+    <div>
+      <h2 data-tekst="pr_cta_kop" data-enkel>Uw project hier ook?</h2>
+      <p data-tekst="pr_cta_tekst" data-enkel>Vertel wat u wilt verlichten, dan kijken we samen wat er nodig is.</p>
+      <p data-telblok style="display:none;margin-top:8px">Liever direct bellen? <a data-tellink href="#" style="color:var(--gloed);font-weight:700"></a></p>
+    </div>
+    <a class="knop vol" href="/contact.html">Neem contact op</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <a class="logo" href="/" style="margin-bottom:14px"><img src="/assets/logo-wit.png" alt="CB Lighting"></a>
+      <p data-tekst="footer_tekst" data-enkel>Onafhankelijk adviesbureau voor lichtberekeningen en verlichtingsadvies. Openbare verlichting, terreinen, kantoren en bedrijfshallen.</p>
+      <p style="margin-top:12px" data-tekst="contact_adres" data-enkel>Zijpenberg 115, 2905 RN Capelle aan den IJssel</p>
+    </div>
+    <div>
+      <h4>Menu</h4>
+      <ul>
+        <li><a href="/lichtberekeningen.html">Lichtberekeningen</a></li>
+        <li><a href="/projecten.html">Projecten</a></li>
+        <li><a href="/nieuws.html">Nieuws</a></li>
+        <li><a href="/over-cb-lighting.html">Over CB-lighting</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <ul>
+        <li><a data-maillink href="/contact.html">Stuur een bericht</a></li>
+        <li data-telblok style="display:none"><a data-tellink href="#"></a></li>
+        <li><a href="/contact.html">Contactformulier</a></li>
+        <li><a href="https://www.linkedin.com/in/ccbakker/" target="_blank" rel="noopener">Volg Chris op LinkedIn</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="onderbalk">
+    <div class="wrap">
+      <span>© <span data-jaar>2026</span> CB-lighting</span>
+      <span>Concreet en betrouwbaar</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/config.js"></script>
+<script src="/js/site.js"></script>
+<script>
+(function () {
+  // Welk project? Uit het adres (/projecten/naam) of uit ?slug= (voor lokaal testen)
+  var deel = location.pathname.match(/\/projecten\/([^\/]+)\/?$/);
+  var slug = deel ? decodeURIComponent(deel[1]) : new URLSearchParams(location.search).get("slug");
+
+  function nietGevonden() {
+    document.getElementById("p-titel").textContent = "Dit project is niet (meer) te vinden";
+    document.getElementById("p-tekst").innerHTML =
+      '<p>Misschien is het project verwijderd of is het adres niet helemaal goed overgekomen. ' +
+      'Bekijk <a href="/projecten.html">alle projecten</a> of <a href="/contact.html">neem contact op</a>.</p>';
+    var robots = document.createElement("meta");
+    robots.name = "robots";
+    robots.content = "noindex";
+    document.head.appendChild(robots);
+  }
+
+  if (!slug) { nietGevonden(); return; }
+
+  cblLees("cbl_projecten?select=*&gepubliceerd=eq.true&slug=eq." + encodeURIComponent(slug))
+    .then(function (rijen) {
+      if (!rijen.length) { nietGevonden(); return; }
+      var p = rijen[0];
+
+      document.title = p.titel + " | Projecten | CB-lighting";
+      var korte = String(p.omschrijving || "").replace(/\s+/g, " ").trim().slice(0, 155);
+      var beschrijving = document.querySelector('meta[name="description"]');
+      if (beschrijving) beschrijving.setAttribute("content", korte);
+      document.getElementById("canoniek").setAttribute("href", "https://cb-lighting.nl/projecten/" + p.slug);
+
+      document.getElementById("p-titel").textContent = p.titel;
+      if (p.plaats) {
+        var pl = document.getElementById("p-plaats");
+        pl.textContent = p.plaats;
+        pl.style.display = "";
+      }
+      if (p.foto_url) {
+        document.getElementById("p-fotoimg").src = p.foto_url;
+        document.getElementById("p-fotoimg").alt = p.titel;
+        document.getElementById("p-foto").style.display = "";
+      }
+      var doel = document.getElementById("p-tekst");
+      String(p.omschrijving || "").split(/\n\s*\n/).forEach(function (stuk) {
+        if (!stuk.trim()) return;
+        var alinea = document.createElement("p");
+        alinea.textContent = stuk.trim();
+        doel.appendChild(alinea);
+      });
+    })
+    .catch(nietGevonden);
+})();
+</script>
+</body>
+</html>

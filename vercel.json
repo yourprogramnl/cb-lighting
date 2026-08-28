@@ -1,4 +1,8 @@
 {
+  "rewrites": [
+    { "source": "/projecten/:slug", "destination": "/project.html" },
+    { "source": "/sitemap.xml", "destination": "/api/sitemap" }
+  ],
   "redirects": [
     { "source": "/contact", "destination": "/contact.html", "permanent": true },
     { "source": "/diensten", "destination": "/lichtberekeningen.html", "permanent": true },

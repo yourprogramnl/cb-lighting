@@ -151,7 +151,7 @@
     s1.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js";
     s1.onload = function () {
       var s2 = document.createElement("script");
-      s2.src = "js/bewerk.js";
+      s2.src = "/js/bewerk.js";
       document.body.appendChild(s2);
     };
     document.body.appendChild(s1);

@@ -101,7 +101,7 @@
 <script src="js/config.js"></script>
 <script src="js/site.js"></script>
 <script>
-cblLees("cbl_projecten?select=titel,plaats,omschrijving,foto_url&gepubliceerd=eq.true&order=sortering.asc,created_at.desc")
+cblLees("cbl_projecten?select=titel,plaats,omschrijving,foto_url,slug&gepubliceerd=eq.true&order=sortering.asc,created_at.desc")
   .then(function (items) {
     var doel = document.getElementById("projectenlijst");
     doel.innerHTML = "";
@@ -110,13 +110,17 @@ cblLees("cbl_projecten?select=titel,plaats,omschrijving,foto_url&gepubliceerd=eq
       return;
     }
     items.forEach(function (p) {
-      var kaart = document.createElement("article");
+      var kaart = document.createElement(p.slug ? "a" : "article");
       kaart.className = "nieuwsitem";
+      if (p.slug) kaart.href = "/projecten/" + p.slug;
       var foto = p.foto_url ? '<div class="nfoto"><img src="' + p.foto_url + '" alt="" loading="lazy"></div>' : "";
-      kaart.innerHTML = foto + '<div class="inhoud"><time></time><h3></h3><div class="tekst"></div></div>';
+      kaart.innerHTML = foto + '<div class="inhoud"><time></time><h3></h3><div class="tekst"></div>' +
+        (p.slug ? '<div class="voet"><span class="leesmeer">Bekijk project &rarr;</span></div>' : "") + "</div>";
       kaart.querySelector("time").textContent = p.plaats || "";
       kaart.querySelector("h3").textContent = p.titel;
-      kaart.querySelector(".tekst").textContent = p.omschrijving;
+      var kort = String(p.omschrijving || "").replace(/\s+/g, " ").trim();
+      if (kort.length > 150) kort = kort.slice(0, 150).replace(/\s+\S*$/, "") + "...";
+      kaart.querySelector(".tekst").textContent = kort;
       doel.appendChild(kaart);
     });
   })

@@ -242,6 +242,16 @@ footer .logo img { height: 30px; }
 .nieuwsitem .voet { margin-top: auto; padding-top: 12px; display: flex; gap: 14px; align-items: center; }
 .leesmeer { background: none; border: 0; color: var(--amber-donker); font-weight: 700; cursor: pointer; font-size: .95rem; padding: 0; }
 
+/* Klikbare projectkaarten en de losse projectpagina */
+a.nieuwsitem { color: inherit; text-decoration: none; transition: transform .15s ease, border-color .15s ease; }
+a.nieuwsitem:hover { transform: translateY(-3px); border-color: var(--amber); }
+.terugregel { margin-bottom: 18px; }
+.terugregel a { color: var(--gloed); font-weight: 700; text-decoration: none; }
+.projectfoto { border-radius: var(--rond); overflow: hidden; box-shadow: var(--schaduw); margin-bottom: 30px; max-width: 900px; }
+.projectfoto img { width: 100%; max-height: 540px; object-fit: cover; display: block; }
+.projecttekst { max-width: 780px; }
+.projecttekst p { color: var(--grijs); margin-bottom: 14px; font-size: 1.05rem; line-height: 1.7; }
+
 .kop-rij { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .li-chip {
   display: inline-flex; align-items: center; gap: 6px;
