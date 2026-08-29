@@ -264,6 +264,7 @@
       <div class="knopjes">
         <button class="kn hoofd" id="n-opslaan">Zet op de site</button>
         <button class="kn stil" id="n-taalknop">Taal controleren</button>
+        <button class="kn stil" id="n-titelknop">Titel maken</button>
         <button class="kn stil" id="n-nieuw" style="display:none">Annuleer bewerken</button>
         <span class="status" id="n-status"></span>
       </div>
@@ -728,6 +729,7 @@
 
   function vulNieuwsForm(n) {
     actiefIdee = null;
+    titelSuggesties = [];
     el("ideebox").style.display = "none";
     el("n-id").value = n ? n.id : "";
     el("n-titel").value = n ? n.titel : "";
@@ -744,6 +746,37 @@
     if (n) window.scrollTo({ top: 0, behavior: "smooth" });
   }
   el("n-nieuw").addEventListener("click", function () { vulNieuwsForm(null); });
+
+  // Titel maken: laat de AI een pakkende kop bedenken op basis van het verhaal.
+  // Nog eens klikken geeft een nieuwe suggestie (eerdere gaan mee als "niet deze").
+  var titelSuggesties = [];
+  el("n-titelknop").addEventListener("click", function () {
+    var tekst = el("n-tekst").value.trim();
+    if (!tekst) { status("n-status", "Schrijf eerst uw verhaal; daar wordt de titel van gemaakt.", "err"); return; }
+    status("n-status", "Bezig met een titel bedenken...");
+    sb.auth.getSession().then(function (res) {
+      var token = res.data && res.data.session && res.data.session.access_token;
+      return fetch("/api/titel", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + (token || "") },
+        body: JSON.stringify({ tekst: tekst, eerdere: titelSuggesties })
+      });
+    }).then(function (r) {
+      if (r.status === 503) throw new Error("nietingesteld");
+      if (!r.ok) throw new Error("storing");
+      return r.json();
+    }).then(function (d) {
+      if (!d.titel) throw new Error("storing");
+      titelSuggesties.push(d.titel);
+      el("n-titel").value = d.titel;
+      updateNieuwsVoorbeeld();
+      status("n-status", "Niet tevreden? Klik nog eens voor een andere titel.", "ok");
+    }).catch(function (fout) {
+      status("n-status", fout.message === "nietingesteld"
+        ? "De titel-hulp is nog niet ingesteld. Vraag Stefan de AI-sleutel in Vercel te zetten."
+        : "De titel-hulp is even niet bereikbaar. Probeer het zo nog eens.", "err");
+    });
+  });
 
   // Nederlandse taalcontrole via LanguageTool (gratis dienst)
   el("n-taalknop").addEventListener("click", function () {
