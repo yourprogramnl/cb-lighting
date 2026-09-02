@@ -110,10 +110,10 @@
   <div class="wrap">
     <b>CB<span>-</span>lighting · Offerte maken</b>
     <div class="knoppenrij">
-      <button class="bk stil" id="k-concept">Bewaar concept</button>
-      <button class="bk stil" id="k-laad">Laad concept</button>
+      <button class="bk stil" id="k-concept">Bewaar voor later</button>
+      <button class="bk stil" id="k-laad">Bewaarde offertes</button>
       <button class="bk stil" id="k-nieuw">Nieuwe offerte</button>
-      <a class="bk stil" href="algemene-voorwaarden.html?print=1" target="_blank">Download algemene voorwaarden (PDF)</a>
+      <a class="bk stil" href="algemene-voorwaarden.html?print=1" target="_blank">Voorwaarden als PDF</a>
       <button class="bk hoofd" id="k-pdf">Opslaan als PDF</button>
     </div>
   </div>
@@ -125,17 +125,23 @@
   <div class="kolommen">
     <div class="formkolom">
 
-      <!-- Concepten (verschijnt na klik op Laad concept) -->
+      <!-- Korte uitleg -->
+      <div class="blok" style="border-left:5px solid var(--amber)">
+        <h3>Zo werkt het</h3>
+        <p class="subtekst" style="margin-bottom:0">Vul hieronder de stappen in. Rechts ziet u meteen hoe de offerte wordt; dat is precies wat de klant straks krijgt. Klaar? Klik bovenaan op <b>Opslaan als PDF</b> en mail die naar de klant, samen met de voorwaarden (knop <b>Voorwaarden als PDF</b>). Wilt u tussendoor stoppen, klik dan op <b>Bewaar voor later</b>.</p>
+      </div>
+
+      <!-- Bewaarde offertes (verschijnt na klik op de knop bovenaan) -->
       <div class="blok" id="conceptenblok" style="display:none">
-        <h3>Bewaarde concepten</h3>
-        <p class="subtekst">Deze offertes zijn op deze computer bewaard.</p>
+        <h3>Bewaarde offertes</h3>
+        <p class="subtekst">Deze offertes staan op deze computer bewaard. Klik op Open om er verder aan te werken.</p>
         <div id="conceptenlijst"></div>
       </div>
 
       <!-- Mijn gegevens -->
       <details class="blok" id="eigenblok">
-        <summary>Mijn gegevens (eenmalig invullen)</summary>
-        <p class="subtekst">Deze gegevens komen in de kop van elke offerte en worden op deze computer onthouden.</p>
+        <summary>Uw eigen gegevens (één keer invullen)</summary>
+        <p class="subtekst">Deze gegevens komen bovenaan elke offerte. Eén keer invullen, op Opslaan klikken, en daarna staan ze er altijd vanzelf. Dit blok kunt u daarna dicht laten.</p>
         <div class="twee">
           <div class="rijtje"><label>Bedrijfsnaam</label><input id="e-bedrijf" value="CB-lighting"></div>
           <div class="rijtje"><label>Naam</label><input id="e-naam" value="Chris Bakker"></div>
@@ -149,15 +155,15 @@
           <div class="rijtje"><label>KvK-nummer</label><input id="e-kvk" placeholder="8 cijfers"></div>
           <div class="rijtje"><label>Btw-id</label><input id="e-btwid" placeholder="NL...B01"></div>
         </div>
-        <div class="rijtje"><label>IBAN</label><input id="e-iban" placeholder="NL.. BANK ...."></div>
+        <div class="rijtje"><label>Rekeningnummer (IBAN)</label><input id="e-iban" placeholder="NL.. BANK ...."></div>
         <div class="drie">
-          <div class="rijtje"><label>Uurtarief meerwerk</label><input id="e-uurtarief" inputmode="decimal" placeholder="bijv. 95"><span class="hint">Excl. btw, per uur</span></div>
-          <div class="rijtje"><label>Betaaltermijn</label><input id="e-termijn" inputmode="numeric" value="14"><span class="hint">Dagen</span></div>
-          <div class="rijtje"><label>Voorschot</label><input id="e-voorschot" inputmode="numeric" value="30"><span class="hint">% bij opdracht, rest bij oplevering</span></div>
+          <div class="rijtje"><label>Uurtarief voor extra werk</label><input id="e-uurtarief" inputmode="decimal" placeholder="bijv. 95"><span class="hint">Per uur, zonder btw. Voor werk dat buiten de afspraak valt.</span></div>
+          <div class="rijtje"><label>Betaaltermijn</label><input id="e-termijn" inputmode="numeric" value="14"><span class="hint">Binnen zoveel dagen moet de klant betalen</span></div>
+          <div class="rijtje"><label>Aanbetaling</label><input id="e-voorschot" inputmode="numeric" value="30"><span class="hint">Percentage dat de klant direct na akkoord betaalt</span></div>
         </div>
         <div class="twee">
-          <div class="rijtje"><label>Grensbedrag 100% vooraf</label><input id="e-grens" inputmode="decimal" value="750"><span class="hint">Onder dit bedrag mag u alles vooraf vragen (voorwaarden art. 6.1)</span></div>
-          <div class="rijtje"><label>Maximum aansprakelijkheid</label><input id="e-maximum" inputmode="decimal" value="10000"><span class="hint">Per opdracht (voorwaarden art. 11.2)</span></div>
+          <div class="rijtje"><label>Kleine klussen: alles vooraf</label><input id="e-grens" inputmode="decimal" value="750"><span class="hint">Bij klussen onder dit bedrag mag u het hele bedrag vooraf vragen</span></div>
+          <div class="rijtje"><label>Hoogste schadevergoeding</label><input id="e-maximum" inputmode="decimal" value="10000"><span class="hint">Meer dan dit bedrag hoeft u nooit te vergoeden als er iets misgaat</span></div>
         </div>
         <div class="knoppenrij" style="display:flex;gap:10px;align-items:center">
           <button class="kn hoofd" id="e-opslaan">Opslaan</button>
@@ -167,7 +173,8 @@
 
       <!-- Klant -->
       <div class="blok">
-        <h3>De klant</h3>
+        <h3>Stap 1. Voor wie is de offerte?</h3>
+        <p class="subtekst">De velden met een * zijn nodig voor de offerte; de rest mag u overslaan als u het niet weet.</p>
         <div class="twee">
           <div class="rijtje verplicht"><label>Bedrijfsnaam</label><input id="k-bedrijf"></div>
           <div class="rijtje"><label>KvK-nummer</label><input id="k-kvk"></div>
@@ -186,31 +193,33 @@
 
       <!-- Offerte -->
       <div class="blok">
-        <h3>De offerte</h3>
+        <h3>Stap 2. Waar gaat het om?</h3>
+        <p class="subtekst">Het nummer en de datums staan vanzelf goed; daar hoeft u niets mee.</p>
         <div class="drie">
           <div class="rijtje"><label>Offertenummer</label><input id="o-nummer"></div>
           <div class="rijtje"><label>Datum</label><input id="o-datum" type="date"></div>
-          <div class="rijtje"><label>Geldig tot</label><input id="o-geldig" type="date"><span class="hint">Vanzelf 30 dagen later</span></div>
+          <div class="rijtje"><label>Geldig tot</label><input id="o-geldig" type="date"><span class="hint">Staat vanzelf op 30 dagen later</span></div>
         </div>
         <div class="rijtje verplicht"><label>Project / locatie</label><input id="o-project" placeholder="bijv. productiehal Van Dijk, Rotterdam"></div>
-        <div class="rijtje verplicht"><label>Omschrijving van de opdracht</label><textarea id="o-omschrijving" placeholder="bijv. Lichtberekening voor de nieuwe productiehal van circa 1.200 m², inclusief kantoorruimte op de verdieping. Doel: toetsing aan NEN-EN 12464-1 en een onafhankelijk armaturenadvies."></textarea></div>
+        <div class="rijtje verplicht"><label>Wat gaat u doen?</label><textarea id="o-omschrijving" placeholder="Vertel in een paar zinnen wat de klus is. Bijvoorbeeld: Lichtberekening voor de nieuwe productiehal van circa 1.200 m², inclusief kantoorruimte op de verdieping."></textarea><span class="hint">Schrijf het zoals u het aan de klant zou vertellen; dit komt zo in de offerte.</span></div>
       </div>
 
       <!-- Inbegrepen / niet inbegrepen -->
       <div class="blok">
-        <h3>Inbegrepen</h3>
-        <p class="subtekst">Vink aan wat geldt, pas de tekst aan of voeg regels toe.</p>
+        <h3>Stap 3. Wat krijgt de klant wel en niet?</h3>
+        <p class="subtekst">Dit staat al goed voor een gewone lichtberekening; meestal hoeft u hier niets te doen. Klopt een regel niet? Haal het vinkje weg (dan komt hij niet in de offerte), pas de tekst aan, of haal hem weg met het kruisje.</p>
+        <p style="font-weight:700;margin-bottom:8px">Dit zit erbij</p>
         <div id="inbegrepen"></div>
         <button class="plusknop" id="plus-in">+ Regel toevoegen</button>
-        <h3 style="margin-top:18px">Niet inbegrepen</h3>
+        <p style="font-weight:700;margin:18px 0 8px">Dit zit er niet bij</p>
         <div id="nietinbegrepen"></div>
         <button class="plusknop" id="plus-uit">+ Regel toevoegen</button>
       </div>
 
       <!-- Uitgangspunten -->
       <div class="blok">
-        <h3>Uitgangspunten van de berekening</h3>
-        <p class="subtekst">Standaardwaarden staan al ingevuld; pas aan wat anders is.</p>
+        <h3>Stap 4. Waar gaat u van uit bij het rekenen?</h3>
+        <p class="subtekst">De gebruikelijke waarden staan al ingevuld. Meestal hoeft u alleen de montagehoogte in te vullen en de norm te kiezen.</p>
         <div class="rijtje"><label>Tekeningen en maten</label><input id="u-tekeningen" value="Aangeleverd door opdrachtgever"><span class="hint">Vul eventueel datum en bestandsnaam aan</span></div>
         <div class="twee">
           <div class="rijtje"><label>Norm / richtlijn</label>
@@ -257,8 +266,8 @@
 
       <!-- Prijs -->
       <div class="blok">
-        <h3>Prijs</h3>
-        <p class="subtekst">Bedragen zonder btw. De btw en het totaal rekent de pagina zelf uit.</p>
+        <h3>Stap 5. Wat kost het?</h3>
+        <p class="subtekst">Vul de bedragen zonder btw in. De btw en het totaal worden er vanzelf bij gerekend.</p>
         <div id="prijsregels"></div>
         <button class="plusknop" id="plus-prijs">+ Prijsregel toevoegen</button>
         <div style="margin-top:12px">
@@ -270,11 +279,12 @@
 
       <!-- Betaling en planning -->
       <div class="blok">
-        <h3>Betaling en planning</h3>
+        <h3>Stap 6. Hoe wordt er betaald?</h3>
+        <p class="subtekst">Dit staat al goed volgens uw vaste afspraak (een deel vooraf, de rest bij oplevering). Alleen het aantal werkdagen moet u nog invullen.</p>
         <div class="drie">
-          <div class="rijtje"><label>Voorschot</label><input id="b-voorschot" inputmode="numeric" value="30"><span class="hint">% direct na akkoord gefactureerd</span></div>
-          <div class="rijtje"><label>Betaaltermijn</label><input id="b-termijn" inputmode="numeric" value="14"><span class="hint">Dagen</span></div>
-          <div class="rijtje"><label>Doorlooptijd</label><input id="b-doorloop" inputmode="numeric" placeholder="bijv. 10"><span class="hint">Werkdagen na ontvangst voorschot</span></div>
+          <div class="rijtje"><label>Aanbetaling</label><input id="b-voorschot" inputmode="numeric" value="30"><span class="hint">Percentage dat de klant direct na akkoord betaalt</span></div>
+          <div class="rijtje"><label>Betaaltermijn</label><input id="b-termijn" inputmode="numeric" value="14"><span class="hint">Binnen zoveel dagen moet de klant betalen</span></div>
+          <div class="rijtje verplicht"><label>Hoe lang duurt de klus?</label><input id="b-doorloop" inputmode="numeric" placeholder="bijv. 10"><span class="hint">In werkdagen, gerekend vanaf de aanbetaling</span></div>
         </div>
         <p class="status" id="b-uitleg"></p>
       </div>
@@ -282,6 +292,10 @@
 
     <!-- Het levende voorbeeld / de offerte -->
     <div class="offertekolom">
+      <div class="geenprint" style="margin-bottom:10px">
+        <h3 style="margin-bottom:2px">Zo ziet uw offerte eruit</h3>
+        <p class="status">Dit is precies wat de klant krijgt. Alles wat u links invult, komt hier meteen in te staan.</p>
+      </div>
       <div class="velA4" id="offerte"></div>
     </div>
   </div>
@@ -599,14 +613,14 @@
     alles[s.offerte.nummer] = s;
     try { localStorage.setItem("cblOffertes", JSON.stringify(alles)); } catch (e) { meld("Bewaren lukte niet.", "err"); return; }
     nummerGebruikt(s.offerte.nummer);
-    if (!stil) meld("Concept bewaard onder nummer " + s.offerte.nummer + ". U vindt het terug via Laad concept.", "ok");
+    if (!stil) meld("Offerte " + s.offerte.nummer + " is bewaard. U vindt hem terug via de knop Bewaarde offertes bovenaan.", "ok");
   }
   function conceptenTonen() {
     var vak = $("conceptenlijst");
     vak.innerHTML = "";
     var alles = alleConcepten();
     var nummers = Object.keys(alles).sort().reverse();
-    if (!nummers.length) { vak.innerHTML = '<p class="status">Er zijn nog geen bewaarde concepten.</p>'; return; }
+    if (!nummers.length) { vak.innerHTML = '<p class="status">Er zijn nog geen bewaarde offertes.</p>'; return; }
     nummers.forEach(function (nr) {
       var c = alles[nr];
       var totaal = (c.prijs || []).reduce(function (som, r) { return som + (r.bedrag || 0); }, 0);
@@ -619,7 +633,7 @@
       r.querySelector("span").textContent = datumNL(c.offerte && c.offerte.datum) + " · " + geld(totaal) + " excl. btw";
       r.querySelector(".openknop").addEventListener("click", function () { conceptLaden(c); });
       r.querySelector(".wegknop").addEventListener("click", function () {
-        if (!confirm("Concept " + nr + " verwijderen?")) return;
+        if (!confirm("Bewaarde offerte " + nr + " verwijderen?")) return;
         var a = alleConcepten();
         delete a[nr];
         localStorage.setItem("cblOffertes", JSON.stringify(a));
@@ -650,7 +664,7 @@
     var b = c.betaling || {};
     $("b-voorschot").value = b.voorschot || 30; $("b-termijn").value = b.termijn || 14; $("b-doorloop").value = b.doorloop || "";
     $("conceptenblok").style.display = "none";
-    meld("Concept " + (c.offerte.nummer || "") + " geopend.", "ok");
+    meld("Offerte " + (c.offerte.nummer || "") + " geopend. U kunt hem nu aanpassen.", "ok");
     render();
   }
 
@@ -681,11 +695,12 @@
   $("k-pdf").addEventListener("click", function () {
     var s = leesState();
     var mis = [];
-    if (!s.klant.bedrijf) mis.push("bedrijfsnaam van de klant");
-    if (!s.klant.contact) mis.push("contactpersoon");
-    if (!s.offerte.project) mis.push("project / locatie");
-    if (!s.offerte.omschrijving) mis.push("omschrijving van de opdracht");
-    if (!s.prijs.some(function (r) { return r.bedrag > 0; })) mis.push("minstens één prijsregel met een bedrag");
+    if (!s.klant.bedrijf) mis.push("de bedrijfsnaam van de klant (stap 1)");
+    if (!s.klant.contact) mis.push("de contactpersoon (stap 1)");
+    if (!s.offerte.project) mis.push("het project (stap 2)");
+    if (!s.offerte.omschrijving) mis.push("wat u gaat doen (stap 2)");
+    if (!s.prijs.some(function (r) { return r.bedrag > 0; })) mis.push("de prijs (stap 5)");
+    if (!s.betaling.doorloop) mis.push("hoe lang de klus duurt (stap 6)");
     if (mis.length) { meld("Nog even invullen: " + mis.join(", ") + ".", "err"); window.scrollTo({ top: 0, behavior: "smooth" }); return; }
     meld("");
     conceptOpslaan(true); // vangnet: bewaar de offerte ook als concept
