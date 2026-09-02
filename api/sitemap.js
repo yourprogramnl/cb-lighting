@@ -12,7 +12,8 @@ export default async function handler(req, res) {
     "/projecten.html",
     "/nieuws.html",
     "/over-cb-lighting.html",
-    "/contact.html"
+    "/contact.html",
+    "/algemene-voorwaarden.html"
   ];
 
   let projecten = [];
