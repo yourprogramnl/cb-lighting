@@ -663,6 +663,10 @@
     vulVb("vb-stap5", prijsHtml);
     vulVb("vb-stap6", betalingHtml);
     vulVb("vb-rest", restHtml);
+
+    // Vangnet: alles wat ingevuld is wordt direct onthouden, zodat er niets
+    // kwijtraakt als de pagina wordt weggeklikt of de computer uitgaat
+    try { localStorage.setItem("cblOfferteBezig", JSON.stringify(s)); } catch (e) {}
   }
 
   // ---------- Concepten ----------
@@ -842,7 +846,18 @@
 
   // ---------- Start ----------
   eigenLaden();
-  nieuweOfferte();
+  // Stond er nog een offerte open toen de pagina wegging? Zet die dan terug.
+  var bezig = null;
+  try { bezig = JSON.parse(localStorage.getItem("cblOfferteBezig") || "null"); } catch (e) {}
+  var hadInhoud = bezig && bezig.klant && bezig.offerte &&
+    (bezig.klant.bedrijf || bezig.offerte.project || bezig.offerte.omschrijving ||
+      (bezig.prijs || []).some(function (r) { return r.bedrag > 0; }));
+  if (hadInhoud) {
+    conceptLaden(bezig);
+    meld("U was hier nog mee bezig; alles staat er nog. U kunt gewoon verder gaan, of klik op Nieuwe offerte om opnieuw te beginnen.", "ok");
+  } else {
+    nieuweOfferte();
+  }
 })();
 </script>
 </body>
