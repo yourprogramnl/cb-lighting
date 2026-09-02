@@ -776,6 +776,12 @@
     document.title = "Offerte " + s.offerte.nummer + " CB-lighting";
     window.print();
     document.title = "Offerte maken | CB-lighting";
+    // Herinnering: de voorwaarden horen in dezelfde e-mail als de offerte
+    var m = $("melding");
+    m.className = "geenprint ok";
+    m.innerHTML = "De offerte is klaar. Stuur in dezelfde e-mail ook de algemene voorwaarden mee; alleen dan gelden ze. " +
+      '<a href="algemene-voorwaarden.html?print=1" target="_blank" style="color:inherit;font-weight:800;text-decoration:underline">Klik hier om ze nu ook als PDF te bewaren</a>.';
+    window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
   // ---------- Bedrijf zoeken bij de KvK ----------
