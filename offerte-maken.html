@@ -59,6 +59,16 @@
     .totaalregel { display: flex; justify-content: space-between; gap: 12px; padding: 4px 0; font-size: .98rem; }
     .totaalregel.eind { border-top: 2px solid var(--lijn); font-weight: 800; margin-top: 4px; padding-top: 8px; }
 
+    /* KvK-zoekresultaten */
+    .kvkresultaat {
+      display: block; width: 100%; text-align: left; cursor: pointer; font: inherit; font-size: .93rem;
+      background: var(--wolk); border: 1px solid var(--lijn); border-radius: 9px;
+      padding: 9px 12px; margin-top: 6px;
+    }
+    .kvkresultaat:hover { border-color: var(--amber); }
+    .kvkresultaat b { display: block; }
+    .kvkresultaat span { color: var(--grijs); }
+
     /* Conceptenlijst */
     .conceptregel { display: flex; gap: 10px; align-items: center; border: 1px solid var(--lijn); border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; font-size: .93rem; }
     .conceptregel .cinfo { flex: 1; min-width: 0; }
@@ -174,7 +184,16 @@
       <!-- Klant -->
       <div class="blok">
         <h3>Stap 1. Voor wie is de offerte?</h3>
-        <p class="subtekst">De velden met een * zijn nodig voor de offerte; de rest mag u overslaan als u het niet weet.</p>
+        <p class="subtekst">Typ de bedrijfsnaam en klik op Zoek: dan worden de gegevens vanzelf ingevuld vanuit het KvK-register. U kunt ze ook gewoon zelf intypen. De velden met een * zijn nodig voor de offerte.</p>
+        <div class="rijtje" id="kvkzoekvak">
+          <label>Zoek het bedrijf</label>
+          <div style="display:flex;gap:8px">
+            <input id="kvk-zoek" placeholder="bijv. CrossFit Capelle" style="flex:1">
+            <button class="kn stil" id="kvk-zoekknop" type="button">Zoek</button>
+          </div>
+          <span class="hint" id="kvk-status"></span>
+          <div id="kvk-resultaten"></div>
+        </div>
         <div class="twee">
           <div class="rijtje verplicht"><label>Bedrijfsnaam</label><input id="k-bedrijf"></div>
           <div class="rijtje"><label>KvK-nummer</label><input id="k-kvk"></div>
@@ -707,6 +726,51 @@
     document.title = "Offerte " + s.offerte.nummer + " CB-lighting";
     window.print();
     document.title = "Offerte maken | CB-lighting";
+  });
+
+  // ---------- Bedrijf zoeken bij de KvK ----------
+  function kvkZoek() {
+    var term = $("kvk-zoek").value.trim();
+    var statusEl = $("kvk-status");
+    var vak = $("kvk-resultaten");
+    vak.innerHTML = "";
+    if (term.length < 2) { statusEl.textContent = "Typ eerst (een deel van) de bedrijfsnaam."; return; }
+    statusEl.textContent = "Even zoeken...";
+    fetch("/api/kvk?naam=" + encodeURIComponent(term))
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d.fout === "geen-sleutel") {
+          statusEl.textContent = "Het opzoeken staat nog niet aan. Vul de gegevens gewoon zelf in.";
+          return;
+        }
+        if (d.fout || !d.resultaten) { statusEl.textContent = "Het opzoeken lukte even niet. Vul de gegevens gewoon zelf in."; return; }
+        if (!d.resultaten.length) { statusEl.textContent = "Niets gevonden. Probeer een ander deel van de naam, of vul de gegevens zelf in."; return; }
+        statusEl.textContent = "Klik op het juiste bedrijf:";
+        d.resultaten.forEach(function (r) {
+          var b = document.createElement("button");
+          b.className = "kvkresultaat";
+          b.type = "button";
+          b.innerHTML = "<b></b><span></span>";
+          b.querySelector("b").textContent = r.naam;
+          b.querySelector("span").textContent = [r.straat, r.plaats, r.kvkNummer ? "KvK " + r.kvkNummer : ""].filter(Boolean).join(" · ");
+          b.addEventListener("click", function () {
+            $("k-bedrijf").value = r.naam;
+            $("k-kvk").value = r.kvkNummer;
+            $("k-straat").value = r.straat;
+            $("k-postcode").value = r.postcode;
+            $("k-plaats").value = r.plaats;
+            vak.innerHTML = "";
+            statusEl.textContent = "Ingevuld. Vul zelf nog de contactpersoon in.";
+            render();
+          });
+          vak.appendChild(b);
+        });
+      })
+      .catch(function () { statusEl.textContent = "Het opzoeken lukte even niet. Vul de gegevens gewoon zelf in."; });
+  }
+  $("kvk-zoekknop").addEventListener("click", kvkZoek);
+  $("kvk-zoek").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") { e.preventDefault(); kvkZoek(); }
   });
 
   // ---------- Knoppen en velden ----------
