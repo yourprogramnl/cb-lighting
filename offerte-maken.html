@@ -48,6 +48,12 @@
     .status.ok { color: #14572c; font-weight: 600; }
     .status.err { color: #8c1d18; font-weight: 600; }
 
+    /* De grote melding bovenaan: duidelijk zichtbaar als gekleurde balk */
+    #melding:empty { display: none; }
+    #melding { border-radius: 10px; padding: 13px 16px; font-size: 1rem; font-weight: 600; }
+    #melding.ok { background: #e5f4e9; color: #14572c; border: 1px solid #bfe0c8; }
+    #melding.err { background: #fdeceb; color: #8c1d18; border: 1px solid #f5c6c2; }
+
     /* Regels (inbegrepen / niet inbegrepen / prijs) */
     .regel { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 8px; }
     .regel input[type=checkbox] { width: 20px; height: 20px; margin-top: 10px; flex: none; accent-color: var(--amber-donker); }
@@ -353,7 +359,9 @@
   function meld(tekst, soort) {
     var m = $("melding");
     m.textContent = tekst || "";
-    m.className = "status geenprint" + (soort ? " " + soort : "");
+    m.className = "geenprint" + (soort ? " " + soort : "");
+    // De melding staat bovenaan; scroll ernaartoe zodat hij altijd te zien is
+    if (tekst) window.scrollTo({ top: 0, behavior: "smooth" });
   }
   function groeiMee(t) {
     t.style.height = "auto";
