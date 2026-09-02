@@ -20,8 +20,13 @@
     .bk.stil { background: transparent; color: var(--wit); border: 1px solid rgba(255,255,255,.4); }
 
     .paneel { max-width: 1560px; margin: 22px auto 60px; padding: 0 18px; }
-    .kolommen { display: grid; grid-template-columns: minmax(430px, 520px) 1fr; gap: 22px; align-items: start; }
-    @media (max-width: 1100px) { .kolommen { grid-template-columns: 1fr; } }
+    /* Elke stap staat naast het stukje van de offerte dat erbij hoort */
+    .stap-rij { display: grid; grid-template-columns: minmax(400px, 480px) 1fr; gap: 22px; align-items: start; margin-bottom: 16px; }
+    .stap-rij > .blok, .stap-rij > details.blok { margin-bottom: 0; }
+    @media (max-width: 1100px) { .stap-rij { grid-template-columns: 1fr; gap: 10px; } }
+    .deelvel { padding: 26px 34px; }
+    /* De complete offerte bestaat alleen voor de PDF (het printen) */
+    #offerte { display: none; }
 
     .blok { background: var(--wit); border: 1px solid var(--lijn); border-radius: 14px; padding: 20px 22px; margin-bottom: 14px; }
     .blok h3 { margin-bottom: 4px; font-size: 1.12rem; }
@@ -111,9 +116,8 @@
     @media print {
       @page { size: A4; margin: 16mm 17mm; }
       body { background: #fff; font-size: 12pt; }
-      .balk, .formkolom, .geenprint { display: none !important; }
-      .paneel { max-width: none; margin: 0; padding: 0; }
-      .kolommen { display: block; }
+      .balk, .paneel, .geenprint { display: none !important; }
+      #offerte { display: block; }
       .velA4 { border: 0; border-radius: 0; box-shadow: none; padding: 0; font-size: 10.5pt; }
       .velA4 table, .velA4 .akkoord { break-inside: avoid; page-break-inside: avoid; }
       .velA4 h3 { break-after: avoid; page-break-after: avoid; }
@@ -139,23 +143,21 @@
 <div class="paneel">
   <p class="status geenprint" id="melding" style="margin-bottom:12px"></p>
 
-  <div class="kolommen">
-    <div class="formkolom">
-
       <!-- Korte uitleg -->
-      <div class="blok" style="border-left:5px solid var(--amber)">
+      <div class="blok" style="border-left:5px solid var(--amber);max-width:980px">
         <h3>Zo werkt het</h3>
-        <p class="subtekst" style="margin-bottom:0">Vul hieronder de stappen in. Rechts ziet u meteen hoe de offerte wordt; dat is precies wat de klant straks krijgt. Klaar? Klik bovenaan op <b>Opslaan als PDF</b> en mail die naar de klant, samen met de voorwaarden (knop <b>Voorwaarden als PDF</b>). Wilt u tussendoor stoppen, klik dan op <b>Bewaar voor later</b>.</p>
+        <p class="subtekst" style="margin-bottom:0">Vul hieronder de stappen in. Naast elke stap ziet u meteen het stukje van de offerte dat daarbij hoort, precies zoals de klant het krijgt. Klaar? Klik bovenaan op <b>Opslaan als PDF</b>: dan ziet u de hele offerte in één keer en bewaart u hem als PDF. Mail die naar de klant, samen met de voorwaarden (knop <b>Voorwaarden als PDF</b>). Tussendoor stoppen kan altijd met <b>Bewaar voor later</b>.</p>
       </div>
 
       <!-- Bewaarde offertes (verschijnt na klik op de knop bovenaan) -->
-      <div class="blok" id="conceptenblok" style="display:none">
+      <div class="blok" id="conceptenblok" style="display:none;max-width:980px">
         <h3>Bewaarde offertes</h3>
         <p class="subtekst">Deze offertes staan op deze computer bewaard. Klik op Open om er verder aan te werken.</p>
         <div id="conceptenlijst"></div>
       </div>
 
       <!-- Mijn gegevens -->
+      <div class="stap-rij">
       <details class="blok" id="eigenblok">
         <summary>Uw eigen gegevens (één keer invullen)</summary>
         <p class="subtekst">Deze gegevens komen bovenaan elke offerte. Eén keer invullen, op Opslaan klikken, en daarna staan ze er altijd vanzelf. Dit blok kunt u daarna dicht laten.</p>
@@ -187,8 +189,11 @@
           <span class="status" id="e-status"></span>
         </div>
       </details>
+      <div class="velA4 deelvel" id="vb-eigen"></div>
+      </div>
 
       <!-- Klant -->
+      <div class="stap-rij">
       <div class="blok">
         <h3>Stap 1. Voor wie is de offerte?</h3>
         <p class="subtekst">Typ de bedrijfsnaam en klik op Zoek: dan worden de gegevens vanzelf ingevuld vanuit het KvK-register. U kunt ze ook gewoon zelf intypen. De velden met een * zijn nodig voor de offerte.</p>
@@ -216,8 +221,11 @@
         </div>
         <div class="rijtje"><label>Telefoonnummer</label><input id="k-tel"></div>
       </div>
+      <div class="velA4 deelvel" id="vb-stap1"></div>
+      </div>
 
       <!-- Offerte -->
+      <div class="stap-rij">
       <div class="blok">
         <h3>Stap 2. Waar gaat het om?</h3>
         <p class="subtekst">Het nummer en de datums staan vanzelf goed; daar hoeft u niets mee.</p>
@@ -229,8 +237,11 @@
         <div class="rijtje verplicht"><label>Project / locatie</label><input id="o-project" placeholder="bijv. productiehal Van Dijk, Rotterdam"></div>
         <div class="rijtje verplicht"><label>Wat gaat u doen?</label><textarea id="o-omschrijving" placeholder="Vertel in een paar zinnen wat de klus is."></textarea><span class="hint">Schrijf het zoals u het aan de klant zou vertellen; dit komt zo in de offerte.</span></div>
       </div>
+      <div class="velA4 deelvel" id="vb-stap2"></div>
+      </div>
 
       <!-- Inbegrepen / niet inbegrepen -->
+      <div class="stap-rij">
       <div class="blok">
         <h3>Stap 3. Wat krijgt de klant wel en niet?</h3>
         <p class="subtekst">Dit staat al goed voor een gewone lichtberekening; meestal hoeft u hier niets te doen. Klopt een regel niet? Haal het vinkje weg (dan komt hij niet in de offerte), pas de tekst aan, of haal hem weg met het kruisje.</p>
@@ -241,8 +252,11 @@
         <div id="nietinbegrepen"></div>
         <button class="plusknop" id="plus-uit">+ Regel toevoegen</button>
       </div>
+      <div class="velA4 deelvel" id="vb-stap3"></div>
+      </div>
 
       <!-- Uitgangspunten -->
+      <div class="stap-rij">
       <div class="blok">
         <h3>Stap 4. Waar gaat u van uit bij het rekenen?</h3>
         <p class="subtekst">De gebruikelijke waarden staan al ingevuld. Meestal hoeft u alleen de montagehoogte in te vullen en de norm te kiezen.</p>
@@ -289,8 +303,11 @@
           <div class="rijtje"><label>Toelichting armaturen</label><input id="u-armatuurtekst" placeholder="bijv. merk of type"></div>
         </div>
       </div>
+      <div class="velA4 deelvel" id="vb-stap4"></div>
+      </div>
 
       <!-- Prijs -->
+      <div class="stap-rij">
       <div class="blok">
         <h3>Stap 5. Wat kost het?</h3>
         <p class="subtekst">Vul de bedragen zonder btw in. De btw en het totaal worden er vanzelf bij gerekend.</p>
@@ -302,8 +319,11 @@
           <div class="totaalregel eind"><span>Totaal incl. btw</span><b id="t-incl">€ 0,00</b></div>
         </div>
       </div>
+      <div class="velA4 deelvel" id="vb-stap5"></div>
+      </div>
 
       <!-- Betaling en planning -->
+      <div class="stap-rij">
       <div class="blok">
         <h3>Stap 6. Hoe wordt er betaald?</h3>
         <p class="subtekst">Dit staat al goed volgens uw vaste afspraak (een deel vooraf, de rest bij oplevering). Alleen het aantal werkdagen moet u nog invullen.</p>
@@ -314,18 +334,21 @@
         </div>
         <p class="status" id="b-uitleg"></p>
       </div>
+      <div class="velA4 deelvel" id="vb-stap6"></div>
     </div>
 
-    <!-- Het levende voorbeeld / de offerte -->
-    <div class="offertekolom">
-      <div class="geenprint" style="margin-bottom:10px">
-        <h3 style="margin-bottom:2px">Zo ziet uw offerte eruit</h3>
-        <p class="status">Dit is precies wat de klant krijgt. Alles wat u links invult, komt hier meteen in te staan.</p>
+    <!-- De vaste afsluiting -->
+    <div class="stap-rij">
+      <div class="blok">
+        <h3>Tot slot: de vaste teksten</h3>
+        <p class="subtekst" style="margin-bottom:0">Dit stuk staat altijd onder elke offerte: het gebruik van het lichtplan, de verwijzing naar de algemene voorwaarden en het akkoord-vak dat de klant invult. Hier hoeft u nooit iets aan te doen.</p>
       </div>
-      <div class="velA4" id="offerte"></div>
+      <div class="velA4 deelvel" id="vb-rest"></div>
     </div>
-  </div>
 </div>
+
+<!-- De complete offerte in één stuk; alleen zichtbaar bij Opslaan als PDF -->
+<div class="velA4" id="offerte"></div>
 
 <script>
 (function () {
@@ -536,19 +559,18 @@
       }).join("");
     }
 
-    var h = "";
-    // Kop
-    h += '<div class="okop">' +
+    // Kop (hoort bij Uw eigen gegevens)
+    var kopHtml = '<div class="okop">' +
       '<img src="assets/logo.png" alt="CB-lighting" onerror="this.remove()">' +
       '<div class="osub">' + esc(e["e-bedrijf"] || "CB-lighting") + ' · Onafhankelijk adviesbureau voor lichtberekeningen en verlichtingsadvies</div>' +
       '<div class="oklein">' + esc(e["e-adres"]) + ' · www.cb-lighting.nl' +
       (e["e-email"] ? " · " + esc(e["e-email"]) : "") + (e["e-tel"] ? " · " + esc(e["e-tel"]) : "") + "</div>" +
       '<div class="oklein">KvK ' + esc(e["e-kvk"] || "[KvK-nummer]") + " · btw-id " + esc(e["e-btwid"] || "[btw-id]") + " · IBAN " + esc(e["e-iban"] || "[IBAN]") + "</div>" +
       "</div>";
-    h += '<h2 class="otitel">Offerte</h2>';
 
-    // Gegevens-tabel
-    h += '<table class="gtab"><tbody>' +
+    // Gegevens-tabel (hoort bij stap 1)
+    var gegevensHtml = '<h2 class="otitel">Offerte</h2>' +
+      '<table class="gtab"><tbody>' +
       "<tr><td>Offertenummer</td><td>" + esc(o.nummer) + "</td></tr>" +
       "<tr><td>Datum</td><td>" + esc(datumNL(o.datum)) + "</td></tr>" +
       "<tr><td>Geldig tot</td><td>" + esc(datumNL(o.geldig)) + "</td></tr>" +
@@ -558,21 +580,23 @@
       "<tr><td>Project</td><td>" + esc(project) + "</td></tr>" +
       "</tbody></table>";
 
-    // Aanhef
-    h += "<p>Beste " + esc(naam) + ",</p>" +
+    // Aanhef en omschrijving (horen bij stap 2)
+    var omschrijvingHtml = "<p>Beste " + esc(naam) + ",</p>" +
       "<p>Bedankt voor uw aanvraag. Hieronder vindt u mijn prijsopgave voor de lichtberekening van " + esc(project) +
       ". Ik heb daarbij de uitgangspunten opgenomen waarop de berekening wordt gebaseerd, zodat u vooraf precies weet wat u krijgt.</p>";
 
     // 1. Omschrijving
-    h += "<h3>1. Omschrijving van de opdracht</h3>";
-    h += "<p>" + (esc(o.omschrijving || "[Korte omschrijving van de opdracht]")).replace(/\n/g, "<br>") + "</p>";
-    h += "<p><b>Inbegrepen</b></p><ul>" + bullets(s.inbegrepen) + "</ul>";
-    h += "<p><b>Niet inbegrepen</b></p><ul>" + bullets(s.nietinbegrepen) + "</ul>";
+    omschrijvingHtml += "<h3>1. Omschrijving van de opdracht</h3>";
+    omschrijvingHtml += "<p>" + (esc(o.omschrijving || "[Korte omschrijving van de opdracht]")).replace(/\n/g, "<br>") + "</p>";
 
-    // 2. Uitgangspunten
-    h += "<h3>2. Uitgangspunten van de berekening</h3>" +
+    // Inbegrepen en niet inbegrepen (horen bij stap 3)
+    var lijstenHtml = "<p><b>Inbegrepen</b></p><ul>" + bullets(s.inbegrepen) + "</ul>" +
+      "<p><b>Niet inbegrepen</b></p><ul>" + bullets(s.nietinbegrepen) + "</ul>";
+
+    // 2. Uitgangspunten (hoort bij stap 4)
+    var uitgangspuntenHtml = "<h3>2. Uitgangspunten van de berekening</h3>" +
       "<p>De berekening wordt gebaseerd op de onderstaande uitgangspunten. Wijken de werkelijke situatie of de gegevens hiervan af, dan kunnen de uitkomsten afwijken.</p>";
-    h += "<table><thead><tr><th>Uitgangspunt</th><th>Waarde</th></tr></thead><tbody>" +
+    uitgangspuntenHtml += "<table><thead><tr><th>Uitgangspunt</th><th>Waarde</th></tr></thead><tbody>" +
       "<tr><td>Tekeningen en maten</td><td>" + esc(u.tekeningen) + "</td></tr>" +
       "<tr><td>Norm / richtlijn</td><td>" + esc(norm) + "</td></tr>" +
       "<tr><td>Reflectiewaarden plafond / wanden / vloer</td><td>" + esc(u.reflP + "% / " + u.reflW + "% / " + u.reflV + "%") + "</td></tr>" +
@@ -583,40 +607,40 @@
       "<tr><td>Daglicht</td><td>" + esc(u.daglicht) + "</td></tr>" +
       "<tr><td>Armaturen</td><td>" + esc(armaturen) + "</td></tr>" +
       "</tbody></table>";
-    h += '<p class="kleiner">Een lichtberekening is een theoretische voorspelling. Werkelijk gemeten waarden kunnen afwijken door montage, productietoleranties, vervuiling en veroudering of afwijkingen van het advies.</p>';
+    uitgangspuntenHtml += '<p class="kleiner">Een lichtberekening is een theoretische voorspelling. Werkelijk gemeten waarden kunnen afwijken door montage, productietoleranties, vervuiling en veroudering of afwijkingen van het advies.</p>';
 
-    // 3. Prijs
-    h += "<h3>3. Prijs</h3>";
-    h += '<table><thead><tr><th>Omschrijving</th><th class="bedrag">Bedrag excl. btw</th></tr></thead><tbody>';
+    // 3. Prijs (hoort bij stap 5)
+    var prijsHtml = "<h3>3. Prijs</h3>";
+    prijsHtml += '<table><thead><tr><th>Omschrijving</th><th class="bedrag">Bedrag excl. btw</th></tr></thead><tbody>';
     s.prijs.forEach(function (r) {
-      h += "<tr><td>" + esc(r.tekst) + '</td><td class="bedrag">' + geld(r.bedrag) + "</td></tr>";
+      prijsHtml += "<tr><td>" + esc(r.tekst) + '</td><td class="bedrag">' + geld(r.bedrag) + "</td></tr>";
     });
-    if (!s.prijs.length) h += '<tr><td>[Omschrijving]</td><td class="bedrag">€ 0,00</td></tr>';
-    h += '<tr class="totaal"><td>Totaal excl. btw</td><td class="bedrag">' + geld(totaalExcl) + "</td></tr>" +
+    if (!s.prijs.length) prijsHtml += '<tr><td>[Omschrijving]</td><td class="bedrag">€ 0,00</td></tr>';
+    prijsHtml += '<tr class="totaal"><td>Totaal excl. btw</td><td class="bedrag">' + geld(totaalExcl) + "</td></tr>" +
       '<tr class="totaal"><td>Btw 21%</td><td class="bedrag">' + geld(btw) + "</td></tr>" +
       '<tr class="eindtotaal"><td>Totaal incl. btw</td><td class="bedrag">' + geld(totaalIncl) + "</td></tr>" +
       "</tbody></table>";
 
-    // 4. Betaling en planning
-    h += "<h3>4. Betaling en planning</h3><ul>" +
+    // 4. Betaling en planning (hoort bij stap 6)
+    var betalingHtml = "<h3>4. Betaling en planning</h3><ul>" +
       "<li>" + b.voorschot + "% bij opdracht (voorschot): <b>" + geld(voorschotBedrag) + "</b>. Factuur direct na uw akkoord, betaaltermijn " + b.termijn + " dagen.</li>" +
       "<li>" + rest + "% bij oplevering van het concept-rapport: <b>" + geld(restBedrag) + "</b>. Betaaltermijn " + b.termijn + " dagen.</li>" +
       "<li>Het definitieve rapport (zonder conceptmarkering) ontvangt u na volledige betaling.</li>" +
       "<li>Start van het werk: na ontvangst van het voorschot. Verwachte oplevering: " + esc(b.doorloop || "[x]") + " werkdagen na ontvangst van het voorschot en van alle benodigde gegevens.</li>" +
       "</ul>";
 
-    // 5 en 6: vaste teksten uit het sjabloon
-    h += "<h3>5. Gebruik van het lichtplan</h3>" +
+    // 5 en 6: vaste teksten uit het sjabloon (het slotstuk)
+    var restHtml = "<h3>5. Gebruik van het lichtplan</h3>" +
       "<p>Het rapport en het lichtplan zijn bedoeld voor het project waarvoor ze zijn gemaakt. Na volledige betaling mag u ze daarvoor vrij gebruiken. Het lichtplan mag niet worden gebruikt voor andere projecten of aan derden worden verstrekt om daarmee elders verlichting in te kopen of te laten berekenen. Het auteursrecht blijft bij CB-lighting.</p>";
-    h += "<h3>6. Voorwaarden</h3>" +
+    restHtml += "<h3>6. Voorwaarden</h3>" +
       "<p>Op deze offerte en op de opdracht zijn de algemene voorwaarden van CB-lighting van toepassing. Deze zijn als bijlage bij deze offerte gevoegd en staan op www.cb-lighting.nl/algemene-voorwaarden.html. Eventuele eigen (inkoop)voorwaarden van de opdrachtgever worden uitdrukkelijk van de hand gewezen.</p>";
 
     // Afsluiting
-    h += "<p>Heeft u vragen over deze offerte? Bel of mail gerust. Ik hoor graag van u.</p>" +
+    restHtml += "<p>Heeft u vragen over deze offerte? Bel of mail gerust. Ik hoor graag van u.</p>" +
       '<p class="groet">Met vriendelijke groet,<br><b>' + esc(e["e-naam"] || "Chris Bakker") + "</b><br>" + esc(e["e-bedrijf"] || "CB-lighting") + "</p>";
 
     // Akkoord-kader
-    h += '<div class="akkoord"><h3>Akkoord opdrachtgever</h3>' +
+    restHtml += '<div class="akkoord"><h3>Akkoord opdrachtgever</h3>' +
       "<p>Ondergetekende verstrekt hierbij opdracht aan CB-lighting volgens deze offerte, inclusief de uitgangspunten, het betaalschema en de bijgevoegde algemene voorwaarden, en verklaart deze voorwaarden te hebben ontvangen en gelezen.</p>" +
       "<table><tbody>" +
       "<tr><td>Bedrijfsnaam</td><td></td></tr>" +
@@ -627,7 +651,18 @@
       '<p class="kleiner" style="margin-bottom:0">Ondertekend retour per e-mail is voldoende. Een e-mail met "akkoord op offerte ' + esc(o.nummer) + '" geldt eveneens als opdracht.</p>' +
       "</div>";
 
-    $("offerte").innerHTML = h;
+    // De complete offerte (voor de PDF) en de losse stukjes naast de stappen
+    $("offerte").innerHTML = kopHtml + gegevensHtml + omschrijvingHtml + lijstenHtml +
+      uitgangspuntenHtml + prijsHtml + betalingHtml + restHtml;
+    function vulVb(id, html) { var el = $(id); if (el) el.innerHTML = html; }
+    vulVb("vb-eigen", kopHtml);
+    vulVb("vb-stap1", gegevensHtml);
+    vulVb("vb-stap2", omschrijvingHtml);
+    vulVb("vb-stap3", lijstenHtml);
+    vulVb("vb-stap4", uitgangspuntenHtml);
+    vulVb("vb-stap5", prijsHtml);
+    vulVb("vb-stap6", betalingHtml);
+    vulVb("vb-rest", restHtml);
   }
 
   // ---------- Concepten ----------
