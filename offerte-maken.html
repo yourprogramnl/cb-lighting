@@ -29,7 +29,7 @@
     details.blok summary { cursor: pointer; font-weight: 700; font-size: 1.12rem; }
     details.blok[open] summary { margin-bottom: 10px; }
 
-    .rijtje { display: grid; gap: 4px; margin-bottom: 12px; }
+    .rijtje { display: grid; gap: 4px; margin-bottom: 12px; align-content: start; }
     .rijtje label { font-weight: 600; font-size: .95rem; }
     .rijtje .hint { font-weight: 400; color: var(--grijs); font-size: .85rem; }
     .rijtje input, .rijtje select, .rijtje textarea {
@@ -217,10 +217,10 @@
         <div class="drie">
           <div class="rijtje"><label>Offertenummer</label><input id="o-nummer"></div>
           <div class="rijtje"><label>Datum</label><input id="o-datum" type="date"></div>
-          <div class="rijtje"><label>Geldig tot</label><input id="o-geldig" type="date"><span class="hint">Staat vanzelf op 30 dagen later</span></div>
+          <div class="rijtje"><label>Geldig tot</label><input id="o-geldig" type="date"></div>
         </div>
         <div class="rijtje verplicht"><label>Project / locatie</label><input id="o-project" placeholder="bijv. productiehal Van Dijk, Rotterdam"></div>
-        <div class="rijtje verplicht"><label>Wat gaat u doen?</label><textarea id="o-omschrijving" placeholder="Vertel in een paar zinnen wat de klus is. Bijvoorbeeld: Lichtberekening voor de nieuwe productiehal van circa 1.200 m², inclusief kantoorruimte op de verdieping."></textarea><span class="hint">Schrijf het zoals u het aan de klant zou vertellen; dit komt zo in de offerte.</span></div>
+        <div class="rijtje verplicht"><label>Wat gaat u doen?</label><textarea id="o-omschrijving" placeholder="Vertel in een paar zinnen wat de klus is."></textarea><span class="hint">Schrijf het zoals u het aan de klant zou vertellen; dit komt zo in de offerte.</span></div>
       </div>
 
       <!-- Inbegrepen / niet inbegrepen -->
