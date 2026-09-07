@@ -144,6 +144,15 @@
     document.head.appendChild(robots);
   }
 
+  // Tijdelijke storing (database even niet bereikbaar): nette melding,
+  // maar bewust ZONDER noindex. De pagina bestaat wel; anders denkt Google
+  // bij een hikje dat de pagina niet geindexeerd mag worden.
+  function laadFout() {
+    document.getElementById("b-titel").textContent = "Het bericht kon even niet geladen worden";
+    document.getElementById("b-tekst").innerHTML =
+      '<p>Probeer het over een ogenblik opnieuw, of bekijk <a href="/nieuws.html">alle berichten</a>.</p>';
+  }
+
   if (!slug) { nietGevonden(); return; }
 
   cblLees("cbl_nieuws?select=*&gepubliceerd=eq.true&slug=eq." + encodeURIComponent(slug))
@@ -198,7 +207,7 @@
           "Het hele verhaal staat hier:\n" + deelUrl + "\n\nGroet!");
       document.getElementById("b-delen").style.display = "";
     })
-    .catch(nietGevonden);
+    .catch(laadFout);
 })();
 </script>
 </body>
